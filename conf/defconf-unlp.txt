@@ -1,0 +1,320 @@
+# Config
+
+variant="Backend";
+ver="1.2";
+verc="120"
+date="26 september, 2019";
+minsdk=19;
+
+modprop="id=MinMicroG
+name=Minimal MicroG Pack $variant Edition
+version=$ver
+versionCode=$verc
+author=MOVZX and FatherJony and FriendlyNeighborhoodShane
+description=A Minimal MicroG installer with just the essentials
+support=https://t.me/joinchat/FyFlS0X2D7f6YNvdxhEsfw
+donate=
+minMagisk=1900
+";
+
+stuff="
+  /system/app/AppleNLPBackend/AppleNLPBackend.apk
+  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
+  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
+  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
+
+  /system/etc/default-permissions/microg-permissions-unlp.xml
+  /system/etc/permissions/com.google.android.gms.xml
+  /system/etc/sysconfig/nogoolag-unlp.xml
+
+  /system/priv-app/MicroGUNLP/MicroGUNLP.apk
+";
+
+stuff_arch="
+";
+
+stuff_sdk="
+";
+
+stuff_arch_sdk="
+";
+
+stuff_other="
+  /system/app/AuroraDroid/AuroraDroid.apk
+  /system/app/AuroraStore/AuroraStore.apk
+  /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
+  /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
+  /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
+  /system/etc/default-permissions/microg-permissions.xml
+  /system/etc/permissions/com.android.vending.xml
+  /system/etc/permissions/com.aurora.services.xml
+  /system/etc/permissions/com.google.android.backuptransport.xml
+  /system/etc/permissions/com.google.android.maps.xml
+  /system/etc/permissions/com.google.android.media.effects.xml
+  /system/etc/permissions/com.google.widevine.software.drm.xml
+  /system/etc/permissions/gsync.xml
+  /system/etc/sysconfig/nogoolag.xml
+  /system/framework/com.google.android.maps.jar
+  /system/framework/com.google.android.media.effects.jar
+  /system/framework/com.google.widevine.software.drm.jar
+  /system/lib/libjni_latinimegoogle.so
+  /system/lib64/libjni_latinimegoogle.so
+  /system/priv-app/AuroraServices/AuroraServices.apk
+  /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
+  /system/priv-app/FakeStore/FakeStore.apk
+  /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk
+  /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
+  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
+";
+
+stuff_old="
+  /system/addon.d/01-nogoolag.sh
+  /system/app/FDroid/FDroid.apk
+  /system/etc/permissions/org.fdroid.fdroid.privileged.xml
+  /system/priv-app/AuroraStore/AuroraStore.apk
+  /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk
+  /system/priv-app/DejaVuNLPBackend/DejaVuNLPBackend.apk
+  /system/priv-app/FDroidPrivileged/FDroidPrivileged.apk
+  /system/priv-app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/priv-app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/priv-app/MicroGGSFProxy/MicroGGSFProxy.apk
+  /system/priv-app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk
+";
+
+stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $stuff_other $stuff_old $initdfile $addondfile";
+
+stuff_debloat="
+  /system/app/GmsCore/GmsCore.apk
+  /system/app/PrebuiltGmsCore/PrebuiltGmsCore.apk
+  /system/priv-app/GmsCore/GmsCore.apk
+  /system/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk
+
+  /system/app/AMAPNetworkLocation/AMAPNetworkLocation.apk
+  /system/app/BaiduNetworkLocation/BaiduNetworkLocation.apk
+  /system/app/LegacyNetworkLocation/LegacyNetworkLocation.apk
+  /system/app/NetworkLocation/NetworkLocation.apk
+  /system/priv-app/AMAPNetworkLocation/AMAPNetworkLocation.apk
+  /system/priv-app/BaiduNetworkLocation/BaiduNetworkLocation.apk
+  /system/priv-app/LegacyNetworkLocation/LegacyNetworkLocation.apk
+  /system/priv-app/NetworkLocation/NetworkLocation.apk
+
+  /system/app/MicroGGMSCore/MicroGGMSCore.apk
+  /system/app/UnifiedNlp/UnifiedNlp.apk
+  /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
+  /system/priv-app/UnifiedNlp/UnifiedNlp.apk
+";
+
+stuff_perm="
+  /system/addon.d
+  /system/app
+  /system/etc
+  /system/priv-app
+";
+
+addona="#!/sbin/sh
+#
+# MinMicroG addon.d
+
+save_files() {
+cat <<EOF
+$(echo $stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile /system/etc/.mmg | sed 's| |\n|g' | sort -u | tr -s '\n')
+
+EOF
+}
+
+delete_files() {
+cat <<EOF
+$(echo $stuff_debloat | sed 's| |\n|g' | sort -u | tr -s '\n')
+
+EOF
+}
+";
+
+addonb='
+log() { echo "$1"; }
+
+log " ";
+log "=== MinMicroG addon.d script ===";
+
+[ -e "/system_root" ] && {
+  mount -o ro /system_root;
+  sysroot="system_root";
+} || {
+  mount -o ro /system;
+  [ -e "/system/system/build.prop" ] && sysroot="system";
+}
+sdk="$(grep ro.build.version.sdk "/$sysroot/system/build.prop" | head -n1 | cut -d= -f2)";
+backupdir="/data/media/0/MinMicroG/backups";
+[ "$C" ] && tmpdir="$C" || tmpdir="/tmp/backupdir";
+
+move() {
+  sourceobject="$1";
+  destobject="$2";
+  if [ "$sdk" -lt 21 ]; then
+    [ "$(basename "$(dirname "$sourceobject")").apk" == "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$(dirname "$sourceobject")")/$(basename "$sourceobject")"; destobject="$(dirname "$(dirname "$destobject")")/$(basename "$destobject")"; }
+  fi;
+  [ "$(basename "$(dirname "$sourceobject")").apk" == "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$sourceobject")"; destobject="$(dirname "$destobject")"; }
+  [ -e "$sourceobject" ] || return 0;
+  mkdir -p "$(dirname "$destobject")";
+  cp -rf "$sourceobject" "$(dirname "$destobject")/";
+  [ -e "$destobject" ] && log "MOVER: Object moved ($sourceobject)" || log "ERROR: Could not move ($sourceobject)";
+  rm -rf "$sourceobject" || { log "ERROR: Could not remove ($sourceobject)"; return 1; }
+  [ -e "$sourceobject" ] && { log "ERROR: Could not remove ($sourceobject)"; return 1; } || log "MOVER: Object removed ($sourceobject)";
+}
+
+perm_r() {
+  uid="$1";
+  gid="$2";
+  dmod="$3";
+  fmod="$4";
+  dir="$5";
+  [ -d "$dir" ] || return 0;
+  chown -R $uid:$gid "$dir" || chown -R $uid.$gid "$dir";
+  find "$dir" -type d -exec chmod $dmod {} +;
+  find "$dir" -type f -exec chmod $fmod {} +;
+}
+
+case "$1" in
+  backup)
+    log " ";
+    log "Backing up...";
+    save_files | while read object dummy; do
+      move "/$sysroot/$object" "$tmpdir/$object";
+    done;
+  ;;
+  restore)
+    log " ";
+    log "Restoring...";
+    save_files | while read object dummy; do
+      move "$tmpdir/$object" "/$sysroot/$object";
+    done;
+  ;;
+  post-restore)
+    log " ";
+    log "Debloating...";
+    mount /data;
+    delete_files | while read object dummy; do
+      move "/$sysroot/$object" "$backupdir/$object";
+    done;
+    [ -d "$backupdir" ] && { perm_r 1023 1023 775 664 "$backupdir"; chcon -hR "u:object_r:media_rw_data_file:s0" "$backupdir"; }
+  ;;
+esac;
+';
+
+addond="$addona $addonb";
+
+pre_install_actions() {
+
+  user_conf;
+  microg_cleanup;
+  return 0;
+}
+
+post_install_actions() {
+
+  return 0;
+
+}
+
+pre_uninstall_actions() {
+
+  return 0;
+
+}
+
+post_uninstall_actions() {
+
+  rm -rf "$root/system/etc/.mmg";
+  return 0;
+
+}
+
+user_conf() {
+
+  for file in "$(dirname "$0")/mmg-conf.txt" "$(dirname "$zipfile")/mmg-conf.txt" "$moddir/mmg-conf.txt" "/data/adb/mmg-conf.txt"; do
+    [ -f "$file" ] && {
+      ui_print " "; ui_print "Processing user config $file...";
+      includelist="$(cat "$file" | sed 's|\#.*||g')";
+      break;
+    }
+  done;
+  [ "$includelist" ] && {
+    new_stuff="";
+    new_stuff_arch="";
+    new_stuff_sdk="";
+    new_stuff_arch_sdk="";
+    for include in $includelist; do 
+      log "Including keyword $include";
+      new_stuff="$new_stuff $(echo "$stuff" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
+      new_stuff_arch="$new_stuff_arch $(echo "$stuff_arch" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
+      new_stuff_sdk="$new_stuff_sdk $(echo "$stuff_sdk" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
+      new_stuff_arch_sdk="$new_stuff_arch_sdk $(echo "$stuff_arch_sdk" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
+    done;
+    stuff="$new_stuff";
+    stuff_arch="$new_stuff_arch";
+    stuff_sdk="$new_stuff_sdk";
+    stuff_arch_sdk="$new_stuff_arch_sdk";
+  }
+  [ "$includelist" ] && {
+    stuff="$(echo "$stuff" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+";
+    stuff_arch="$(echo "$stuff_arch" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+";
+    stuff_sdk="$(echo "$stuff_sdk" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+";
+    stuff_arch_sdk="$(echo "$stuff_arch_sdk" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+";
+    addona="#!/sbin/sh
+#
+# MinMicroG addon.d
+
+save_files() {
+cat <<EOF
+$(echo $stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile /system/etc/.mmg | sed 's| |\n|g' | sort -u | tr -s '\n')
+
+EOF
+}
+
+delete_files() {
+cat <<EOF
+$(echo $stuff_debloat | sed 's| |\n|g' | sort -u | tr -s '\n')
+
+EOF
+}
+";
+    addond="$addona$addonb";
+  }
+
+  [ "$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk" ] || abort "Nothing left to install after config";
+
+}
+
+microg_cleanup() {
+
+  if [ "$(echo $stuff | grep MicroG)" ]; then
+    ui_print " ";
+    ui_print "Doing MicroG preparations...";
+    if [ "$bootmode" != "true" ]; then
+      # Kanged from NanoDroid
+      # Thanks Setialpha
+      cleanup_folders="PrebuiltGmsCore GmsCore MicroGGMSCore";
+      cleanup_packages="com.google.android.gms";
+      for app in $cleanup_folders; do
+        for file in /data/dalvik-cache/*/system"@priv-app@$app"[@\.]*@classes.* /data/dalvik-cache/*/system"@app@$app"[@\.]*@classes.*; do
+          [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
+        done;
+      done;
+      log "Doing the clean install treatment";
+      for app in $cleanup_packages; do
+        for file in /data/data/$app /data/user/*/$app /data/user_de/*/$app /data/app/$app-*; do
+          [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
+        done;
+      done;
+    fi;
+  fi;
+
+}

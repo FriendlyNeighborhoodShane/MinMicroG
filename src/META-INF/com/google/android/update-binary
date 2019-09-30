@@ -1,0 +1,515 @@
+#!/sbin/sh
+# Minimal MicroG installer
+# By FriendlyNeighborhoodShane
+# Based on work by osm0sis @ xda-developers (Thanks!)
+
+exec 3>&1;
+exec 1>&2;
+
+outfd="/proc/self/fd/$2";
+zipfile="$3";
+
+ps | grep zygote | grep -v grep >/dev/null && bootmode=true || bootmode=false;
+$bootmode || ps -A 2>/dev/null | grep zygote | grep -v grep >/dev/null && bootmode=true;
+
+$bootmode && ui_print() { echo "$1" >&3; } || ui_print() { echo -e "ui_print $1\nui_print" >> $outfd; }
+
+log() { echo "$1"; }
+
+$bootmode || mount -o bind /dev/urandom /dev/random;
+
+file_getprop() {
+  grep "^$2" "$1" | head -n1 | awk '{ print $1 }' | cut -d= -f2;
+}
+
+abort() {
+  ui_print " ";
+  ui_print "!!! FATAL ERROR: $1";
+  ui_print " ";
+  ui_print "Stopping installation and Uninstalling...";
+  uninstall_pack;
+  [ -d "$filedir" ] && rm -rf "$filedir";
+  $bootmode || { [ "$sysroot" ] && umount /$sysroot || umount /system; }
+  sync;
+  ui_print " ";
+  ui_print "Installation failed!";
+  ui_print " ";
+  exit 1;
+}
+
+ui_print " ";
+ui_print "--         Minimal MicroG Installer         --";
+ui_print "--     The Essentials only MicroG pack      --";
+ui_print "--      From the MicroG Telegram group      --";
+ui_print "--         No, not the Official one         --";
+modname="MinMicroG";
+
+log " ";
+log "Zip File is $zipfile";
+log "Bootmode is $bootmode";
+
+$bootmode || { mount /data; mount /cache; }
+for bb in /magisk/.core/busybox /sbin/.core/busybox /sbin/.magisk/busybox; do
+  [ -e "$bb" ] && magiskbb="$bb";
+done;
+[ "$magiskbb" ] && export PATH="$magiskbb:$PATH";
+[ -e "/system_root" ] && {
+  mount -o ro /system_root;
+  sysroot="system_root";
+} || {
+  mount -o ro /system;
+  [ -e "/system/system/build.prop" ] && sysroot="system";
+}
+[ -f "/$sysroot/system/build.prop" ] || abort "Could not find a ROM in /$sysroot";
+for bin in awk cat chcon chmod chown cp cut df du echo find grep head losetup ls mkdir mount ps rm sed tail touch umount unzip; do
+  [ "$(which "$bin")" ] || abort "No $bin available";
+done;
+
+$bootmode && filedir="/dev/tmp/$modname" || filedir="/tmp/$modname";
+tmplibdir="$filedir/tmplibdir";
+moddir="/data/media/0/$modname";
+backupdir="$moddir/Backup";
+initdfile="/system/etc/init.d/10-$modname";
+addondfile="/system/addon.d/10-$modname.sh";
+
+$bootmode && forcesys=no;
+case "$(basename "$zipfile")" in
+  *system*|*System*|*SYSTEM*)
+    forcesys=yes;
+    ui_print " ";
+    ui_print "WARNING: Forcing a system action!";
+  ;;
+esac;
+case "$(basename "$zipfile")" in
+  *uninstall*|*Uninstall*|*UNINSTALL*)
+    action=uninstallation;
+  ;;
+  *)
+    action=installation;
+  ;;
+esac;
+
+abi="$(file_getprop /$sysroot/system/build.prop ro.product.cpu.abi)";
+case "$abi" in
+  arm64*)
+    arch=arm64;
+    libarches="arm64-v8a armeabi-v7a armeabi";
+  ;;
+  arm*)
+    arch=arm;
+    libarches="armeabi-v7a armeabi";
+  ;;
+  x86_64*)
+    arch=x86_64;
+    libarches="x86_64 x86 armeabi-v7a armeabi";
+  ;;
+  x86*)
+    arch=x86;
+    libarches="x86 armeabi-v7a armeabi";
+  ;;
+  mips64*)
+    arch=mips64;
+    libarches="mips64 mips";
+  ;;
+  mips*)
+    arch=mips;
+    libarches="mips";
+  ;;
+  *)
+    abort "Could not recognise architecture: $abi";
+  ;;
+esac;
+
+sdk="$(file_getprop /$sysroot/system/build.prop ro.build.version.sdk)";
+[ "$sdk" ] || abort "Could not find SDK";
+[ "$sdk" -gt 0 ] || abort "Could not recognise SDK: $sdk";
+
+sizecheck() {
+  for realsizeobject in $1; do
+    sizeobject="$realsizeobject";
+    break;
+  done;
+  [ -e "$sizeobject" ] || { echo 0; return 0; }
+  objectsize="$(du -s "$sizeobject" | awk '{ print $1 }')";
+  libsize=0;
+  case "$sizeobject" in
+    *.apk)
+      apkunzip="$(unzip -l "$sizeobject" "lib/*/lib*.so")";
+      if [ "$(echo "$apkunzip" | grep lib/.*/lib.*.so)" ]; then
+        for archlib in $libarches; do
+          if [ "$(echo "$apkunzip" | grep lib/$archlib/lib.*.so)" ]; then
+            libsizeb=0;
+            for entry in $(echo "$apkunzip" | grep lib/$archlib/lib.*.so | awk '{ print $1 }'); do
+              libsizeb="$(($libsizeb + $entry))";
+            done;
+            libsize="$(($libsizeb / 1024 + 1))";
+            break;
+          fi;
+        done;
+      fi;
+    ;;
+  esac;
+  echo "$(($objectsize + $libsize))";
+}
+
+remove() {
+  removalobject="$1";
+  backupobject="$2";
+  if [ "$sdk" -lt 21 ]; then
+    [ "$(basename "$(dirname "$removalobject")").apk" == "$(basename "$removalobject")" ] && {
+      removalobject="$(dirname "$(dirname "$removalobject")")/$(basename "$removalobject")";
+      backupobject="$(dirname "$(dirname "$backupobject")")/$(basename "$backupobject")";
+    }
+  fi;
+  [ "$(basename "$(dirname "$removalobject")").apk" == "$(basename "$removalobject")" ] && { removalobject="$(dirname "$removalobject")"; backupobject="$(dirname "$backupobject")"; }
+  [ -e "$removalobject" ] || return 0;
+  mkdir -p "$(dirname "$backupobject")";
+  cp -rf "$removalobject" "$backupobject";
+  [ -e "$backupobject" ] && log "BACKUPER: Object backed up ($removalobject)" || log "ERROR: Could not backup ($removalobject)";
+  rm -rf "$removalobject" || { log "ERROR: Could not remove ($removalobject)"; return 1; }
+  [ -e "$removalobject" ] && { log "ERROR: Could not remove ($removalobject)"; return 1; } || log "REMOVER: Object removed ($removalobject)";
+}
+
+debloat() {
+  debloatobject="$1";
+  debloatingobject="$2";
+  if [ "$sdk" -lt 21 ]; then
+    [ "$(basename "$(dirname "$debloatobject")").apk" == "$(basename "$debloatobject")" ] && {
+      debloatobject="$(dirname "$(dirname "$debloatobject")")/$(basename "$debloatobject")";
+      debloatingobject="$(dirname "$(dirname "$debloatingobject")")/$(basename "$debloatingobject")";
+    }
+  fi;
+  [ "$(basename "$(dirname "$debloatobject")").apk" == "$(basename "$debloatobject")" ] && debloatobject="$(dirname "$debloatobject")";
+  [ -e "$debloatobject" ] || return 0;
+  mkdir -p "$(dirname "$debloatingobject")";
+  if [ "$(basename "$(dirname "$debloatingobject")").apk" == "$(basename "$debloatingobject")" ]; then
+    touch "$(dirname $debloatingobject)/.replace" && log "DEBLOATER: Object directory debloated ($debloatobject)" || { log "ERROR: Could not create replace file for object $debloatobject"; return 1; }
+  elif [ -d "$debloatobject" ]; then
+    touch "$debloatingobject/.replace" && log "DEBLOATER: directory debloated ($debloatobject)" || { log "ERROR: Could not create replace file for directory $debloatobject"; return 1; }
+  else
+    echo "# This is a dummy for debloating" > "$debloatingobject" && log "DEBLOATER: Object dummy debloated ($debloatobject)" || { log"ERROR: Could not create dummy file for $debloatobject"; return 1; }
+  fi;
+}
+
+uninstall() {
+  uninstallobject="$1";
+  if [ "$sdk" -lt 21 ]; then
+    [ "$(basename "$(dirname "$uninstallobject")").apk" == "$(basename "$uninstallobject")" ] && uninstallobject="$(dirname "$(dirname "$uninstallobject")")/$(basename "$uninstallobject")";
+  fi;
+  [ "$(basename "$(dirname "$uninstallobject")").apk" == "$(basename "$uninstallobject")" ] && uninstallobject="$(dirname "$uninstallobject")";
+  [ -e "$uninstallobject" ] || return 0;
+  rm -rf "$uninstallobject" || { log "ERROR: Object not uninstalled ($uninstallobject)"; return 1; }
+  [ -e "$uninstallobject" ] && { log "ERROR: Object not uninstalled ($uninstallobject)"; return 1; } || log "UNINSTALLER: Object uninstalled ($uninstallobject)";
+}
+
+install_dest() {
+  for realobject in $1; do
+    object="$realobject";
+    break;
+  done;
+  destobject="$2";
+  [ -e "$object" ] || { log "ERROR: Object not found ($object)"; return 1; }
+  if [ "$sdk" -lt 21 ]; then
+    [ "$(basename "$(dirname "$destobject")").apk" == "$(basename "$destobject")" ] && destobject="$(dirname "$(dirname "$destobject")")/$(basename "$destobject")";
+  fi;
+  mkdir -p "$(dirname "$destobject")";
+  cp -rf "$object" "$destobject" || abort "Could not install $destobject";
+  [ -e "$destobject" ] && log "INSTALLER: Object installed ($object to $destobject)" || abort "Could not install $destobject";
+  case "$destobject" in
+    *.apk)
+      install_lib "$destobject";
+    ;;
+  esac;
+}
+
+install_lib() {
+  libobject="$1";
+  mkdir -p "$tmplibdir";
+  unzipout="$(unzip -l "$libobject" "lib/*/lib*.so")";
+  [ "$(echo "$unzipout" | grep lib/.*/lib.*.so)" ] || return 0;
+  for archlib in $libarches; do
+    if [ "$(echo "$unzipout" | grep lib/$archlib/lib.*.so)" ]; then
+      case "$archlib" in
+        *arm64*)
+          log "INSTALLER: Installing arm64 libs ($libobject)";
+          libdir=lib64;
+          libarch=arm64;
+        ;;
+        *arm*)
+          log "INSTALLER: Installing arm libs ($libobject)";
+          libdir=lib;
+          libarch=arm;
+        ;;
+        *x86_64*)
+          log "INSTALLER: Installing x86_64 libs ($libobject)";
+          libdir=lib64;
+          libarch=x86_64;
+        ;;
+        *x86*)
+          log "INSTALLER: Installing x86 libs ($libobject)";
+          libdir=lib;
+          libarch=x86;
+        ;;
+        *mips64*)
+          log "INSTALLER: Installing mips64 libs ($libobject)";
+          libdir=lib64;
+          libarch=mips64;
+        ;;
+        *mips*)
+          log "INSTALLER: Installing mips libs ($libobject)";
+          libdir=lib;
+          libarch=mips;
+        ;;
+      esac;
+      if [ "$sdk" -lt 21 ]; then
+        libdest="$(dirname $(dirname $libobject))/$libdir";
+      else
+        libdest="$(dirname $libobject)/lib/$libarch";
+      fi;
+      unzip -oq "$libobject" "lib/$archlib/lib*.so" -d "$tmplibdir";
+      mkdir -p "$libdest";
+      for lib in $tmplibdir/lib/$archlib/lib*.so; do
+        cp -rf "$lib" "$libdest/$(basename "$lib")" || abort "Could not Install $lib for $libobject";
+        [ -f "$libdest/$(basename "$lib")" ] && log "INSTALLER: Installed library ($lib to $libdest)" || abort "Could not Install $lib for $libobject";
+      done;
+      break;
+    fi;
+  done;
+  rm -rf "$tmplibdir";
+}
+
+uninstall_pack() {
+  if [ "$magisk" == "yes" ]; then
+    rm -rf "$root" || { log " "; log "Could not delete Magisk root ($root)"; }
+  else
+    for thing in $stuff_uninstall; do
+      [ "$thing" ] && uninstall "$root/$thing";
+    done;
+    uninstall "$initdfile";
+    uninstall "$addondfile";
+    [ "$sysprop" ] && {
+      for line in $sysprop; do
+        if [ "$(grep "^$line #$modname" "/$sysroot/system/build.prop")" ]; then
+          sed -i "s|^$line #$modname||g" "/$sysroot/system/build.prop";
+        fi;
+        if [ "$(grep "^#$modname $(echo $line | cut -d= -f1)" "/$sysroot/system/build.prop")" ]; then
+          sed -i "s|^#$modname $(echo $line | cut -d= -f1)|$(echo $line | cut -d= -f1)|g" "/$sysroot/system/build.prop";
+        fi;
+      done;
+    }
+  fi;
+}
+
+perm() {
+  uid="$1";
+  gid="$2";
+  dmod="$3";
+  fmod="$4";
+  permobject="$5";
+  [ -e "$permobject" ] || return 0;
+  chown -R $uid:$gid "$permobject" || chown -R $uid.$gid "$permobject";
+  find "$permobject" -type d -exec chmod $dmod {} +;
+  find "$permobject" -type f -exec chmod $fmod {} +;
+}
+
+rm -rf "$filedir";
+mkdir -p "$filedir";
+unzip -o "$zipfile" "defconf" -d "$filedir/";
+[ -f "$filedir/defconf" ] || abort "Could not find a default config";
+chmod 0777 "$filedir/defconf";
+. "$filedir/defconf" || abort "Could not execute default config";
+
+ui_print " ";
+ui_print "Package: $variant";
+ui_print "Version: $ver";
+ui_print "Release date: $date";
+ui_print " ";
+ui_print "Using architecture: $arch";
+ui_print "Using SDK level: $sdk";
+ui_print "Sysroot is on /$sysroot";
+if [ "$sdk" -lt "$minsdk" ]; then
+  ui_print " ";
+  ui_print "WARNING: Using an old Android";
+  ui_print "Full compatibility not guaranteed";
+fi;
+
+ui_print " ";
+ui_print "Mounting...";
+if [ -e "/data/adb/magisk" -a "$forcesys" != "yes" ]; then
+  $bootmode && modulesdir="/data/adb/modules_update" || modulesdir="/data/adb/modules";
+  root="$modulesdir/$modname";
+  magisk=yes;
+  log "Using $modulesdir";
+  [ -d "$modulesdir" ] || {
+    mkdir -p "$modulesdir";
+    perm 0 0 0755 0644 "$modulesdir";
+  }
+else
+  [ "$sysroot" ] && {
+    mount -o rw,remount /$sysroot;
+    mount -o rw,remount /$sysroot /$sysroot;
+  } || {
+    mount -o rw,remount /system;
+    mount -o rw,remount /system /system;
+  }
+  root="/$sysroot";
+  magisk=no;
+  log "Mounted /$sysroot/system RW";
+fi;
+
+if [ "$action" == "installation" ]; then
+
+  pre_install_actions;
+
+  ui_print " ";
+  ui_print "Cleaning up...";
+  log "Removing duplicates";
+  uninstall_pack;
+  log "Debloating";
+  if [ "$magisk" == "yes" ]; then
+    for thing in $stuff_debloat; do
+      [ "$thing" ] && debloat "/$sysroot/$thing" "$root/$thing";
+    done;
+  else
+    for thing in $stuff_debloat; do
+      [ "$thing" ] && remove "/$sysroot/$thing" "$backupdir/$thing";
+    done;
+  fi;
+  [ -d "$backupdir" ] && { perm 1023 1023 775 664 "$backupdir"; chcon -hR 'u:object_r:media_rw_data_file:s0' "$backupdir"; }
+
+  ui_print " ";
+  ui_print "Extracting files...";
+  rm -rf "$filedir";
+  mkdir -p "$filedir";
+  unzip -o "$zipfile" -d "$filedir" || abort "Could not unzip $zipfile";
+
+  ui_print " ";
+  ui_print "Doing size checks...";
+  packsize=0;
+  for thing in defconf $stuff; do
+    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$thing")))";
+  done;
+  for thing in $stuff_arch; do
+    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$(dirname $thing)/*-$arch-*/$(basename $thing)")))";
+  done;
+  for thing in $stuff_sdk; do
+    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$(dirname $thing)/*-$sdk-*/$(basename $thing)")))";
+  done;
+  for thing in $stuff_arch_sdk; do
+    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$(dirname $thing)/*-$arch-*-$sdk-*/$(basename $thing)")))";
+  done;
+  packsizem="$(($packsize / 1024 + 1))";
+  log "Pack size is $packsizem";
+  if [ "$magisk" == "yes" ]; then
+    datfreem="$(($(df -Pk "/data" | tail -n 1 | awk '{ print $4 }') / 1024))";
+    log "Free data space is $datfreem";
+    [ "$datfreem" -lt "$packsizem" ] && abort "Not enough free space in your data!";
+  else
+    sysfreem="$(($(df -Pk "/$sysroot/system" | tail -n 1 | awk '{ print $4 }') / 1024))";
+    log "Free system space is $sysfreem";
+    [ "$sysfreem" -lt "$packsizem" ] && abort "Not enough free space in your system!";
+  fi;
+
+  ui_print " ";
+  ui_print "Installing $modname to $root...";
+  mkdir -p "$root";
+
+  log " ";
+  log "Installing generic stuff";
+  for thing in $stuff; do
+    [ "$thing" ] && install_dest "$filedir/$thing" "$root/$thing";
+  done;
+
+  log " ";
+  log "Installing Arch dependant stuff for $arch";
+  for thing in $stuff_arch; do
+    [ "$thing" ] && install_dest "$filedir/$(dirname $thing)/*-$arch-*/$(basename $thing)" "$root/$thing";
+  done;
+
+  log " ";
+  log "Installing SDK dependant stuff for SDK $sdk";
+  for thing in $stuff_sdk; do
+    [ "$thing" ] && install_dest "$filedir/$(dirname $thing)/*-$sdk-*/$(basename $thing)" "$root/$thing";
+  done;
+
+  log " ";
+  log "Installing Arch and SDK dependant stuff for $arch and SDK $sdk";
+  for thing in $stuff_arch_sdk; do
+    [ "$thing" ] && install_dest "$filedir/$(dirname $thing)/*-$arch-*-$sdk-*/$(basename $thing)" "$root/$thing";
+  done;
+
+  log " ";
+  log "Executing other actions";
+  if [ "$magisk" == "yes" ]; then
+    [ "$postfs" ] && { echo "$postfs" > "$root/post-fs-data.sh" || abort "Could not create post-fs-data.sh in $root"; }
+    [ "$service" ] && { echo "$service" > "$root/service.sh" || abort "Could not create service.sh in $root"; }
+    [ "$sysprop" ] && { echo "$sysprop" > "$root/system.prop" || abort "Could not create system.prop in $root"; }
+    [ "$modprop" ] && { echo "$modprop" > "$root/module.prop" || abort "Could not create module.prop in $root"; }
+    touch "$root/auto_mount" || abort "Could not create auto_mount in $root";
+    if $bootmode && [ "$modulesdir" == "/data/adb/modules_update" ]; then
+      modmnt="/data/adb/modules";
+      mkdir -p "$modmnt/$modname";
+      touch "$modmnt/$modname/update" || abort "Could not create update in $modmnt/$modname";
+      [ "$modprop" ] && { echo "$modprop" > "$modmnt/$modname/module.prop" || abort "Could not create module.prop in $modmnt/$modname"; }
+    fi;
+  else
+    [ "$postfs" ] && { mkdir -p $(dirname "$root/$initdfile"); echo "$postfs" > "$root/$initdfile" || abort "Could not create $initdfile in $root"; }
+    [ "$service" ] && { mkdir -p $(dirname "$root/$initdfile"); echo "$service" > "$root/$initdfile" || abort "Could not create $initdfile in $root"; }
+    [ "$addond" ] && { mkdir -p $(dirname "$root/$addondfile"); echo "$addond" > "$root/$addondfile" || abort "Could not create $addondfile in $root"; }
+    [ "$sysprop" ] && {
+      for line in $sysprop; do
+        if [ "$(grep "^$line" "/$sysroot/system/build.prop")" ]; then
+          continue;
+        fi;
+        if [ "$(grep "^$(echo $line | cut -d= -f1)" "/$sysroot/system/build.prop")" ]; then
+          sed -i "s|^$(echo $line | cut -d= -f1)|#$modname $(echo $line | cut -d= -f1)|g" "/$sysroot/system/build.prop";
+        fi;
+        echo -e "$line #$modname" >> "/$sysroot/system/build.prop";
+      done;
+    }
+  fi;
+
+  ui_print " ";
+  ui_print "Setting permissions...";
+  if [ "$magisk" == "yes" ]; then
+    find "$root" -maxdepth 1 -exec chmod 0755 {} +;
+  fi;
+  for thing in $stuff_perm; do
+    case "$thing" in
+      */bin*|*/xbin*)
+        perm 0 2000 0755 0777 "$root/$thing";
+      ;;
+      *)
+        perm 0 0 0755 0644 "$root/$thing";
+      ;;
+    esac;
+    chcon -hR 'u:object_r:system_file:s0' "$root/$thing";
+  done;
+
+  post_install_actions;
+
+fi;
+
+if [ "$action" == "uninstallation" ]; then
+
+  pre_uninstall_actions;
+
+  ui_print " ";
+  ui_print "Uninstalling $modname from $root...";
+  uninstall_pack;
+
+  post_uninstall_actions;
+
+fi;
+
+ui_print " ";
+ui_print "Unmounting...";
+$bootmode || { [ "$sysroot" ] && umount /$sysroot || umount /system; }
+rm -rf "$filedir";
+sync;
+
+ui_print " ";
+ui_print "Done!";
+ui_print "Join us on Telegram: @NoGooLag";
+ui_print " ";
+exit 0;
