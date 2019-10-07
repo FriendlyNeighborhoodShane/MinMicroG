@@ -8,6 +8,7 @@ resdir="$workdir/res";
 resdldir="$workdir/resdl";
 tmpdir="$workdir/tmp";
 reldir="$workdir/releases";
+zipsigner="$(dirname "$workdir")/zipsigner.jar";
 
 echo " ";
 echo "==================================";
@@ -112,13 +113,15 @@ cd "$workdir";
 echo " ";
 echo " - Signing zip...";
 
+java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
+
 # Done
 
 echo " ";
 echo " - Copying zip to releases...";
 
 mkdir -p "$reldir";
-mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$(date +%Y%m%d%H%M%S)-signed.zip";
+mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$(date +%Y%m%d%H%M%S)-signed.zip";
 
 # Done
 
