@@ -2,7 +2,7 @@
 # Build a package with $1 variant
 
 workdir="$(pwd)";
-cd "$workdir":
+cd "$workdir";
 confvar="$1";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
@@ -18,12 +18,14 @@ echo "--      From the MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
 for bin in cp grep java ls mv rm sed zip; do
-  which $bin || { echo " "; echo "FATAL: No $bin found"; return 1; }
+  [ "$(which $bin)" ] || { echo " "; echo "FATAL: No $bin found"; return 1; }
 done;
 [ -f "$zipsigner" ] || { echo " "; echo "FATAL: No zipsigner jar found"; return 1; }
 
 echo " ";
 echo " - Working from $workdir";
+
+echo " ";
 echo " - Build started at $buildtime";
 
 [ "$1" ] || { echo " "; echo "FATAL: No variant specified to build"; return 1; }
@@ -63,14 +65,14 @@ echo " - Copying files...";
 
 for file in "$workdir/src/META-INF" "$workdir/LICENSE" "$workdir/README.md"; do
   [ -e "$file" ] || { echo "ERROR: $file doesn't exist"; continue; }
-  echo " -- BUILDER: Copying $file (to $tmpdir/)";
+  echo " -- BUILDER: Copying $file";
   cp -Rf "$file" "$tmpdir/";
 done;
 
 for object in $stuff; do
   for realobject in $resdir/"$object" $resdldir/"$object"; do
     [ -e "$realobject" ] || continue;
-    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/)";
+    echo " -- BUILDER: Copying $object";
     mkdir -p "$tmpdir/$(dirname "$object")/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/";
   done;
@@ -80,7 +82,7 @@ for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
   for realobject in $resdir/$(dirname "$object")/-*-/$(basename "$object") $resdldir/$(dirname "$object")/-*-/$(basename "$object"); do
     [ -e "$realobject" ] || continue;
     cond="$(basename "$(dirname "$realobject")")";
-    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
+    echo " -- BUILDER: Copying $object ($cond)";
     mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
   done;
