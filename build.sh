@@ -9,6 +9,7 @@ resdldir="$workdir/resdl";
 tmpdir="$workdir/tmp";
 reldir="$workdir/releases";
 zipsigner="$(dirname "$workdir")/zipsigner.jar";
+buildtime="$(date +%Y%m%d%H%M%S)";
 
 echo " ";
 echo "--       Minimal MicroG Build Script        --";
@@ -16,8 +17,14 @@ echo "--     The Essentials only MicroG pack      --";
 echo "--      From the MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
+for bin in cp grep java ls mv rm sed zip; do
+  which $bin || { echo " "; echo "FATAL: No $bin found"; return 1; }
+done;
+[ -f "$zipsigner" ] || { echo " "; echo "FATAL: No zipsigner jar found"; return 1; }
+
 echo " ";
 echo " - Working from $workdir";
+echo " - Build started at $buildtime";
 
 [ "$1" ] || { echo " "; echo "FATAL: No variant specified to build"; return 1; }
 
@@ -88,6 +95,8 @@ cd "$tmpdir";
 zip -r9q "$tmpdir/release.zip" *;
 cd "$workdir";
 
+[ -f "$tmpdir/release.zip" ] || { echo " "; echo "FATAL: Zip failed"; return 1; }
+
 # Sign
 
 echo " ";
@@ -95,13 +104,17 @@ echo " - Signing zip...";
 
 java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
 
+[ -f "$tmpdir/release-signed.zip" ] || { echo " "; echo "FATAL: Zipsigner failed"; return 1; }
+
 # Done
 
 echo " ";
 echo " - Copying zip to releases...";
 
 mkdir -p "$reldir";
-mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$(date +%Y%m%d%H%M%S)-signed.zip";
+mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip";
+
+[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" ] || { echo " "; echo "FATAL: Move failed"; return 1; }
 
 # Done
 
