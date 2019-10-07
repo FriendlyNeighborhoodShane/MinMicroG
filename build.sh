@@ -69,28 +69,8 @@ for object in $stuff; do
   done;
 done;
 
-for object in $stuff_arch; do
+for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
   for realobject in $resdir/$(dirname "$object")/-*-/$(basename "$object") $resdldir/$(dirname "$object")/-*-/$(basename "$object"); do
-    [ -e "$realobject" ] || continue;
-    cond="$(basename "$(dirname "$realobject")")";
-    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
-    mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
-    cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
-  done;
-done;
-
-for object in $stuff_sdk; do
-  for realobject in $resdir/$(dirname "$object")/-*-/$(basename "$object") $resdldir/$(dirname "$object")/-*-/$(basename "$object"); do
-    [ -e "$realobject" ] || continue;
-    cond="$(basename "$(dirname "$realobject")")";
-    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
-    mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
-    cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
-  done;
-done;
-
-for object in $stuff_arch_sdk; do
-  for realobject in $resdir/$(dirname "$object")/-*--*-/$(basename "$object") $resdldir/$(dirname "$object")/-*--*-/$(basename "$object"); do
     [ -e "$realobject" ] || continue;
     cond="$(basename "$(dirname "$realobject")")";
     echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
