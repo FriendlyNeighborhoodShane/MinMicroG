@@ -1,63 +1,98 @@
 #!/bin/sh
 # Build a package with $1 variant
 
-workdir="$(dirname "$0")";
+workdir="$(pwd)";
+cd "$workdir":
 confvar="$1";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
 tmpdir="$workdir/tmp";
-rel="$workdir/releases";
+reldir="$workdir/releases";
 
-[ "$1" ] || { echo " "; echo "FATAL: No variant specified to build"; exit 1; }
+echo " ";
+echo "==================================";
+echo "      MinMicroG build script      ";
+echo "==================================";
+echo " ";
 
-[ -f "$workdir/confs/defconf-$confvar.txt" ] || { echo " "; echo "FATAL: No variant defconf found"; exit 1; }
+echo " ";
+echo " - Working from $workdir";
 
-rm -rf "$tmpdir";
+[ "$1" ] || { echo " "; echo "FATAL: No variant specified to build"; return 1; }
+
+case "$1" in
+  all)
+    echo " ";
+    echo " - Building all packages...";
+    echo " ";
+    for list in $(ls -1 "$workdir/conf" | grep -o "defconf-.*.txt" | sed -e "s|^defconf-||g" -e "s|.txt$||g"); do
+      echo " - Executing build for $list...";
+      "$workdir/build.sh" "$list";
+    done;
+    return;
+  ;;
+esac;
+
+[ -f "$workdir/conf/defconf-$confvar.txt" ] || { echo " "; echo "FATAL: No variant defconf found"; return 1; }
+
+echo " ";
+echo " - Building package $confvar";
+
+rm -Rf "$tmpdir";
 mkdir -p "$tmpdir";
 
 # Config
 
-cp "$workdir/confs/defconf-$confvar.txt" "$tmpdir/defconf";
+cp -Rf "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
 eval "$(cat "$tmpdir/defconf")";
-[ "$confvar" == "$variant" ] || { echo " "; echo "FATAL: Variant from defconf don't match"; exit 1; }
+echo " ";
+echo " - Config says variant $variant";
 
 # Copy neccesary files
 
+echo " ";
+echo " - Copying files...";
+
 for file in "$workdir/src/META-INF" "$workdir/LICENSE" "$workdir/README.md"; do
   [ -e "$file" ] || { echo "ERROR: $file doesn't exist"; continue; }
+  echo " -- BUILDER: Copying $file (to $tmpdir/)";
   cp -Rf "$file" "$tmpdir/";
 done;
 
 for object in $stuff; do
   for realobject in $resdir/"$object" $resdldir/"$object"; do
-    [ -e "$realobject" ] || { echo "ERROR: $object doesn't exist"; continue; }
+    [ -e "$realobject" ] || continue;
+    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/)";
     mkdir -p "$tmpdir/$(dirname "$object")/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/";
   done;
 done;
 
 for object in $stuff_arch; do
-  for realobject in $resdir/$(dirname "$object")/*-$arch-*/$(basename "$object") $resdldir/$(dirname "$object")/*-$arch-*/$(basename "$object"); do
-    [ -e "$realobject" ] || { echo "ERROR: $object doesn't exist"; continue; }
+  for realobject in $resdir/$(dirname "$object")/-*-/$(basename "$object") $resdldir/$(dirname "$object")/-*-/$(basename "$object"); do
+    [ -e "$realobject" ] || continue;
     cond="$(basename "$(dirname "$realobject")")";
+    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
     mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
   done;
 done;
 
 for object in $stuff_sdk; do
-  for realobject in $resdir/$(dirname "$object")/*-$sdk-*/$(basename "$object") $resdldir/$(dirname "$object")/*-$sdk-*/$(basename "$object"); do
-    [ -e "$realobject" ] || { echo "ERROR: $object doesn't exist"; continue; }
+  for realobject in $resdir/$(dirname "$object")/-*-/$(basename "$object") $resdldir/$(dirname "$object")/-*-/$(basename "$object"); do
+    [ -e "$realobject" ] || continue;
     cond="$(basename "$(dirname "$realobject")")";
+    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
     mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
   done;
 done;
 
 for object in $stuff_arch_sdk; do
-  for realobject in $resdir/$(dirname "$object")/*-$arch-*-$sdk-*/$(basename "$object") $resdldir/$(dirname "$object")/*-$arch-*-$sdk-*/$(basename "$object"); do
-    [ -e "$realobject" ] || { echo "ERROR: $object doesn't exist"; continue; }
+  for realobject in $resdir/$(dirname "$object")/-*--*-/$(basename "$object") $resdldir/$(dirname "$object")/-*--*-/$(basename "$object"); do
+    [ -e "$realobject" ] || continue;
     cond="$(basename "$(dirname "$realobject")")";
+    echo " -- BUILDER: Copying $object ($realobject to $tmpdir/$(dirname "$object")/$cond/)";
     mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
   done;
@@ -65,11 +100,30 @@ done;
 
 # Zip
 
+echo " ";
+echo " - Zipping files...";
+
 cd "$tmpdir";
-zip -vr9 "$tmpdir/release.zip" *;
+zip -vr9q "$tmpdir/release.zip" *;
+cd "$workdir";
 
 # Sign
 
+echo " ";
+echo " - Signing zip...";
 
-mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-signed.zip";
-rm -rf "$tmpdir";
+# Done
+
+echo " ";
+echo " - Copying zip to releases...";
+
+mkdir -p "$reldir";
+mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$(date +%Y%m%d%H%M%S)-signed.zip";
+
+# Done
+
+echo " ";
+echo " - Done!";
+
+rm -Rf "$tmpdir";
+echo " ";
