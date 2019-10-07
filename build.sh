@@ -11,10 +11,10 @@ reldir="$workdir/releases";
 zipsigner="$(dirname "$workdir")/zipsigner.jar";
 
 echo " ";
-echo "==================================";
-echo "      MinMicroG build script      ";
-echo "==================================";
-echo " ";
+echo "--       Minimal MicroG Build Script        --";
+echo "--     The Essentials only MicroG pack      --";
+echo "--      From the MicroG Telegram group      --";
+echo "--         No, not the Official one         --";
 
 echo " ";
 echo " - Working from $workdir";
@@ -85,7 +85,7 @@ echo " ";
 echo " - Zipping files...";
 
 cd "$tmpdir";
-zip -vr9q "$tmpdir/release.zip" *;
+zip -r9q "$tmpdir/release.zip" *;
 cd "$workdir";
 
 # Sign
