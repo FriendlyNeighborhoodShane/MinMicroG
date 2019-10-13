@@ -9,7 +9,7 @@ resdldir="$workdir/resdl";
 tmpdir="$workdir/tmp";
 reldir="$workdir/releases";
 zipsigner="$(dirname "$workdir")/zipsigner.jar";
-buildtime="$(date +%Y%m%d%H%M%S)";
+buildtime="$(date -u +%Y%m%d%H%M%S)";
 
 echo " ";
 echo "--       Minimal MicroG Build Script        --";
