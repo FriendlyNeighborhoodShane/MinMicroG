@@ -379,7 +379,6 @@ if [ "$action" == "installation" ]; then
 
   ui_print " ";
   ui_print "Extracting files...";
-  rm -rf "$filedir";
   mkdir -p "$filedir";
   unzip -o "$zipfile" -d "$filedir" || abort "Could not unzip $zipfile";
 
