@@ -55,11 +55,11 @@ done;
 [ "$magiskbb" ] && export PATH="$magiskbb:$PATH";
 [ -e "/system_root" ] && {
   mount -o ro /system_root;
-  sysroot="system_root";
 } || {
   mount -o ro /system;
-  [ -e "/system/system/build.prop" ] && sysroot="system";
 }
+[ -e "/system/system/build.prop" ] && sysroot="system";
+[ -e "/system_root/system/build.prop" ] && sysroot="system_root";
 [ -f "/$sysroot/system/build.prop" ] || abort "Could not find a ROM in /$sysroot";
 for bin in awk cat chcon chmod chown cp cut df du echo find grep head losetup ls mkdir mount ps rm sed tail touch umount unzip; do
   [ "$(which "$bin")" ] || abort "No $bin available";
