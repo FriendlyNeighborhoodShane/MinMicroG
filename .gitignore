@@ -2,5 +2,7 @@ releases/
 releases
 resdl/system/
 resdl/system
+resdl/util/
+resdl/util
 tmp/
 tmp

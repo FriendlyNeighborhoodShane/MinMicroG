@@ -69,7 +69,7 @@ for file in "$workdir/src/META-INF" "$workdir/LICENSE" "$workdir/README.md"; do
   cp -Rf "$file" "$tmpdir/";
 done;
 
-for object in $stuff; do
+for object in $stuff $stuff_util; do
   for realobject in $resdir/"$object" $resdldir/"$object"; do
     [ -e "$realobject" ] || continue;
     echo " -- BUILDER: Copying $object";

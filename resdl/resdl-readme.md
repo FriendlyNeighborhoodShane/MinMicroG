@@ -1,3 +1,3 @@
-Script downloads all updateable assets in system here
+Script downloads all updateable assets in system or util here.
 
-All static or manually updated assets go in res/system
+All static or manually updated assets go in res instead
