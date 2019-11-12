@@ -126,7 +126,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl to $objectfile";
-      wget -q --show-progress "$objecturl" -O "$objectfile";
+      wget -q --show-progress "$objecturl" -O "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       [ -f "$objectfile" ] || { echo "ERROR: $object failed to download"; continue; }
     ;;
   esac;
