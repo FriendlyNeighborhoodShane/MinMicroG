@@ -61,7 +61,7 @@ for repo in $(echo "$stuff_repo" | awk '{ print $1 }'); do
   line="$(echo "$stuff_repo" | grep -P "^[ \t]*$repo[ \t]+" | head -n1)";
   repourl="$(echo "$line" | awk '{ print $2 }')";
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL"; continue; }
-  echo " -- REPO: Downloading repo $repo from URL $repourl";
+  echo " -- REPO: Downloading repo $repo";
   wget -q --show-progress "$repourl/index-v1.jar" -O "$tmpdir/repos/$repo.jar";
   [ -f "$tmpdir/repos/$repo.jar" ] || { echo "ERROR: Repo $repo failed to download"; continue; }
   unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/";
@@ -125,7 +125,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
       [ "$objecturl" ] || { echo "ERROR: $object has no URL available"; continue; } 
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
-      echo " ---- Downloading $objecturl to $objectfile";
+      echo " ---- Downloading $objecturl";
       wget -q --show-progress "$objecturl" -O "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       [ -f "$objectfile" ] || { echo "ERROR: $object failed to download"; continue; }
     ;;
