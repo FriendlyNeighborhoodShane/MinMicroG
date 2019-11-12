@@ -1,0 +1,145 @@
+createwhitelist() {
+
+  ui_print " ";
+  ui_print "Creating priv-app whitelist...";
+
+  spoofperm=android.permission.FAKE_PACKAGE_SIGNATURE;
+  spoofpermod=61006e00640072006f00690064002e007000650072006d0069007300730069006f006e002e00460041004b0045005f005000410043004b004100470045005f005300490047004e00410054005500520045;
+  hasspoof=false;
+  syslist="$filedir/privlist/privperm.list";
+  applist="$filedir/privlist/app.lst";
+  permlist="$filedir/privlist/app.xml";
+
+  unzip -oq "$zipfile" "privlist/*" -d "$filedir";
+
+  case "$arch" in
+    arm*)
+      aapt="$filedir/privlist/aapt-arm";
+    ;;
+    x86*)
+      aapt="$filedir/privlist/aapt-x86";
+    ;;
+    mips*)
+      aapt="$filedir/privlist/aapt-mips";
+    ;;
+  esac;
+  [ -f "$aapt" ] || abort "No AAPT available";
+  chmod 777 "$aapt";
+
+  "$aapt" dump xmltree "/$sysroot/system/framework/framework-res.apk" AndroidManifest.xml | \
+    tr -d '\n' | sed -e 's/E:/\n/g' | grep '(type 0x11)0x[137]2' | \
+    awk -F\" '{print $2}' | sort > "$syslist";
+
+  unzip -oq "/$sysroot/system/framework/framework-res.apk" "AndroidManifest.xml" -d "$filedir/privlist/";
+
+  grep -qF "$spoofperm" "$filedir/privlist/AndroidManifest.xml" && hasspoof=true;
+  od -A n -t x1 "$filedir/privlist/AndroidManifest.xml" | tr -d ' \n' | grep -qF "$spoofpermod" && hasspoof=true;
+
+  $hasspoof && echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "${syslist}" || log "WHITELISTER: No native sigspoof found";
+
+  buildlist() {
+
+    "${aapt}" dump permissions "$privobject" | \
+      awk -F \' '/^uses-permission:/{print $2}' | \
+      sort > "$applist";
+
+    [ "$(cat "$applist")" ] || continue;
+
+    echo '<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="'$package'">' > "$permlist";
+
+    for perm in $(cat "$applist"); do
+      if grep -q "$perm" "$syslist"; then
+        log "WHITELISTER: $package needs privapp-whitelist $perm";
+        echo '        <permission name="'$perm'" />' >> "$permlist";
+      fi;
+    done;
+
+    echo '    </privapp-permissions>
+</permissions>' >> "$permlist";
+
+  }
+
+  unzip -oq "$zipfile" "system/priv-app/*" -d "$filedir";
+
+  for object in $stuff; do
+    case $object in
+      /system/priv-app/*/*.apk) ;;
+      *) continue;;
+    esac;
+    for realobject in "$filedir/$object"; do
+      privobject="$realobject"; break;
+    done;
+    [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
+    package="$("$aapt" dump badging "$privobject" | awk -F \' '/^package: name/{print $2}')";
+    log "WHITELISTER: Building list for $object";
+    buildlist;
+    mkdir -p "$filedir/system/etc/permissions/";
+    mv -f "$permlist" "$filedir/system/etc/permissions/$package.xml";
+    stuff="$stuff
+  /system/etc/permissions/$package.xml
+";
+  done;
+
+  for object in $stuff_arch; do
+    case $object in
+      /system/priv-app/*/*.apk) ;;
+      *) continue;;
+    esac;
+    for realobject in $filedir/$(dirname "$object")/*-$arch-*/$(basename "$object"); do
+      privobject="$realobject"; break;
+    done;
+    [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
+    package="$("$aapt" dump badging "$privobject" | awk -F \' '/^package: name/{print $2}')";
+    log "WHITELISTER: Building list for $object ($cond)";
+    cond="$(basename "$(dirname "$privobject")")";
+    buildlist;
+    mkdir -p "$filedir/system/etc/permissions/$cond/";
+    mv -f "$permlist" "$filedir/system/etc/permissions/$cond/$package.xml";
+    stuff_arch="$stuff_arch
+  /system/etc/permissions/$package.xml
+";
+  done;
+
+  for object in $stuff_sdk; do
+    case $object in
+      /system/priv-app/*/*.apk) ;;
+      *) continue;;
+    esac;
+    for realobject in $filedir/$(dirname "$object")/*-$sdk-*/$(basename "$object"); do
+      privobject="$realobject"; break;
+    done;
+    [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
+    package="$("$aapt" dump badging "$privobject" | awk -F \' '/^package: name/{print $2}')";
+    cond="$(basename "$(dirname "$privobject")")";
+    log "WHITELISTER: Building list for $object ($cond)";
+    buildlist;
+    mkdir -p "$filedir/system/etc/permissions/$cond/";
+    mv -f "$permlist" "$filedir/system/etc/permissions/$cond/$package.xml";
+    stuff_sdk="$stuff_sdk
+  /system/etc/permissions/$package.xml
+";
+  done;
+
+  for object in $stuff_arch_sdk; do
+    case $object in
+      /system/priv-app/*/*.apk) ;;
+      *) continue;;
+    esac;
+    for realobject in $filedir/$(dirname "$object")/*-$arch-*-$sdk-*/$(basename "$object"); do
+      privobject="$realobject"; break;
+    done;
+    [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
+    package="$("$aapt" dump badging "$privobject" | awk -F \' '/^package: name/{print $2}')";
+    cond="$(basename "$(dirname "$privobject")")";
+    log "WHITELISTER: Building list for $object ($cond)";
+    buildlist;
+    mkdir -p "$filedir/system/etc/permissions/$cond/";
+    mv -f "$permlist" "$filedir/system/etc/permissions/$cond/$package.xml";
+    stuff_arch_sdk="$stuff_arch_sdk
+  /system/etc/permissions/$package.xml
+";
+  done;
+
+}
