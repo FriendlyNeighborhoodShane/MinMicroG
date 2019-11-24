@@ -136,7 +136,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
       echo " ---- Downloading $objecturl";
       wget -q --show-progress "$objecturl" -O "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       [ -f "$objectfile" ] || { echo "ERROR: $object failed to download"; continue; }
-      echo "NAME: $objectname, FILE: $object, URL: $objecturl;" > "$updatelog";
+      echo "NAME: $objectname, FILE: $object, URL: $objecturl;" >> "$updatelog";
     ;;
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
