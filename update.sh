@@ -26,10 +26,8 @@ mkdir -p "$tmpdir" "$tmpdir/repos";
 
 # Config
 
-[ -f "$confdir/resdl-download.txt" ] || { echo " "; echo "FATAL: No resdl-download.txt found"; return 1; }
-cp "$confdir/resdl-download.txt" "$tmpdir/resdl";
-chmod 777 "$tmpdir/resdl";
-. "$tmpdir/resdl";
+[ -f "$confdir/resdl-download.txt" ] || { echo " "; echo "F: No resdl-download.txt found"; return 1; }
+eval "$(cat "$confdir/resdl-download.txt")" || { echo "FATAL: resdl-download.txt cannot be executed"; return 1; };
 
 if [ $@ ]; then
   echo " ";

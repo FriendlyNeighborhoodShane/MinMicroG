@@ -54,7 +54,7 @@ mkdir -p "$tmpdir";
 # Config
 
 cp -Rf "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
-eval "$(cat "$tmpdir/defconf")";
+eval "$(cat "$tmpdir/defconf")" || { echo "ERROR: Config for $confvar cannot be executed"; return 1; };
 echo " ";
 echo " - Config says variant $variant";
 
