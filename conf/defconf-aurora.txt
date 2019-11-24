@@ -1,0 +1,72 @@
+# Config
+
+variant="AuroraServices"
+ver="1.0.0";
+verc="100"
+date="24th november,2019";
+minsdk=21;
+
+modprop="id=MinMicroG
+name=Minimal MicroG Pack $variant Edition
+version=$ver
+versionCode=$verc
+author=MOVZX and FatherJony and FriendlyNeighborhoodShane
+description=A Minimal MicroG installer with just the essentials
+support=https://t.me/joinchat/FyFlS0X2D7f6YNvdxhEsfw
+donate=
+minMagisk=1900
+";
+
+stuff="
+  /system/etc/permissions/com.aurora.services.xml
+  /system/priv-app/AuroraServices/AuroraServices.apk
+";
+
+stuff_arch="
+";
+
+stuff_sdk="
+";
+
+stuff_arch_sdk="
+";
+
+stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile";
+
+stuff_debloat="
+";
+
+stuff_perm="
+  /system/etc/permissions
+  /system/priv-app/AuroraServices
+";
+
+service="
+";
+
+addond="
+";
+
+pre_install_actions() {
+
+  return 0;
+
+}
+
+post_install_actions() {
+
+  return 0;
+
+}
+
+pre_uninstall_actions() {
+
+  return 0;
+
+}
+
+post_uninstall_actions() {
+
+  return 0;
+
+}
