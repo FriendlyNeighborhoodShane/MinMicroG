@@ -30,7 +30,7 @@ echo " ";
 echo " - Cleaning...";
   
 rm -Rf "$tmpdir";
-mkdir -p "$tmpdir" "$tmpdir/repos";
+mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 
 # Config
 
