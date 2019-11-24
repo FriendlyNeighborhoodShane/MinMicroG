@@ -6,6 +6,8 @@ cd "$workdir";
 confdir="$workdir/conf";
 resdldir="$workdir/resdl";
 tmpdir="$workdir/tmp";
+updatetime="$(date -u +%Y%m%d%H%M%S)";
+updatelog="$workdir/releases/update-$updatetime.log";
 
 echo " ";
 echo "--       Minimal MicroG Update Script       --";
@@ -17,6 +19,12 @@ echo "--         No, not the Official one         --";
 for bin in awk chmod cp curl grep head jq mv rm sort unzip wget; do
   [ "$(which $bin)" ] || { echo " "; echo "FATAL: No $bin found"; return 1; }
 done;
+
+echo " ";
+echo " - Working from $workdir";
+
+echo " ";
+echo " - Update started at $updatetime";
 
 echo " ";
 echo " - Cleaning...";
@@ -91,14 +99,16 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
         ;;
         github)
           echo " ---- Getting GitHub URL for $object";
-          objecturl="$(curl -sN "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep "$objectarg$" | head -n1)";
+          objecturl="$(curl -sN "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep -P "$objectarg$" | head -n1)";
         ;;
         gitlab)
           echo " ---- Getting GitLab project ID for $object";
           objectid="$(curl -sN https://gitlab.com/$objectpath | grep "Project ID" | head -n1 | awk '{ print $3 }')";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found"; continue; }
           echo " ---- Getting GitLab URL for $object";
-          objecturl="https://gitlab.com/$objectpath$(curl -sN https://gitlab.com/api/v4/projects/$objectid/repository/tags | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
+          objectupload="$(curl -sN "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
+          [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found"; continue; }
+          objecturl="https://gitlab.com/$objectpath$objectupload";
         ;;
         repo)
           objectrepo="$(dirname "$objectpath")";
@@ -126,6 +136,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
       echo " ---- Downloading $objecturl";
       wget -q --show-progress "$objecturl" -O "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       [ -f "$objectfile" ] || { echo "ERROR: $object failed to download"; continue; }
+      echo "NAME: $objectname, FILE: $object, URL: $objecturl;" > "$objectlog";
     ;;
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
