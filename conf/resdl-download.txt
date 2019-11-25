@@ -26,24 +26,24 @@ stuff_download="
   /util/aapt-arm													direct	https://gitlab.com/Nanolx/NanoDroid/raw/master/tools/aapt.arm
   /util/aapt-x86													direct	https://gitlab.com/Nanolx/NanoDroid/raw/master/tools/aapt.x86
 
-  /system/app/GoogleCalendarSyncAdapter/-19-21-22-23-24-25-26-27-28-/GoogleCalendarSyncAdapter.apk	direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.calendar/15/nodpi/2015080710.apk
-  /system/app/GoogleContactsSyncAdapter/-19-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.contacts/19/nodpi/19.apk
-  /system/app/GoogleContactsSyncAdapter/-21-22-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.contacts/21/nodpi/21.apk
-  /system/app/GoogleContactsSyncAdapter/-23-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.contacts/23/nodpi/23.apk
-  /system/app/GoogleContactsSyncAdapter/-24-25-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.contacts/24/nodpi/24.apk
-  /system/app/GoogleContactsSyncAdapter/-26-27-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.contacts/26/nodpi/26.apk
-  /system/app/GoogleContactsSyncAdapter/-28-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/openapps/all/raw/master/app/com.google.android.syncadapters.contacts/28/nodpi/28.apk
-  /system/framework/com.google.android.media.effects.jar											direct	https://gitlab.opengapps.org/openapps/all/raw/master/framework/com.google.android.media.effects.jar
-  /system/framework/com.google.widevine.software.drm.jar											direct	https://gitlab.opengapps.org/openapps/all/raw/master/framework/com.google.widevine.software.drm.jar
-  /system/lib/-arm-/libjni_latinimegoogle.so														direct	https://gitlab.opengapps.org/openapps/arm/raw/master/lib/21/libjni_latinimegoogle.so
-  /system/lib/-x86-/libjni_latinimegoogle.so														direct	https://gitlab.opengapps.org/openapps/x86/raw/master/lib/23/libjni_latinimegoogle.so
-  /system/lib64/-arm64-/libjni_latinimegoogle.so													direct	https://gitlab.opengapps.org/openapps/arm64/raw/master/lib64/21/libjni_latinimegoogle.so
-  /system/lib64/-x86_64-/libjni_latinimegoogle.so													direct	https://gitlab.opengapps.org/openapps/x86_64/raw/master/lib64/23/libjni_latinimegoogle.so
-  /system/priv-app/GoogleBackupTransport/-19-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/openapps/all/raw/master/priv-app/com.google.android.backuptransport/19/nodpi/19.apk
-  /system/priv-app/GoogleBackupTransport/-21-22-/GoogleBackupTransport.apk							direct	https://gitlab.opengapps.org/openapps/all/raw/master/priv-app/com.google.android.backuptransport/21/nodpi/21.apk
-  /system/priv-app/GoogleBackupTransport/-23-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/openapps/all/raw/master/priv-app/com.google.android.backuptransport/23/nodpi/23.apk
-  /system/priv-app/GoogleBackupTransport/-24-25-/GoogleBackupTransport.apk							direct	https://gitlab.opengapps.org/openapps/all/raw/master/priv-app/com.google.android.backuptransport/24/nodpi/24.apk
-  /system/priv-app/GoogleBackupTransport/-26-27-/GoogleBackupTransport.apk							direct	https://gitlab.opengapps.org/openapps/all/raw/master/priv-app/com.google.android.backuptransport/26/nodpi/26.apk
-  /system/priv-app/GoogleBackupTransport/-28-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/openapps/all/raw/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk
+  /system/app/GoogleCalendarSyncAdapter/-19-21-22-23-24-25-26-27-28-/GoogleCalendarSyncAdapter.apk	direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/15/nodpi/2015080710.apk
+  /system/app/GoogleContactsSyncAdapter/-19-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/19/nodpi/19.apk
+  /system/app/GoogleContactsSyncAdapter/-21-22-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/21/nodpi/21.apk
+  /system/app/GoogleContactsSyncAdapter/-23-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/23/nodpi/23.apk
+  /system/app/GoogleContactsSyncAdapter/-24-25-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/24/nodpi/24.apk
+  /system/app/GoogleContactsSyncAdapter/-26-27-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/26/nodpi/26.apk
+  /system/app/GoogleContactsSyncAdapter/-28-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/28/nodpi/28.apk
+  /system/framework/com.google.android.media.effects.jar											direct	https://gitlab.opengapps.org/opengapps/all/raw/master/framework/19/com.google.android.media.effects.jar
+  /system/framework/com.google.widevine.software.drm.jar											direct	https://gitlab.opengapps.org/opengapps/all/raw/master/framework/19/com.google.widevine.software.drm.jar
+  /system/lib/-arm-/libjni_latinimegoogle.so														direct	https://gitlab.opengapps.org/opengapps/arm/raw/master/lib/21/libjni_latinimegoogle.so
+  /system/lib/-x86-/libjni_latinimegoogle.so														direct	https://gitlab.opengapps.org/opengapps/x86/raw/master/lib/23/libjni_latinimegoogle.so
+  /system/lib64/-arm64-/libjni_latinimegoogle.so													direct	https://gitlab.opengapps.org/opengapps/arm64/raw/master/lib64/21/libjni_latinimegoogle.so
+  /system/lib64/-x86_64-/libjni_latinimegoogle.so													direct	https://gitlab.opengapps.org/opengapps/x86_64/raw/master/lib64/23/libjni_latinimegoogle.so
+  /system/priv-app/GoogleBackupTransport/-19-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/19/nodpi/19.apk
+  /system/priv-app/GoogleBackupTransport/-21-22-/GoogleBackupTransport.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/21/nodpi/21.apk
+  /system/priv-app/GoogleBackupTransport/-23-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/23/nodpi/23.apk
+  /system/priv-app/GoogleBackupTransport/-24-25-/GoogleBackupTransport.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/24/nodpi/24.apk
+  /system/priv-app/GoogleBackupTransport/-26-27-/GoogleBackupTransport.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/26/nodpi/26.apk
+  /system/priv-app/GoogleBackupTransport/-28-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk
   /system/priv-app/PatchPhonesky/PatchPhonesky.apk													repo	nanolx/com.android.vending
 ";
