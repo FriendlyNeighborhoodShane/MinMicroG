@@ -3,7 +3,7 @@
 variant="AuroraServices"
 ver="1.0.0";
 verc="100"
-date="24th november,2019";
+date="18th December,2019";
 minsdk=21;
 
 modprop="id=MinMicroG

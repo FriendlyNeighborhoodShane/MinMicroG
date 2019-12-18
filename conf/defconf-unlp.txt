@@ -1,9 +1,9 @@
 # Config
 
 variant="Backend";
-ver="1.2";
+ver="1.3";
 verc="120"
-date="26 september, 2019";
+date="18th December, 2019";
 minsdk=19;
 
 modprop="id=MinMicroG

@@ -1,9 +1,9 @@
 # Config
 
 variant="Standard"
-ver="2.4-MAYBE";
+ver="2.4";
 verc="240"
-date="27th September, 2019";
+date="18th December, 2019";
 minsdk=19;
 
 modprop="id=MinMicroG
