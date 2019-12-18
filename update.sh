@@ -58,6 +58,10 @@ $(echo "$stuff_repo" | grep -P "^[ \t]*$(dirname "$repo")[ \t]+" | head -n1)
   stuff_repo="$(echo "$stuff_repo_new" | sort -u)";
 fi; 
 
+# Pre update actions
+
+pre_update_actions;
+
 # Download repos
 
 echo " ";
@@ -143,6 +147,10 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
   mv -f "$objectfile" "$resdldir/$object";
   [ -f "$resdldir/$object" ] || { echo "ERROR: $object failed to copy"; continue; } 
 done;
+
+# Post update actions
+
+post_update_actions;
 
 # Done
 

@@ -39,3 +39,10 @@ Pretty self explanatory. Leave them blank with a return 0 if there's no use for 
 
  - stuff_repos: List of FDroid format app repositories that are to be downloaded and their contents used by update.sh. First column has their names, which are to be unique and are the key to access them in stuff_download. Second column is the URL, to which appending '/index-v1.jar' should result in an object downloadable by wget.
  - stuff_download: List of actual objects that are put into resdl by update.sh. First column is the filepath inside resdl that it should be put in. Second column is the source that it comes from, which is one of local, direct, github, gitlab, or repo. Other columns depend upon the source and any extra columns are ignored. For local, third column is a path resolved against the repo directory from which the file is cp'd to the destination. For direct, the third column is a URL that must be downloadable using wget. For github and gitlab, the third column is [repo owner]/[repo name] from which the newest file is grabbed from the releases page, optionally filtering only for the regex-enabled suffix in the fourth column if provided. For repo, it's the [repo key]/[package name] of which the latest APK is grabbed, optionally filtering for the arch if provided in the third column (arch is usually one of arm64-v8a, armeabi, armeabi-v7a, mips, mips64, x86, x86_64).
+
+## Functions in resdl-conf file
+
+ - pre_update_actions()
+ - post_update_actions()
+
+Again, they speak for themselves.

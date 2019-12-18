@@ -45,3 +45,15 @@ stuff_download="
   /system/priv-app/GoogleBackupTransport/-28-/GoogleBackupTransport.apk								direct	https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk
   /system/priv-app/PatchPhonesky/PatchPhonesky.apk													repo	nanolx/com.android.vending
 ";
+
+pre_update_actions() {
+
+  return 0;
+
+}
+
+post_update-actions() {
+
+  return 0;
+
+}
