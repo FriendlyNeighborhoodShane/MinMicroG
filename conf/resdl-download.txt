@@ -8,8 +8,8 @@ stuff_repo="
 
 stuff_download="
   /system/app/AppleNLPBackend/AppleNLPBackend.apk					repo	fdroid/org.microg.nlp.backend.apple
-  /system/app/AuroraDroid/AuroraDroid.apk							gitlab	AuroraOSS/auroradroid																				.apk
-  /system/app/AuroraStore/AuroraStore.apk							gitlab	AuroraOSS/AuroraStore																				.apk
+  /system/app/AuroraDroid/AuroraDroid.apk							gitlab	AuroraOSS/auroradroid							.apk
+  /system/app/AuroraStore/AuroraStore.apk							gitlab	AuroraOSS/AuroraStore							.apk
   /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk					repo	fdroid/org.fitchfamily.android.dejavu
   /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk				repo	fdroid/org.fitchfamily.android.gsmlocation
   /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk			repo	fdroid/org.fitchfamily.android.wifi_backend
@@ -17,8 +17,8 @@ stuff_download="
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk	repo	fdroid/org.microg.nlp.backend.ichnaea
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk			repo	fdroid/org.microg.nlp.backend.nominatim
   /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk			repo	fdroid/org.openbmap.unifiedNlp
-  /system/framework/com.google.android.maps.jar						direct	https://gitlab.com/Nanolx/NanoDroid/raw/master/Full/system/framework/com.google.android.maps.jar
-  /system/priv-app/AuroraServices/AuroraServices.apk				gitlab	AuroraOSS/AuroraServices																			.apk
+  /system/framework/com.google.android.maps.zip						github	microg/android_frameworks_mapsv1				.zip
+  /system/priv-app/AuroraServices/AuroraServices.apk				gitlab	AuroraOSS/AuroraServices						.apk
   /system/priv-app/FakeStore/FakeStore.apk							repo	microg/com.android.vending
   /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk			repo	microg/org.microg.gms.droidguard
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk					repo	microg/com.google.android.gms
@@ -52,8 +52,24 @@ pre_update_actions() {
 
 }
 
-post_update-actions() {
+post_update_actions() {
 
+  unzipmaps;
   return 0;
+
+}
+
+unzipmaps() {
+
+  mapsfile="system/framework/com.google.android.maps";
+
+  [ -f "$resdldir/$mapsfile.zip" ] || return 0;
+
+  echo " ";
+  echo " - Unzipping maps JAR...";
+  
+  rm -rf "$resdldir/$mapsfile.jar";
+  unzip -oq -j "$resdldir/$mapsfile.zip" "$mapsfile.jar" -d "$resdldir/$(dirname "$mapsfile")/";
+  rm -rf "$resdldir/$mapsfile.zip";
 
 }
