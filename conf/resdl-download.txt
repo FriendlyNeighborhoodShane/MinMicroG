@@ -23,8 +23,6 @@ stuff_download="
   /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk			repo	microg/org.microg.gms.droidguard
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk					repo	microg/com.google.android.gms
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk						repo	fdroid/com.google.android.gms
-  /util/aapt-arm													direct	https://gitlab.com/Nanolx/NanoDroid/raw/master/tools/aapt.arm
-  /util/aapt-x86													direct	https://gitlab.com/Nanolx/NanoDroid/raw/master/tools/aapt.x86
 
   /system/app/GoogleCalendarSyncAdapter/-19-21-22-23-24-25-26-27-28-/GoogleCalendarSyncAdapter.apk	direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/15/nodpi/2015080710.apk
   /system/app/GoogleContactsSyncAdapter/-19-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/19/nodpi/19.apk
