@@ -55,6 +55,7 @@ pre_update_actions() {
 post_update_actions() {
 
   unzipmaps;
+  updatedelta;
   return 0;
 
 }
@@ -71,5 +72,36 @@ unzipmaps() {
   rm -rf "$resdldir/$mapsfile.jar";
   unzip -oq -j "$resdldir/$mapsfile.zip" "$mapsfile.jar" -d "$resdldir/$(dirname "$mapsfile")/";
   rm -rf "$resdldir/$mapsfile.zip";
+
+}
+
+updatedelta() {
+
+  echo " ";
+  echo " - Checking resdl delta between updates...";
+
+  newlog=""
+  oldlogs=""
+  for log in $(ls -t $reldir/update-*.log); do
+    [ "$newlog" ] && oldlogs="$oldlogs $(basename "$log")" || newlog="$(basename "$log")";
+  done;
+  [ "$oldlogs" ] || { echo " -- No old logs to compare"; return 0; }
+  for entry in $(cat "$reldir/$newlog" | grep -Po "FILE: [^,]*" | cut -d" " -f2); do
+    line="$(grep "FILE: $entry," "$reldir/$newlog")";
+    file="$entry";
+    url="$(echo $line | grep -Po "URL: [^,]*" | cut -d" " -f2)";
+    oldurl="";
+    for log in $oldlogs; do
+      oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -Po "URL: [^,]*" | cut -d" " -f2)";
+      [ "$oldurl" ] && break;
+    done;
+    [ "$oldurl" ] || oldurl="None";
+    /usr/bin/[ "$url" == "$oldurl" ] && continue;
+    echo " -- Updated file: $file"
+    echo "   ++ Old URL: $oldurl"
+    echo "   ++ New URL: $url"
+    echo "   ++ Old name: $(basename $oldurl)"
+    echo "   ++ New name: $(basename $url)"
+  done;
 
 }

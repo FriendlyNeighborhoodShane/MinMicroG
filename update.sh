@@ -5,9 +5,10 @@ workdir="$(pwd)";
 cd "$workdir";
 confdir="$workdir/conf";
 resdldir="$workdir/resdl";
+reldir="$workdir/releases";
 tmpdir="$workdir/tmp";
 updatetime="$(date -u +%Y%m%d%H%M%S)";
-updatelog="$workdir/releases/update-$updatetime.log";
+updatelog="$reldir/update-$updatetime.log";
 
 echo " ";
 echo "--       Minimal MicroG Update Script       --";
@@ -37,7 +38,7 @@ mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 [ -f "$confdir/resdl-download.txt" ] || { echo " "; echo "F: No resdl-download.txt found"; return 1; }
 eval "$(cat "$confdir/resdl-download.txt")" || { echo "FATAL: resdl-download.txt cannot be executed"; return 1; };
 
-if [ $@ ]; then
+if [ "$*" ]; then
   echo " ";
   echo " - Building update list...";
   stuff_download_new="";
