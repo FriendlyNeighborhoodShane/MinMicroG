@@ -96,7 +96,7 @@ updatedelta() {
       [ "$oldurl" ] && break;
     done;
     [ "$oldurl" ] || oldurl="None";
-    /usr/bin/[ "$url" == "$oldurl" ] && continue;
+    [ "$url" = "$oldurl" ] && continue;
     echo " -- Updated file: $file"
     echo "   ++ Old URL: $oldurl"
     echo "   ++ New URL: $url"
