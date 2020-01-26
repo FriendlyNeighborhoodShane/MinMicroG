@@ -39,6 +39,11 @@ The things included in the UNLP Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
+The things included in the AuroraServices Edition zip are:
+ - AuroraServices (From Whyorean's GitLab)
+ - Permission files for all of this
+ - An addon.d file to backup/restore everything on a rom flash
+
 ### How do I build these packs myself?
 First, get the AOSP zipsigner or TopJohnWu's rewrite of it and place it as zipsigner.jar in this repo's parent directory.
 cd to this directory and run:
