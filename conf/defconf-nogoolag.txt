@@ -1,7 +1,7 @@
 # Config
 
 variant="NoGoolag";
-ver="2.4";
+ver="2.5";
 verc="240"
 date="18th December, 2019";
 minsdk=21;
