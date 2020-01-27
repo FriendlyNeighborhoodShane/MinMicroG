@@ -60,13 +60,12 @@ stuff_other="
   /system/framework/com.google.android.maps.jar
   /system/framework/com.google.android.media.effects.jar
   /system/framework/com.google.widevine.software.drm.jar
-  /system/lib/libjni_latinimegoogle.so
   /system/lib64/libjni_latinimegoogle.so
+  /system/lib/libjni_latinimegoogle.so
   /system/priv-app/AuroraServices/AuroraServices.apk
-  /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
   /system/priv-app/FakeStore/FakeStore.apk
+  /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
   /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk
-  /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
   /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
 

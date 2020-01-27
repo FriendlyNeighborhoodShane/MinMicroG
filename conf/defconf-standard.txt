@@ -65,7 +65,8 @@ stuff_arch_sdk="
 
 stuff_other="
   /system/app/AuroraStore/AuroraStore.apk
-  /system/etc/default-permissions/aurora-permissions.xml
+  /system/etc/default-permissions/microg-permissions-unlp.xml
+  /system/etc/sysconfig/nogoolag-unlp.xml
   /system/priv-app/FakeStore/FakeStore.apk
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk
 ";

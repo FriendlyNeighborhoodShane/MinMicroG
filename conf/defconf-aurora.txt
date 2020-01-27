@@ -31,6 +31,58 @@ stuff_sdk="
 stuff_arch_sdk="
 ";
 
+stuff_other="
+  /system/app/AppleNLPBackend/AppleNLPBackend.apk
+  /system/app/AuroraDroid/AuroraDroid.apk
+  /system/app/AuroraStore/AuroraStore.apk
+  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
+  /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
+  /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
+  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
+  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
+  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
+  /system/etc/default-permissions/microg-permissions-unlp.xml
+  /system/etc/default-permissions/microg-permissions.xml
+  /system/etc/permissions/com.android.vending.xml
+  /system/etc/permissions/com.google.android.backuptransport.xml
+  /system/etc/permissions/com.google.android.gms.xml
+  /system/etc/permissions/com.google.android.maps.xml
+  /system/etc/permissions/com.google.android.media.effects.xml
+  /system/etc/permissions/com.google.widevine.software.drm.xml
+  /system/etc/permissions/gsync.xml
+  /system/etc/sysconfig/nogoolag-unlp.xml
+  /system/etc/sysconfig/nogoolag.xml
+  /system/framework/com.google.android.maps.jar
+  /system/framework/com.google.android.media.effects.jar
+  /system/framework/com.google.widevine.software.drm.jar
+  /system/lib64/libjni_latinimegoogle.so
+  /system/lib/libjni_latinimegoogle.so
+  /system/priv-app/FakeStore/FakeStore.apk
+  /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
+  /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk
+  /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
+  /system/priv-app/MicroGUNLP/MicroGUNLP.apk
+  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
+";
+
+stuff_old="
+  /system/addon.d/01-nogoolag.sh
+  /system/app/FDroid/FDroid.apk
+  /system/etc/permissions/org.fdroid.fdroid.privileged.xml
+  /system/priv-app/AuroraStore/AuroraStore.apk
+  /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk
+  /system/priv-app/DejaVuNLPBackend/DejaVuNLPBackend.apk
+  /system/priv-app/FDroidPrivileged/FDroidPrivileged.apk
+  /system/priv-app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/priv-app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/priv-app/MicroGGSFProxy/MicroGGSFProxy.apk
+  /system/priv-app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk
+";
+
 stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile";
 
 stuff_debloat="

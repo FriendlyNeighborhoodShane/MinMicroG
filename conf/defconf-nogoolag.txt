@@ -27,6 +27,7 @@ stuff="
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
+  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
 
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml
@@ -53,18 +54,21 @@ stuff_arch_sdk="
 ";
 
 stuff_other="
-  /system/etc/permissions/com.google.android.media.effects.xml
-  /system/etc/permissions/com.google.widevine.software.drm.xml
-  /system/framework/com.google.android.media.effects.jar
-  /system/framework/com.google.widevine.software.drm.jar
-  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
-  /system/lib/libjni_latinimegoogle.so
-  /system/lib64/libjni_latinimegoogle.so
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
+  /system/etc/default-permissions/microg-permissions-unlp.xml
+  /system/etc/permissions/com.google.android.backuptransport.xml
+  /system/etc/permissions/com.google.android.media.effects.xml
+  /system/etc/permissions/com.google.widevine.software.drm.xml
   /system/etc/permissions/gsync.xml
+  /system/etc/sysconfig/nogoolag-unlp.xml
+  /system/framework/com.google.android.media.effects.jar
+  /system/framework/com.google.widevine.software.drm.jar
+  /system/lib64/libjni_latinimegoogle.so
+  /system/lib/libjni_latinimegoogle.so
   /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk
+  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
 
 stuff_old="
