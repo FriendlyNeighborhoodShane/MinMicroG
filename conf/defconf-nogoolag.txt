@@ -2,8 +2,8 @@
 
 variant="NoGoolag";
 ver="2.5";
-verc="240"
-date="18th December, 2019";
+verc="250"
+date="27th january, 2020";
 minsdk=21;
 
 modprop="id=MinMicroG
