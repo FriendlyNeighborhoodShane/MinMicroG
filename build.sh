@@ -18,9 +18,9 @@ echo "--      From the MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
 for bin in cp grep java ls mv rm sed zip; do
-  [ "$(which $bin)" ] || { echo " "; echo "FATAL: No $bin found"; return 1; }
+  [ "$(which $bin)" ] || { echo " " >&2; echo "FATAL: No $bin found" >&2; return 1; }
 done;
-[ -f "$zipsigner" ] || { echo " "; echo "FATAL: No zipsigner jar found"; return 1; }
+[ -f "$zipsigner" ] || { echo " " >&2; echo "FATAL: No zipsigner jar found" >&2; return 1; }
 
 echo " ";
 echo " - Working from $workdir";
@@ -28,7 +28,7 @@ echo " - Working from $workdir";
 echo " ";
 echo " - Build started at $buildtime";
 
-[ "$1" ] || { echo " "; echo "FATAL: No variant specified to build"; return 1; }
+[ "$1" ] || { echo " " >&2; echo "FATAL: No variant specified to build" >&2; return 1; }
 
 case "$1" in
   all)
@@ -43,7 +43,7 @@ case "$1" in
   ;;
 esac;
 
-[ -f "$workdir/conf/defconf-$confvar.txt" ] || { echo " "; echo "FATAL: No variant defconf found"; return 1; }
+[ -f "$workdir/conf/defconf-$confvar.txt" ] || { echo " " >&2; echo "FATAL: No variant defconf found" >&2; return 1; }
 
 echo " ";
 echo " - Building package $confvar";
@@ -54,7 +54,7 @@ mkdir -p "$tmpdir";
 # Config
 
 cp -Rf "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
-eval "$(cat "$tmpdir/defconf")" || { echo "ERROR: Config for $confvar cannot be executed"; return 1; };
+eval "$(cat "$tmpdir/defconf")" || { echo " " >&2; echo "FATAL: Config for $confvar cannot be executed" >&2; return 1; };
 echo " ";
 echo " - Config says variant $variant";
 
@@ -64,7 +64,7 @@ echo " ";
 echo " - Copying files...";
 
 for file in "$workdir/src/META-INF" "$workdir/LICENSE" "$workdir/README.md"; do
-  [ -e "$file" ] || { echo "ERROR: $file doesn't exist"; continue; }
+  [ -e "$file" ] || { echo "ERROR: $file doesn't exist" >&2; continue; }
   echo " -- BUILDER: Copying $file";
   cp -Rf "$file" "$tmpdir/";
 done;
@@ -97,7 +97,7 @@ cd "$tmpdir";
 zip -r9q "$tmpdir/release.zip" *;
 cd "$workdir";
 
-[ -f "$tmpdir/release.zip" ] || { echo " "; echo "FATAL: Zip failed"; return 1; }
+[ -f "$tmpdir/release.zip" ] || { echo " " >&2; echo "FATAL: Zip failed" >&2; return 1; }
 
 # Sign
 
@@ -106,7 +106,7 @@ echo " - Signing zip...";
 
 java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
 
-[ -f "$tmpdir/release-signed.zip" ] || { echo " "; echo "FATAL: Zipsigner failed"; return 1; }
+[ -f "$tmpdir/release-signed.zip" ] || { echo " " >&2; echo "FATAL: Zipsigner failed" >&2; return 1; }
 
 # Done
 
@@ -116,7 +116,7 @@ echo " - Copying zip to releases...";
 mkdir -p "$reldir";
 mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip";
 
-[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" ] || { echo " "; echo "FATAL: Move failed"; return 1; }
+[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
 
 # Done
 
