@@ -2,7 +2,7 @@
 # Update all assets
 
 workdir="$(pwd)";
-cd "$workdir";
+cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 confdir="$workdir/conf";
 resdldir="$workdir/resdl";
 reldir="$workdir/releases";
@@ -43,7 +43,7 @@ if [ "$*" ]; then
   echo " - Building update list...";
   stuff_download_new="";
   stuff_repo_new="";
-  for include in $@; do
+  for include in "$@"; do
     echo " -- CONFIG: Including $include";
     stuff_download_new="$stuff_download_new
 $(echo "$stuff_download" | grep -Pi "^[ \t]*[^ \t]*$include[^ \t]*[ \t]+")
@@ -108,7 +108,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
         ;;
         gitlab)
           echo " ---- Getting GitLab project ID for $object";
-          objectid="$(curl -sN https://gitlab.com/$objectpath | grep "Project ID" | head -n1 | awk '{ print $3 }')";
+          objectid="$(curl -sN "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | awk '{ print $3 }')";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found" >&2; continue; }
           echo " ---- Getting GitLab URL for $object";
           objectupload="$(curl -sN "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
@@ -118,7 +118,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
         repo)
           objectrepo="$(dirname "$objectpath")";
           objectpackage="$(basename "$objectpath")";
-          [ "$objectrepo" -a "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments" >&2; continue; }
+          [ "$objectrepo" ] && [ "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments" >&2; continue; }
           [ -f "$tmpdir/repos/$objectrepo.json" ] || { echo "ERROR: $object repo $objectrepo does not exist" >&2; continue; }
           echo " ---- Getting repo URL for $object from repo $repo";
           objectserver="$(jq -r '.repo.address' "$tmpdir/repos/$objectrepo.json")";
@@ -128,7 +128,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
-          [ "$objectserver" -a "$objectserverfile" ] || { echo "ERROR: $object has no URL available" >&2; continue; } 
+          [ "$objectserver" ] && [ "$objectserverfile" ] || { echo "ERROR: $object has no URL available" >&2; continue; } 
           objecturl="$objectserver/$objectserverfile";
         ;;
         *)
