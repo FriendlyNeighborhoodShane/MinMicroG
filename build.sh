@@ -2,7 +2,7 @@
 # Build a package with $1 variant
 
 workdir="$(pwd)";
-cd "$workdir";
+cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 confvar="$1";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
@@ -79,7 +79,7 @@ for object in $stuff $stuff_util; do
 done;
 
 for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
-  for realobject in $resdir/$(dirname "$object")/-*-/$(basename "$object") $resdldir/$(dirname "$object")/-*-/$(basename "$object"); do
+  for realobject in "$resdir/$(dirname "$object")"/-*-/"$(basename "$object")" "$resdldir/$(dirname "$object")"/-*-/"$(basename "$object")"; do
     [ -e "$realobject" ] || continue;
     cond="$(basename "$(dirname "$realobject")")";
     echo " -- BUILDER: Copying $object ($cond)";
@@ -93,9 +93,9 @@ done;
 echo " ";
 echo " - Zipping files...";
 
-cd "$tmpdir";
-zip -r9q "$tmpdir/release.zip" *;
-cd "$workdir";
+cd "$tmpdir" || { echo " "; echo "FATAL: Can't cd to $tmpdir"; return 1; };
+zip -r9q "$tmpdir/release.zip" ./*;
+cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 
 [ -f "$tmpdir/release.zip" ] || { echo " " >&2; echo "FATAL: Zip failed" >&2; return 1; }
 
