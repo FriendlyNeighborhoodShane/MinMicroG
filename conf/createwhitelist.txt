@@ -35,7 +35,7 @@ createwhitelist() {
   grep -qF "$spoofperm" "$filedir/privlist/AndroidManifest.xml" && hasspoof=true;
   od -A n -t x1 "$filedir/privlist/AndroidManifest.xml" | tr -d ' \n' | grep -qF "$spoofpermod" && hasspoof=true;
 
-  $hasspoof && echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "${syslist}" || log "WHITELISTER: No native sigspoof found";
+  if $hasspoof; then echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "${syslist}"; else log "WHITELISTER: No native sigspoof found"; fi;
 
   buildlist() {
 
@@ -43,7 +43,7 @@ createwhitelist() {
       awk -F \' '/^uses-permission:/{print $2}' | \
       sort > "$applist";
 
-    [ "$(cat "$applist")" ] || continue;
+    [ "$(cat "$applist")" ] || return 1;
 
     echo '<?xml version="1.0" encoding="utf-8"?>
 <permissions>
@@ -68,13 +68,13 @@ createwhitelist() {
       /system/priv-app/*/*.apk) ;;
       *) continue;;
     esac;
-    for realobject in "$filedir/$object"; do
+    for realobject in $filedir/$object; do
       privobject="$realobject"; break;
     done;
     [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
     package="$("$aapt" dump badging "$privobject" | awk -F \' '/^package: name/{print $2}')";
     log "WHITELISTER: Building list for $object";
-    buildlist;
+    buildlist || continue;
     mkdir -p "$filedir/system/etc/permissions/";
     mv -f "$permlist" "$filedir/system/etc/permissions/$package.xml";
     stuff="$stuff
@@ -87,7 +87,7 @@ createwhitelist() {
       /system/priv-app/*/*.apk) ;;
       *) continue;;
     esac;
-    for realobject in $filedir/$(dirname "$object")/*-$arch-*/$(basename "$object"); do
+    for realobject in "$filedir/$(dirname "$object")"/*-"$arch"-*/"$(basename "$object")"; do
       privobject="$realobject"; break;
     done;
     [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
@@ -107,7 +107,7 @@ createwhitelist() {
       /system/priv-app/*/*.apk) ;;
       *) continue;;
     esac;
-    for realobject in $filedir/$(dirname "$object")/*-$sdk-*/$(basename "$object"); do
+    for realobject in "$filedir/$(dirname "$object")"/*-"$sdk"-*/"$(basename "$object")"; do
       privobject="$realobject"; break;
     done;
     [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }
@@ -127,7 +127,7 @@ createwhitelist() {
       /system/priv-app/*/*.apk) ;;
       *) continue;;
     esac;
-    for realobject in $filedir/$(dirname "$object")/*-$arch-*-$sdk-*/$(basename "$object"); do
+    for realobject in "$filedir/$(dirname "$object")"/*-"$arch"-*-"$sdk"-*/"$(basename "$object")"; do
       privobject="$realobject"; break;
     done;
     [ -f "$privobject" ] || { log "ERROR: $privobject vanished"; continue; }

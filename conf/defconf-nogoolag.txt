@@ -355,7 +355,7 @@ microg_cleanup() {
       if [ ! -f "$root/system/etc/.mmg" ]; then
         log "Doing the clean install treatment";
         for app in $cleanup_packages; do
-          for file in /data/data/$app /data/user/*/$app /data/user_de/*/$app /data/app/$app-*; do
+          for file in "/data/data/${app}" "/data/user/*/$app" "/data/user_de/*/$app" "/data/app/$app"-* "/mnt/asec/$app"-* "/data/media/0/Android/data/$app"; do
             [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
           done;
         done;

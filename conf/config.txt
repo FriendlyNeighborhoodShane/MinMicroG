@@ -1,15 +1,15 @@
 user_conf() {
 
   for dir in "$(dirname "$0")" "$(dirname "$zipfile")" "$moddir" "/data/adb"; do
-    [ -f "$dir/includelist.txt" -o "$dir/excludelist.txt" ] && {
+    [ -f "$dir/includelist.txt" ] || [ -f "$dir/excludelist.txt" ] && {
       ui_print " ";
-      [ -f "$dir/includelist.txt" ] && {
+      if [ -f "$dir/includelist.txt" ]; then
         ui_print "Processing include config from $dir...";
         includelist="$(cat "$dir/includelist.txt" | sed -e 's|\#.*||g' -e 's/[\#%&\`|*+=!@:;\t$^()?\[\]{}<>]/ /g')";
-      } || {
+      else
         ui_print "Processing exclude config from $dir...";
         excludelist="$(cat "$dir/excludelist.txt" | sed -e 's|\#.*||g' -e 's/[\#%&\`|*+=!@:;\t$^()?\[\]{}<>]/ /g')";
-      }
+      fi;
       break;
     }
   done;
@@ -50,7 +50,7 @@ user_conf() {
     stuff_arch_sdk="$new_stuff_arch_sdk";
   }
 
-  [ "$includelist" -o "$excludelist" ] && {
+  [ "$includelist" ] || [ "$excludelist" ] && {
     stuff="$(echo "$stuff" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
 ";
     stuff_arch="$(echo "$stuff_arch" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
@@ -61,6 +61,6 @@ user_conf() {
 ";
   }
 
-  [ "$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk" ] || abort "Nothing left to install after config";
+  [ "$stuff" ] || [ "$stuff_arch" ] || [ "$stuff_sdk" ] || [ "$stuff_arch_sdk" ] || abort "Nothing left to install after config";
 
 }
