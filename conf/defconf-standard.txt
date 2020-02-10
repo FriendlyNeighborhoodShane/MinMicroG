@@ -51,8 +51,6 @@ stuff="
 ";
 
 stuff_arch="
-  /system/lib/libjni_latinimegoogle.so
-  /system/lib64/libjni_latinimegoogle.so
 ";
 
 stuff_sdk="
@@ -63,6 +61,10 @@ stuff_sdk="
 ";
 
 stuff_arch_sdk="
+  /system/lib/libjni_keyboarddecoder.so
+  /system/lib/libjni_latinimegoogle.so
+  /system/lib64/libjni_keyboarddecoder.so
+  /system/lib64/libjni_latinimegoogle.so
 ";
 
 stuff_other="

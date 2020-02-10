@@ -66,8 +66,10 @@ stuff_other="
   /system/etc/sysconfig/nogoolag-unlp.xml
   /system/framework/com.google.android.media.effects.jar
   /system/framework/com.google.widevine.software.drm.jar
-  /system/lib64/libjni_latinimegoogle.so
+  /system/lib/libjni_keyboarddecoder.so
   /system/lib/libjni_latinimegoogle.so
+  /system/lib64/libjni_keyboarddecoder.so
+  /system/lib64/libjni_latinimegoogle.so
   /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk
   /system/priv-app/PatchPhonesky/PatchPhonesky.apk
