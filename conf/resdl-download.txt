@@ -31,6 +31,7 @@ stuff_download="
   /system/app/GoogleContactsSyncAdapter/-24-25-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/24/nodpi/24.apk
   /system/app/GoogleContactsSyncAdapter/-26-27-/GoogleContactsSyncAdapter.apk						direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/26/nodpi/26.apk
   /system/app/GoogleContactsSyncAdapter/-28-/GoogleContactsSyncAdapter.apk							direct	https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/28/nodpi/28.apk
+  /system/bin/npem																					direct	https://gitlab.com/nanolx/nanodroid/raw/master/Full/system/xbin/nanodroid-perm
   /system/framework/com.google.android.media.effects.jar											direct	https://gitlab.opengapps.org/opengapps/all/raw/master/framework/19/com.google.android.media.effects.jar
   /system/framework/com.google.widevine.software.drm.jar											direct	https://gitlab.opengapps.org/opengapps/all/raw/master/framework/19/com.google.widevine.software.drm.jar
   /system/lib/-arm-/libjni_latinimegoogle.so														direct	https://gitlab.opengapps.org/opengapps/arm/raw/master/lib/21/libjni_latinimegoogle.so

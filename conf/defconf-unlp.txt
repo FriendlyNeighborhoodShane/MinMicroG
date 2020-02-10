@@ -48,6 +48,9 @@ stuff_other="
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
+
+  /system/bin/npem
+
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml
   /system/etc/permissions/com.aurora.services.xml
@@ -57,11 +60,14 @@ stuff_other="
   /system/etc/permissions/com.google.widevine.software.drm.xml
   /system/etc/permissions/gsync.xml
   /system/etc/sysconfig/nogoolag.xml
+
   /system/framework/com.google.android.maps.jar
   /system/framework/com.google.android.media.effects.jar
   /system/framework/com.google.widevine.software.drm.jar
+
   /system/lib64/libjni_latinimegoogle.so
   /system/lib/libjni_latinimegoogle.so
+
   /system/priv-app/AuroraServices/AuroraServices.apk
   /system/priv-app/FakeStore/FakeStore.apk
   /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
@@ -110,6 +116,7 @@ stuff_debloat="
 stuff_perm="
   /system/addon.d
   /system/app
+  /system/bin/npem
   /system/etc
   /system/priv-app
 ";

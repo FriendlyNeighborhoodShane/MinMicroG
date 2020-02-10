@@ -44,6 +44,7 @@ stuff_other="
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
   /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
+  /system/bin/npem
   /system/etc/default-permissions/microg-permissions-unlp.xml
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml

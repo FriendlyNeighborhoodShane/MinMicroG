@@ -29,6 +29,8 @@ stuff="
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
   /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
 
+  /system/bin/npem
+
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml
   /system/etc/permissions/com.aurora.services.xml
@@ -131,6 +133,7 @@ stuff_debloat="
 stuff_perm="
   /system/addon.d
   /system/app
+  /system/bin/npem
   /system/etc
   /system/framework
   /system/lib
