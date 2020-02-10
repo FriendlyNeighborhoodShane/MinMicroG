@@ -503,7 +503,7 @@ fi;
 
 ui_print " ";
 ui_print "Unmounting...";
-$bootmode || { if [ "$sysroot" ]; then umount /$sysroot; else umount /system; fi; }
+$bootmode || { if [ "$sysroot" ]; then umount "/$sysroot"; else umount /system; fi; }
 rm -rf "$filedir";
 sync;
 
