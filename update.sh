@@ -29,7 +29,7 @@ echo " - Update started at $updatetime";
 
 echo " ";
 echo " - Cleaning...";
-  
+
 rm -Rf "$tmpdir";
 mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 
@@ -57,7 +57,7 @@ $(echo "$stuff_repo" | grep -P "^[ \t]*$(dirname "$repo")[ \t]+" | head -n1)
 ";
   done;
   stuff_repo="$(echo "$stuff_repo_new" | sort -u)";
-fi; 
+fi;
 
 # Pre update actions
 
@@ -128,14 +128,14 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
-          [ "$objectserver" ] && [ "$objectserverfile" ] || { echo "ERROR: $object has no URL available" >&2; continue; } 
+          [ "$objectserver" ] && [ "$objectserverfile" ] || { echo "ERROR: $object has no URL available" >&2; continue; }
           objecturl="$objectserver/$objectserverfile";
         ;;
         *)
           echo "ERROR: Source $source for $object unknown" >&2;
         ;;
       esac;
-      [ "$objecturl" ] || { echo "ERROR: $object has no URL available" >&2; continue; } 
+      [ "$objecturl" ] || { echo "ERROR: $object has no URL available" >&2; continue; }
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
@@ -146,7 +146,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
   mv -f "$objectfile" "$resdldir/$object";
-  [ -f "$resdldir/$object" ] || { echo "ERROR: $object failed to copy" >&2; continue; } 
+  [ -f "$resdldir/$object" ] || { echo "ERROR: $object failed to copy" >&2; continue; }
 done;
 
 # Post update actions

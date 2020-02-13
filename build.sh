@@ -8,7 +8,7 @@ resdir="$workdir/res";
 resdldir="$workdir/resdl";
 tmpdir="$workdir/tmp";
 reldir="$workdir/releases";
-zipsigner="$(dirname "$workdir")/zipsigner.jar";
+zipsigner="$resdldir/util/zipsigner.jar";
 buildtime="$(date -u +%Y%m%d%H%M%S)";
 
 echo " ";

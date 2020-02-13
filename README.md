@@ -45,12 +45,13 @@ The things included in the AuroraServices Edition zip are:
  - An addon.d file to backup/restore everything on a rom flash
 
 ### How do I build these packs myself?
-First, get the AOSP zipsigner or TopJohnWu's rewrite of it and place it as zipsigner.jar in this repo's parent directory.
 cd to this directory and run:
 ```
 > ./update.sh
 ```
 To download all the assets to resdl directory.
+
+NOTE: This will download a zipsigner.jar (topjohnwu's rewrite of the AOSP version) into resdl/util, if the file does not exist already. The source can be found in the Magisk repo, and prebuilt binaries in attachments [here](https://forum.xda-developers.com/showpost.php?p=56621542) 
 ```
 > ./build.sh all
 ```

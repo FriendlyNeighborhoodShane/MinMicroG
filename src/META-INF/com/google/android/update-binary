@@ -139,7 +139,7 @@ sizecheck() {
         for archlib in $libarches; do
           if [ "$(echo "$apkunzip" | grep "lib/$archlib/lib.*.so")" ]; then
             libsizeb=0;
-            for entry in $(echo "$apkunzip" | grep "lib/$archlib/lib.*.so" | awk '{ print $1 }'); do
+            for entry in $(unzip -l "$sizeobject" | grep "lib/$archlib/lib.*.so" | awk '{ print $1 }'); do
               libsizeb="$(($libsizeb + $entry))";
             done;
             libsize="$(($libsizeb / 1024 + 1))";
