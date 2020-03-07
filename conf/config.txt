@@ -5,10 +5,10 @@ user_conf() {
       ui_print " ";
       if [ -f "$dir/includelist.txt" ]; then
         ui_print "Processing include config from $dir...";
-        includelist="$(cat "$dir/includelist.txt" | sed -e 's|\#.*||g' -e 's/[\#%&\`|*+=!@:;\t$^()?\[\]{}<>]/ /g')";
+        includelist="$(cat "$dir/includelist.txt" | sed -e 's|\#.*||g' -e 's|[^a-zA-Z0-9.-]| |g')";
       else
         ui_print "Processing exclude config from $dir...";
-        excludelist="$(cat "$dir/excludelist.txt" | sed -e 's|\#.*||g' -e 's/[\#%&\`|*+=!@:;\t$^()?\[\]{}<>]/ /g')";
+        excludelist="$(cat "$dir/excludelist.txt" | sed -e 's|\#.*||g' -e 's|[^a-zA-Z0-9.-]| |g')";
       fi;
       break;
     }

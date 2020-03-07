@@ -286,7 +286,7 @@ user_conf() {
   for file in "$(dirname "$0")/mmg-conf.txt" "$(dirname "$zipfile")/mmg-conf.txt" "$moddir/mmg-conf.txt" "/data/adb/mmg-conf.txt"; do
     [ -f "$file" ] && {
       ui_print " "; ui_print "Processing user config $file...";
-      includelist="$(cat "$file" | sed 's|\#.*||g')";
+      includelist="$(cat "$file" | sed -e 's|\#.*||g' -e 's|[^a-zA-Z0-9.-]| |g')";
       break;
     }
   done;
