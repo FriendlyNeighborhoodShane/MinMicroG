@@ -120,7 +120,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
           objectpackage="$(basename "$objectpath")";
           [ "$objectrepo" ] && [ "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments" >&2; continue; }
           [ -f "$tmpdir/repos/$objectrepo.json" ] || { echo "ERROR: $object repo $objectrepo does not exist" >&2; continue; }
-          echo " ---- Getting repo URL for $object from repo $repo";
+          echo " ---- Getting repo URL for $object from repo $objectrepo";
           objectserver="$(jq -r '.repo.address' "$tmpdir/repos/$objectrepo.json")";
           if [ "$objectarg" ]; then
             echo " ---- Getting object for arch $objectarg";
