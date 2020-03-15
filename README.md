@@ -11,7 +11,7 @@
 This is a simple MicroG installer. It can install MicroG and othe stuff into your system partition or as a Magisk module. It supports virtually all mobile architectures (arm/64, x86/64, mips/64) and fully supports KitKat and above. It can also (mostly) support much older versions, but sync adapters and some location providers won't work. It can even uninstall itself from your device, just rename it and flash it again.
 
 The things included in the Standard Edition zip are:
- - MicroG (GMSCore, GSFProxy, Droidguard, Maps APIv1) (from MicroG FDroid repo)
+ - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - Google Play store (modded for IAPs by Setialpha)
  - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim, RadioCells) (From FDroid repo)
  - AuroraDroid (From Whyorean's GitLab)
@@ -23,7 +23,7 @@ The things included in the Standard Edition zip are:
  - An addon.d file to backup/restore everything on a rom flash
 
 The things included in the NoGoolag Edition zip are:
- - MicroG (GMSCore, GSFProxy, Droidguard, Maps APIv1) (from MicroG FDroid repo)
+ - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - FakeStore (from MicroG FDroid repo)
  - AuroraStore (From Whyorean's GitLab)
  - AuroraDroid (From Whyorean's GitLab)

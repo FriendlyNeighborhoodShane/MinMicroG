@@ -45,7 +45,6 @@ stuff="
   /system/framework/com.google.widevine.software.drm.jar
 
   /system/priv-app/AuroraServices/AuroraServices.apk
-  /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
   /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
@@ -85,6 +84,7 @@ stuff_old="
   /system/priv-app/FDroidPrivileged/FDroidPrivileged.apk
   /system/priv-app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
   /system/priv-app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk
   /system/priv-app/MicroGGSFProxy/MicroGGSFProxy.apk
   /system/priv-app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk

@@ -20,7 +20,6 @@ stuff_download="
   /system/framework/com.google.android.maps.zip						github	microg/android_frameworks_mapsv1				.zip
   /system/priv-app/AuroraServices/AuroraServices.apk				gitlab	AuroraOSS/AuroraServices						.apk
   /system/priv-app/FakeStore/FakeStore.apk							repo	microg/com.android.vending
-  /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk			repo	microg/org.microg.gms.droidguard
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk					repo	microg/com.google.android.gms
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk						repo	fdroid/com.google.android.gms
 
