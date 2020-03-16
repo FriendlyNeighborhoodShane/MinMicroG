@@ -163,8 +163,8 @@ move() {
   [ "$(basename "$(dirname "$sourceobject")").apk" == "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$sourceobject")"; destobject="$(dirname "$destobject")"; }
   [ -e "$sourceobject" ] || return 0;
   mkdir -p "$(dirname "$destobject")";
-  cp -rf "$sourceobject" "$(dirname "$destobject")/";
-  [ -e "$destobject" ] && log "MOVER: Object moved ($sourceobject)" || log "ERROR: Could not move ($sourceobject)";
+  cp -rf "$sourceobject" "$(dirname "$destobject")/" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
+  [ -e "$destobject" ] && log "MOVER: Object moved ($sourceobject to $destobject)" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
   rm -rf "$sourceobject" || { log "ERROR: Could not remove ($sourceobject)"; return 1; }
   [ -e "$sourceobject" ] && { log "ERROR: Could not remove ($sourceobject)"; return 1; } || log "MOVER: Object removed ($sourceobject)";
 }
