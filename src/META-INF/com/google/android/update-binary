@@ -281,7 +281,7 @@ install_lib() {
 uninstall_pack() {
   if [ "$magisk" = "yes" ]; then
     rm -rf "$root" || { log " "; log "Could not delete Magisk root ($root)"; }
-  else
+  elif [ "$magisk" = "no" ]; then
     for thing in $stuff_uninstall; do
       [ "$thing" ] && uninstall "$root/$thing";
     done;
@@ -370,7 +370,7 @@ if [ "$action" = "installation" ]; then
     for thing in $stuff_debloat; do
       [ "$thing" ] && debloat "/$sysroot/$thing" "$root/$thing";
     done;
-  else
+  elif [ "$magisk" = "no" ]; then
     for thing in $stuff_debloat; do
       [ "$thing" ] && remove "/$sysroot/$thing" "$backupdir/$thing";
     done;
@@ -403,7 +403,7 @@ if [ "$action" = "installation" ]; then
     datfreem="$(($(df -Pk "/data" | tail -n 1 | awk '{ print $4 }') / 1024))";
     log "Free data space is $datfreem";
     [ "$datfreem" -lt "$packsizem" ] && abort "Not enough free space in your data!";
-  else
+  elif [ "$magisk" = "no" ]; then
     sysfreem="$(($(df -Pk "/$sysroot/system" | tail -n 1 | awk '{ print $4 }') / 1024))";
     log "Free system space is $sysfreem";
     [ "$sysfreem" -lt "$packsizem" ] && abort "Not enough free space in your system!";
@@ -451,7 +451,7 @@ if [ "$action" = "installation" ]; then
       touch "$modmnt/$modname/update" || abort "Could not create update in $modmnt/$modname";
       [ "$modprop" ] && { echo "$modprop" > "$modmnt/$modname/module.prop" || abort "Could not create module.prop in $modmnt/$modname"; }
     fi;
-  else
+  elif [ "$magisk" = "no" ]; then
     [ "$postfs" ] && { mkdir -p "$(dirname "$root/$initdfile")"; echo "$postfs" > "$root/$initdfile" || abort "Could not create $initdfile in $root"; }
     [ "$service" ] && { mkdir -p "$(dirname "$root/$initdfile")"; echo "$service" > "$root/$initdfile" || abort "Could not create $initdfile in $root"; }
     [ "$addond" ] && { mkdir -p "$(dirname "$root/$addondfile")"; echo "$addond" > "$root/$addondfile" || abort "Could not create $addondfile in $root"; }
