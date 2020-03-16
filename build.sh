@@ -1,5 +1,8 @@
 #!/bin/sh
 # Build a package with $1 variant
+#
+# Copyright 2018-2020 FriendlyNeighborhoodShane
+# Distributed under the terms of the GNU GPL v3
 
 workdir="$(pwd)";
 cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };

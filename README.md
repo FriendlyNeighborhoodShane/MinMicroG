@@ -2,6 +2,7 @@
 
 ### By MOVZX and FatherJony and FriendlyNeighborhoodShane
 *A simple, flexible MicroG/gang Installer*
+**Licensed under the GNU GPL v3**
 
 ### Links
 * [GitHub](https://github.com/FriendlyNeighborhoodShane/MinMicroG)

@@ -2,6 +2,9 @@
 # Minimal MicroG installer
 # By FriendlyNeighborhoodShane
 # Based on work by osm0sis @ xda-developers (Thanks!)
+#
+# Copyright 2018-2020 FriendlyNeighborhoodShane
+# Distributed under the terms of the GNU GPL v3
 
 exec 3>&1;
 exec 1>&2;
