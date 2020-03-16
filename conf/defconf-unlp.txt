@@ -186,6 +186,7 @@ case "$1" in
     log " ";
     log "Backing up...";
     save_files | while read object dummy; do
+      [ "$object" ] || continue;
       move "/$sysroot/$object" "$tmpdir/$object";
     done;
   ;;
@@ -193,6 +194,7 @@ case "$1" in
     log " ";
     log "Restoring...";
     save_files | while read object dummy; do
+      [ "$object" ] || continue;
       move "$tmpdir/$object" "/$sysroot/$object";
     done;
   ;;
@@ -201,6 +203,7 @@ case "$1" in
     log "Debloating...";
     mount /data;
     delete_files | while read object dummy; do
+      [ "$object" ] || continue;
       move "/$sysroot/$object" "$backupdir/$object";
     done;
     [ -d "$backupdir" ] && { perm_r 1023 1023 775 664 "$backupdir"; chcon -hR "u:object_r:media_rw_data_file:s0" "$backupdir"; }
