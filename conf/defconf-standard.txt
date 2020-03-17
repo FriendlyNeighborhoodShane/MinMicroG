@@ -90,7 +90,7 @@ stuff_old="
   /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk
 ";
 
-stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $stuff_other $stuff_old $initdfile $addondfile";
+stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $stuff_other $stuff_old";
 
 stuff_debloat="
   /system/app/GmsCore/GmsCore.apk

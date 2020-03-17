@@ -285,7 +285,7 @@ uninstall_pack() {
   if [ "$magisk" = "yes" ]; then
     rm -rf "$root" || { log " "; log "Could not delete Magisk root ($root)"; }
   elif [ "$magisk" = "no" ]; then
-    for thing in $stuff_uninstall; do
+    for thing in $stuff_uninstall $initdfile $addondfile; do
       [ "$thing" ] && uninstall "$root/$thing";
     done;
     uninstall "$initdfile";
