@@ -99,7 +99,7 @@ echo " ";
 echo " - Zipping files...";
 
 cd "$tmpdir" || { echo " "; echo "FATAL: Can't cd to $tmpdir"; return 1; };
-zip -r9q "$tmpdir/release.zip" ./*;
+zip -r9q "$tmpdir/release.zip" "." || { echo " "; echo "FATAL: Can't zip package"; return 1; };
 cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 
 [ -f "$tmpdir/release.zip" ] || { echo " " >&2; echo "FATAL: Zip failed" >&2; return 1; }
