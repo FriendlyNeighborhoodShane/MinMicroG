@@ -475,10 +475,11 @@ if [ "$action" = "installation" ]; then
   ui_print "Setting permissions...";
   if [ "$magisk" = "yes" ]; then
     find "$root" -maxdepth 1 -exec chmod 0755 {} +;
+    find "$root" -maxdepth 1 -name "post-fs-data.sh" -o -name "service.sh" -exec chmod 0777 {} +;
   fi;
-  for thing in $stuff_perm; do
+  for thing in $stuff_perm $initdfile $addondfile; do
     case "$thing" in
-      */bin*|*/xbin*)
+      */bin*|*/xbin*|*/etc/init.d*)
         perm 0 2000 0755 0777 "$root/$thing";
       ;;
       *)
