@@ -48,6 +48,26 @@ The things included in the AuroraServices Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
+### Notes
+Dirty flashing not recommended. you'll mess up all your permissions and may even cause conflicts in app data, leading to crashes.
+The maker does not support or endorse dirty flashing. It will harm you and your loved ones. Don't come complaining to me.
+
+How to control the zip by changing its name:
+NOTE: Control by name is not possible in magisk manager, since it copies the zip to a cache directory and renames it install.zip. This is unavoidable behaviour.
+
+ - Add 'system' to its filename to force it to install/uninstall from system. Otherwise, it looks for magisk, and if not found, installs to system. Obviously, if you flash it through Magisk manager, you want to install it to Magisk. If not, you have to flash it through recovery.
+
+ - Add 'uninstall' to its filename to uninstall it from your device, whether in magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
+
+Just rename it and flash it again for the intended effect.
+
+The zip debloats the specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
+WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over gapped ROMs, but don't take my word for it. Debloat before you flash.
+
+For support with flashing:
+If you flashed through recovery, provide its logs.
+If you used Magisk Manager, provide its logs.
+
 ### How do I build these packs myself?
 cd to this directory and run:
 ```
@@ -67,29 +87,6 @@ You can pass update.sh several perl-style regexes as arguments to only download 
 You can pass build.sh a specific pack's conf name instead of all to build only the specif pack.
 
 To build your own custom pack, refer to custom-pack.md in the conf directory.
-
-### Notes
-How to control the zip by changing its name:
-NOTE: Control by name is not possible in magisk manager, since it copies the zip to a cache directory and renames it install.zip. This is unavoidable behaviour.
-
- - Add 'system' to its filename to force it to install/uninstall from system. Otherwise, it looks for magisk, and if not found, installs to system. Obviously, if you flash it through Magisk manager, you want to install it to Magisk. If not, you have to flash it through recovery.
-
- - Add 'uninstall' to its filename to uninstall it from your device, whether in magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
-
-Just rename it and flash it again for the intended effect.
-
-The zip debloats the specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
-WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over gapped ROMs, but don't take my word for it. Debloat before you flash.
-
-For support with flashing:
-If you flashed through recovery, provide its logs.
-If you used Magisk Manager, provide its logs.
-
-### Common problems: 
-- MicroG showing wrong signature for Phonesky? Lemme guess... System mode? Dirty flashed? Go to shell and type (ofcourse with su): 
-pm grant com.android.vending android.permission.FAKE_PACKAGE_SIGNATURE
-- Dirty flashing not recommended. you'll mess up all your permissions and may even cause conflicts in app data, leading to crashes. 
-The maker does not support or endorse dirty flashing. It will harm you and your loved ones. Don't come complaining to me.
 
 ### Credits
  - Thanks to @osm0sis for the base magisk/recovery code and inspiration and guidance on the majority of the stuff in here.
