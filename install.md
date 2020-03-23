@@ -9,9 +9,10 @@
 You can skip this if you have the ROM set up already, but it's highly recommended to start with a clean install.
  - Wipe or format data from your custom recovery.
  - Flash your clean ROM and any other system mods you may want.
- - If you want MinMicroG to be installed as a Magisk module, flash Magisk and boot your phone once to allow Magisk to setup properly.
 
-##### Chapter 2: microG setup
+##### Chapter 2: microG
+You can install MinMicroG as a Magisk module or directly to the system. If you install as a module, it will not touch system at all, and you can easily remove it when something goes wrong. On the other hand, it will be tied to the Magisk installation and can be removed with it.
+ - If you want MinMicroG to be installed as a Magisk module, flash Magisk and boot your phone once to allow Magisk to setup properly.
  - Flash MinMicroG, preferably from recovery.
  - Open microG Settings > Self-Check. If "System grants signature spoofing permission" isn't ticked, click on it and grant the permission.
  - In microG settings, Go to "Google device registration", "Google Cloud Messaging" and enable both of them.
@@ -81,13 +82,13 @@ Get a clean AOSP-based ROM.
 
 Or if you're a masochist, there are several ways to clean those kinds of ROMs:
  - Gapps removal script
-   https://github.com/CHEF-KOCH/Remove-Gapps
+   - https://github.com/CHEF-KOCH/Remove-Gapps
  - G-Killer (GAPPS aroma Debloater)
-   https://forum.xda-developers.com/android/software-hacking/aroma-google-services-debloater-t3668456
+   - https://forum.xda-developers.com/android/software-hacking/aroma-google-services-debloater-t3668456
  - Rom Cleaner
-   https://github.com/DroidTR/Rom-Cleaner
+   - https://github.com/DroidTR/Rom-Cleaner
  - /d/gapps
-   https://f-droid.org/app/org.droidtr.deletegapps
+   - https://f-droid.org/app/org.droidtr.deletegapps
 
 
 ### Troubleshooting
@@ -157,10 +158,8 @@ You should also be able to sync contacts with Google without proprietary apps or
  - First of all, go to https://www.google.com/settings/security/lesssecureapps
 With your account and enable the setting
  - When logging in with DAVDroid, Use "Login with URL and user name" 
-   - Base URL: 
-https://www.google.com/calendar/dav/your_gmail_id@gmail.com/events
-   - User name: 
-your_gmail_id@gmail.com
+   - Base URL: https://www.google.com/calendar/dav/your_gmail_id@gmail.com/events
+   - User name: your_gmail_id@gmail.com
    - Password: Your Google account password
 
 ##### Android Wear companion apps
