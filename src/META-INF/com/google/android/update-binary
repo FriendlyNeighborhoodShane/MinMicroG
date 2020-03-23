@@ -70,10 +70,6 @@ done;
 
 $bootmode && filedir="/dev/tmp/$modname" || filedir="/tmp/$modname";
 tmplibdir="$filedir/tmplibdir";
-moddir="/data/media/0/$modname";
-backupdir="$moddir/Backup";
-initdfile="/system/etc/init.d/10-$modname";
-addondfile="/system/addon.d/10-$modname.sh";
 
 $bootmode && forcesys=no;
 case "$(basename "$zipfile")" in
@@ -321,6 +317,11 @@ unzip -o "$zipfile" "defconf" -d "$filedir/";
 [ -f "$filedir/defconf" ] || abort "Could not find a default config";
 chmod 0777 "$filedir/defconf";
 . "$filedir/defconf" || abort "Could not execute default config";
+
+moddir="/data/media/0/$modname";
+backupdir="$moddir/Backup";
+initdfile="/system/etc/init.d/10-$modname";
+addondfile="/system/addon.d/10-$modname.sh";
 
 ui_print " ";
 ui_print "Package: $variant";
