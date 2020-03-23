@@ -68,7 +68,7 @@ echo " - Config says variant $variant";
 echo " ";
 echo " - Copying files...";
 
-for file in "$workdir/src/META-INF" "$workdir/LICENSE" "$workdir/README.md"; do
+for file in "$workdir/src/META-INF" "$workdir/install.md" "$workdir/LICENSE" "$workdir/README.md"; do
   [ -e "$file" ] || { echo "ERROR: $file doesn't exist" >&2; continue; }
   echo " -- BUILDER: Copying $file";
   cp -Rf "$file" "$tmpdir/";
@@ -113,7 +113,7 @@ java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
 
 [ -f "$tmpdir/release-signed.zip" ] || { echo " " >&2; echo "FATAL: Zipsigner failed" >&2; return 1; }
 
-# Done
+# Finish up
 
 echo " ";
 echo " - Copying zip to releases...";
