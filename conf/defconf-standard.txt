@@ -132,14 +132,30 @@ stuff_debloat="
 ";
 
 stuff_perm="
-  /system/addon.d
-  /system/app
+  /system/app/AppleNLPBackend
+  /system/app/AuroraDroid
+  /system/app/DejaVuNLPBackend
+  /system/app/LocalGSMNLPBackend
+  /system/app/LocalWiFiNLPBackend
+  /system/app/MicroGGSFProxy
+  /system/app/MozillaUnifiedNLPBackend
+  /system/app/NominatimNLPBackend
+  /system/app/RadioCellsNLPBackend
   /system/bin/npem
-  /system/etc
-  /system/framework
-  /system/lib
-  /system/lib64
-  /system/priv-app
+  /system/etc/default-permissions
+  /system/etc/permissions
+  /system/etc/sysconfig
+  /system/framework/com.google.android.maps.jar
+  /system/priv-app/AuroraServices
+  /system/priv-app/MicroGGMSCore
+  /system/priv-app/PatchPhonesky
+  /system/app/GoogleCalendarSyncAdapter
+  /system/app/GoogleContactsSyncAdapter
+  /system/priv-app/GoogleBackupTransport
+  /system/lib/libjni_keyboarddecoder.so
+  /system/lib/libjni_latinimegoogle.so
+  /system/lib64/libjni_keyboarddecoder.so
+  /system/lib64/libjni_latinimegoogle.so
 ";
 
 service='#!/system/bin/sh

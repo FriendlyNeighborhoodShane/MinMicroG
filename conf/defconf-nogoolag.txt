@@ -133,14 +133,24 @@ stuff_debloat="
 ";
 
 stuff_perm="
-  /system/addon.d
-  /system/app
+  /system/app/AppleNLPBackend
+  /system/app/AuroraDroid
+  /system/app/AuroraStore
+  /system/app/DejaVuNLPBackend
+  /system/app/LocalGSMNLPBackend
+  /system/app/LocalWiFiNLPBackend
+  /system/app/MicroGGSFProxy
+  /system/app/MozillaUnifiedNLPBackend
+  /system/app/NominatimNLPBackend
+  /system/app/RadioCellsNLPBackend
   /system/bin/npem
-  /system/etc
-  /system/framework
-  /system/lib
-  /system/lib64
-  /system/priv-app
+  /system/etc/default-permissions
+  /system/etc/permissions
+  /system/etc/sysconfig
+  /system/framework/com.google.android.maps.jar
+  /system/priv-app/AuroraServices
+  /system/priv-app/FakeStore
+  /system/priv-app/MicroGGMSCore
 ";
 
 service='#!/system/bin/sh

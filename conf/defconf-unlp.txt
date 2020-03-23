@@ -111,11 +111,17 @@ stuff_debloat="
 ";
 
 stuff_perm="
-  /system/addon.d
-  /system/app
-  /system/bin/npem
-  /system/etc
-  /system/priv-app
+  /system/app/AppleNLPBackend
+  /system/app/DejaVuNLPBackend
+  /system/app/LocalGSMNLPBackend
+  /system/app/LocalWiFiNLPBackend
+  /system/app/MozillaUnifiedNLPBackend
+  /system/app/NominatimNLPBackend
+  /system/app/RadioCellsNLPBackend
+  /system/etc/default-permissions
+  /system/etc/permissions
+  /system/etc/sysconfig
+  /system/priv-app/MicroGUNLP
 ";
 
 addona="#!/sbin/sh
