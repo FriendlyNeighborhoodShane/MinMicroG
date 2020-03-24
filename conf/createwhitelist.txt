@@ -144,6 +144,28 @@ createwhitelist() {
 
 }
 
+getwhitelist() {
+
+  echo " ";
+  echo " - Getting priv-app permissions...";
+
+  privpermlist="util/privperms.lst";
+  privpermurl="https://developer.android.com/reference/android/Manifest.permission";
+
+  wget -q --show-progress "$privpermurl" -O "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download" >&2; return 1; }
+
+  lines="$(grep -En "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | awk '{ print $1 }')";
+  for line in $lines; do
+    [ "$startline" ] && endline="$line" || startline="$line";
+  done;
+  cat "$tmpdir/tmppage" | tail -n+"$(($startline + 1))" | head -n"$(($endline - $startline - 1))" | tr -d "\n" | sed "s|<div data|\n|g" | grep "Not for use by third-party applications" | grep -oE "android.permission.[A-Z_]*" > "$tmpdir/tmplist";
+  echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "$tmpdir/tmplist";
+
+  cat "$resdldir/$privpermlist" "$tmpdir/tmplist" | sort -u > "$tmpdir/sortedlist";
+  mv -f "$tmpdir/sortedlist" "$resdldir/$privpermlist";
+
+}
+
 checkwhitelist() {
 
   echo " ";
