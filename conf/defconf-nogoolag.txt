@@ -309,7 +309,7 @@ user_conf() {
     new_stuff_arch="";
     new_stuff_sdk="";
     new_stuff_arch_sdk="";
-    for include in $includelist; do 
+    for include in $includelist; do
       log "Including keyword $include";
       new_stuff="$new_stuff $(echo "$stuff" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
       new_stuff_arch="$new_stuff_arch $(echo "$stuff_arch" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";

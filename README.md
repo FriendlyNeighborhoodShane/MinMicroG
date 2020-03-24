@@ -53,16 +53,16 @@ Dirty flashing not recommended. you'll mess up all your permissions and may even
 The maker does not support or endorse dirty flashing. It will harm you and your loved ones. Don't come complaining to me.
 
 How to control the zip by changing its name:
-NOTE: Control by name is not possible in magisk manager, since it copies the zip to a cache directory and renames it install.zip. This is unavoidable behaviour.
+NOTE: Control by name is not possible in Magisk Manager, since it copies the zip to a cache directory and renames it install.zip. This is unavoidable behaviour.
 
- - Add 'system' to its filename to force it to install/uninstall from system. Otherwise, it looks for magisk, and if not found, installs to system. Obviously, if you flash it through Magisk manager, you want to install it to Magisk. If not, you have to flash it through recovery.
+ - Add 'system' to its filename to force it to install/uninstall from system. Otherwise, it looks for Magisk, and if not found, installs to system. Obviously, if you flash it through Magisk Manager, you want to install it to Magisk. If not, you have to flash it through recovery.
 
- - Add 'uninstall' to its filename to uninstall it from your device, whether in magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
+ - Add 'uninstall' to its filename to uninstall it from your device, whether in Magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
 
 Just rename it and flash it again for the intended effect.
 
-The zip debloats the specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
-WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over gapped ROMs, but don't take my word for it. Debloat before you flash.
+The zip debloats three specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
+WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over GApped ROMs, but don't take my word for it. Debloat before you flash.
 
 For support with flashing:
 If you flashed through recovery, provide its logs.
@@ -75,7 +75,7 @@ cd to this directory and run:
 ```
 To download all the assets to resdl directory.
 
-NOTE: This will download a zipsigner.jar (topjohnwu's rewrite of the AOSP version) into resdl/util, if the file does not exist already. The source can be found in the Magisk repo, and prebuilt binaries in attachments [here](https://forum.xda-developers.com/showpost.php?p=56621542) 
+NOTE: This will download a zipsigner.jar (topjohnwu's rewrite of the AOSP version) into resdl/util, if the file does not exist already. The source can be found in the Magisk repo, and prebuilt binaries in attachments [here](https://forum.xda-developers.com/showpost.php?p=56621542)
 ```
 > ./build.sh all
 ```

@@ -19,7 +19,7 @@ user_conf() {
     new_stuff_arch="";
     new_stuff_sdk="";
     new_stuff_arch_sdk="";
-    for include in $includelist; do 
+    for include in $includelist; do
       log "Including keyword $include";
       new_stuff="$new_stuff $(echo "$stuff" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
       new_stuff_arch="$new_stuff_arch $(echo "$stuff_arch" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
@@ -37,7 +37,7 @@ user_conf() {
     new_stuff_arch="$stuff_arch";
     new_stuff_sdk="$stuff_sdk";
     new_stuff_arch_sdk="$stuff_arch_sdk";
-    for exclude in $excludelist; do 
+    for exclude in $excludelist; do
       log "Including keyword $include";
       new_stuff="$(echo "$new_stuff" | sed "s|[ ]*[^ ]*$exclude[^ ]*[ ]*| |ig")";
       new_stuff_arch="$(echo "$new_stuff_arch" | sed "s|[ ]*[^ ]*$exclude[^ ]*[ ]*| |ig")";

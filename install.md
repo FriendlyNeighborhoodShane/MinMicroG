@@ -58,7 +58,7 @@ There are several other ways to have your ROM support sigspoof too:
  - Using the SmaliPatcher application on PC (shrouded in mystery)
    - Proprietary, windows only
    - [Here](https://forum.xda-developers.com/showpost.php?p=78958124) OP of XDA thread admits they do not know of the source code, probably do not even have access to it
-   - [Here A](https://forum.xda-developers.com/showpost.php?p=80287799), [Here B](https://forum.xda-developers.com/showpost.php?p=80287989), [Here C](https://forum.xda-developers.com/showpost.php?p=80292041), It connects to arbitrary Russian IPs and OP says it's probably nothing
+   - [Here](https://forum.xda-developers.com/showpost.php?p=80287799), [Here](https://forum.xda-developers.com/showpost.php?p=80287989), [Here](https://forum.xda-developers.com/showpost.php?p=80292041), It connects to arbitrary Russian IPs and OP says it's probably nothing
 
 You also need to watch which apps you grant sigspoof permissions to. I am not aware of any app that legitimately requires sigspoof other than MicroG.
 
@@ -122,7 +122,7 @@ if no:
 If yes:
  - Ensure you don't have an adblocker blocking the domain, whitelist it in adaway and similar:
 mtalk.google.com
- 
+
 If you can't get any app to register for Google Cloud Messaging, try dialing this:
 
 \*\#\*\#2432546\#\*\#\*
@@ -157,7 +157,7 @@ You can retieve your contacts directly from your Google account in a vcf file:
 You should also be able to sync contacts with Google without proprietary apps or microG using the open-source CardDAV client DAVdroid (available on F-Droid or Play)
  - First of all, go to https://www.google.com/settings/security/lesssecureapps
 With your account and enable the setting
- - When logging in with DAVDroid, Use "Login with URL and user name" 
+ - When logging in with DAVDroid, Use "Login with URL and user name"
    - Base URL: https://www.google.com/calendar/dav/your_gmail_id@gmail.com/events
    - User name: your_gmail_id@gmail.com
    - Password: Your Google account password

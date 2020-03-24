@@ -7,7 +7,7 @@ To prove this, we're gonna write a new config and resdl-download file for an ent
 If you've read through this document (or perhaps want to play Russian roulette with rm and your device), there is a blank config file in defconf-dummy.txt that you can fill in.
 
 ### update.sh and resdl-download.txt
-First, before making a pack, we gotta get the Aurora APK files from somewhere. We could've just downloaded and put them in the res directory, but they'd need to be updated and I'm lazy, so no. 
+First, before making a pack, we gotta get the Aurora APK files from somewhere. We could've just downloaded and put them in the res directory, but they'd need to be updated and I'm lazy, so no.
 
 What update.sh does for me is get everything I would need for a pack itself from a list of predefined sources and puts them in their proper places in the resdl directory so the build script picks them up. Now, update.sh knows what to get by executing and getting the variables from resdl-download.txt (open it and see) in the conf directory, so we're gonna add a few lines to it to get the three Aurora APKs downloaded automatically when we run the script.
 
@@ -22,7 +22,7 @@ For AuroraServices, we'll be keeping the file at path /system/priv-app/AuroraSer
 ```
 To stuff_download.
 
-But ding-ding! When you run the script, you may or may not notice that you may or may not get a valid APK file as the result. Why is that? open AuroraServices's GitLab releases pag for yourself and see. The problem is that Whyorean provides a Flashable zip with each release too! How considerate. But that's a problem for the script, because as you may or may not have seen, our poor update.sh can get confused between different files in a release, and we can't exactly blame it; It has no way to know what we wanted and what we got are different, it's simply grabbing the latest file from a release's attachments.
+But ding-ding! When you run the script, you may or may not notice that you may or may not get a valid APK file as the result. Why is that? open AuroraServices's GitLab releases page for yourself and see. The problem is that Whyorean provides a Flashable zip with each release too! How considerate. But that's a problem for the script, because as you may or may not have seen, our poor update.sh can get confused between different files in a release, and we can't exactly blame it; It has no way to know what we wanted and what we got are different, it's simply grabbing the latest file from a release's attachments.
 
 Fortunately, I am wise. I foresaw this situation, and so I added a way to filter through the release files from a GitLab page. All we have to do is add a '.apk' in the fourth column, so that update.sh will first filter all the release attachments into only those having .apk at the end, and then grab the latest of them. So what we have to change that entry into is:
 ```
@@ -32,7 +32,7 @@ Note that while here I am using a simple suffix for this filtering since there a
 Also note that exact same behaviour applies to the fourth column for the 'github' source type.
 Additionally note that the fourth column for the 'repo' source type has a different function but similar purpose; It is the architecture to filter all the available APKs by.
 
-Now, when we run update.sh, as long as the internet is still up, we will get a correct AuroraServices.apk where we wanted. 
+Now, when we run update.sh, as long as the internet is still up, we will get a correct AuroraServices.apk where we wanted.
 
 ### build.sh and defconf-aurora.txt
 
