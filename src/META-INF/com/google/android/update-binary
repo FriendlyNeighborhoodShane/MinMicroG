@@ -32,6 +32,7 @@ abort() {
   ui_print "Stopping installation and Uninstalling...";
   uninstall_pack;
   [ -d "$filedir" ] && rm -rf "$filedir";
+  [ -d "$bbdir" ] && rm -rf "$bbdir";
   $bootmode || { if [ "$sysroot" ]; then umount "/$sysroot"; else umount "/system"; fi; }
   sync;
   ui_print " ";
@@ -59,13 +60,25 @@ $bootmode || {
   fi;
   mount /data;
 }
-for bb in /magisk/.core/busybox /sbin/.core/busybox /sbin/.magisk/busybox; do
-  [ -e "$bb" ] && magiskbb="$bb";
-done;
-[ "$magiskbb" ] && export PATH="$magiskbb:$PATH";
 [ -e "/system/system/build.prop" ] && sysroot="system";
 [ -e "/system_root/system/build.prop" ] && sysroot="system_root";
 [ -f "/$sysroot/system/build.prop" ] || abort "Could not find a ROM in /$sysroot";
+
+bbdir="/tmp/busybox";
+$bootmode || {
+  for bb in /data/adb/magisk/busybox; do
+    [ -f "$bb" ] && magiskbb="$bb";
+  done;
+  [ "$magiskbb" ] && {
+    ui_print " ";
+    ui_print "Setting up busybox...";
+    mkdir -p "$bbdir";
+    "$magiskbb" --install -s "$bbdir/";
+    export PATH="$bbdir:$PATH";
+    log "Shell path set to $PATH";
+  }
+}
+
 for bin in awk cat chcon chmod chown cp cut df du echo find grep head losetup ls mkdir mount ps rm sed tail touch umount unzip; do
   [ "$(which "$bin")" ] || abort "No $bin available";
 done;
@@ -512,6 +525,7 @@ ui_print " ";
 ui_print "Unmounting...";
 $bootmode || { if [ "$sysroot" ]; then umount "/$sysroot"; else umount /system; fi; }
 rm -rf "$filedir";
+[ -d "$bbdir" ] && rm -rf "$bbdir";
 sync;
 
 ui_print " ";
