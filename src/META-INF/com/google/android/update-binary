@@ -51,16 +51,18 @@ log " ";
 log "Zip File is $zipfile";
 log "Bootmode is $bootmode";
 
-$bootmode || { mount /data; mount /cache; }
+$bootmode || {
+  if [ -e "/system_root" ]; then
+    mount -o ro /system_root;
+  else
+    mount -o ro /system;
+  fi;
+  mount /data;
+}
 for bb in /magisk/.core/busybox /sbin/.core/busybox /sbin/.magisk/busybox; do
   [ -e "$bb" ] && magiskbb="$bb";
 done;
 [ "$magiskbb" ] && export PATH="$magiskbb:$PATH";
-if [ -e "/system_root" ]; then
-  mount -o ro /system_root;
-else
-  mount -o ro /system;
-fi;
 [ -e "/system/system/build.prop" ] && sysroot="system";
 [ -e "/system_root/system/build.prop" ] && sysroot="system_root";
 [ -f "/$sysroot/system/build.prop" ] || abort "Could not find a ROM in /$sysroot";
