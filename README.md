@@ -20,7 +20,7 @@ The things included in the Standard Edition zip are:
  - AuroraServices (From Whyorean's GitLab)
  - Swype libs for AOSP keyboard (From OpenGApps GitHub repo)
  - Some Google DRM jars (From OpenGApps GitHub repo)
- - Google Sync adapters for KK to O (From OpenGApps GitHub repo)
+ - Google Sync adapters for KK to Q (From OpenGApps GitHub repo)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
@@ -36,7 +36,7 @@ The things included in the NoGoolag Edition zip are:
  - An addon.d file to backup/restore everything on a rom flash
 
 The things included in the UNLP Edition zip are:
- - UNLP  (From FDroid repo)
+ - UNLP (From FDroid repo)
  - Maps APIv1
  - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim, RadioCells) (From FDroid repo)
  - UNLP LocalGSM backend (From @ploink 's fork)
