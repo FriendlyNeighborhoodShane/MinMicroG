@@ -35,7 +35,9 @@ All apps basically call Play Services like, "Yo, package com.google.android.gms 
 
 But since we don't have google's keys to sign the microg apk with the same signature as gapps, we add an extra feature in Android that makes microg look like it has the play services signature. The app asks, "Hey Android, is this really play services?" Android responds <crossing its fingers>, "Yeah, sure".
 
-Of course, this is only a simplified explanation. To be more technically accurate, it patches Android's signature checking mechanism at the core, meaning it can be used for installing over different signatures too.
+Of course, this is only a simplified explanation. To be more technically accurate, it patches Android's signature checking mechanism at the core. Because of that, apps can misuse the permission and compromise your device by allowing APKs from different (possibly malicious) creators to be installed over the current one.
+
+ROMs with a source sigspoof patch are much less dangerous in this regard because they have sigspoofing as a part of the Android runtime permissions GUI, as opposed to dexpatched ROMs, which grant it universally without any user consent. Regardless, you should carefully watch who you grant sigspoof to, and how you update that app. I am not aware of any app that legitimately requires sigspoof other than microG and fakestore.
 
 Because the permission has the possibility to be misused, several ROM maintainers (including LOS) have rejected putting sigspoof in the official code. But most of them have rejected it just because they are averse to trying to leave Google. Some ROMs that do include sigspoof in official builds are:
  * LOS for µG
@@ -50,6 +52,8 @@ Because the permission has the possibility to be misused, several ROM maintainer
 There are several other ways to have your ROM support sigspoof too:
  - Patching it at the source level
    - Easiest if you self-build or know a friendly neighborhood maintainer
+   - Patches in microG repo
+   - OmniROM's commits to integrate it into Android's permissions GUI [here](https://gerrit.omnirom.org/c/android_packages_apps_PackageInstaller/+/36730) and [here](https://gerrit.omnirom.org/c/android_frameworks_base/+/36729)
  - Patching it with Haystack patcher or Needle patcher
    - Requires PC
  - Using the NanoDroid-patcher standalone zip for on-device patching
@@ -59,8 +63,6 @@ There are several other ways to have your ROM support sigspoof too:
    - Proprietary, windows only
    - [Here](https://forum.xda-developers.com/showpost.php?p=78958124) OP of XDA thread admits they do not know of the source code, probably do not even have access to it
    - [Here](https://forum.xda-developers.com/showpost.php?p=80287799), [Here](https://forum.xda-developers.com/showpost.php?p=80287989), [Here](https://forum.xda-developers.com/showpost.php?p=80292041), It connects to arbitrary Russian IPs and OP says it's probably nothing
-
-You also need to watch which apps you grant sigspoof permissions to. I am not aware of any app that legitimately requires sigspoof other than MicroG.
 
 ##### [microG and UNLP] Network Location Provider support
 Another major thing MicroG and UNLP do is providing network location to apps.
