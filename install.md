@@ -148,7 +148,7 @@ Et voila, it (hopefully) works properly again.
 ##### Contact sync
 The standard package includes sync adapters that work automatically after logging in and turning on device registration.
 
-But giving all your contacts to Google is not on the "top 100 ideas of all time" list (just like Shinji not being in the fucking robot and intead under some stairs wasn't either (Sorry, still under EoE shock)). You should probably look into selfhosting.
+But giving all your contacts to Google is not on the "top 100 ideas of all time" list. You should probably look into selfhosting.
 
 You can retieve your contacts directly from your Google account in a vcf file:
  - Go to https://contacts.google.com/ and login
