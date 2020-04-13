@@ -136,10 +136,10 @@ Go to System > Apps > Play Store
  - Grant all permissions (make sure sigspoof is)
 
 If even that doesn't work:
-- Settings > System > Accounts > Remove Google Account
-- System > Accounts > Disable Account Data Syncronization
-- After all is set in microG self-test after doing the above steps, open Play Store and re-add your account.
-- You may have to close (recent apps > swipe it away) the Play Store once
+ - Settings > System > Accounts > Remove Google Account
+ - System > Accounts > Disable Account Data Synchronization
+ - After all is set in microG self-test after doing the above steps, open Play Store and re-add your account.
+ - You may have to close (recent apps > swipe it away) the Play Store once
 
 Et voila, it (hopefully) works properly again.
 

@@ -84,7 +84,7 @@ To build all the packs and place them in the releases directory.
 That's it! If it tells you that some dependency is missing, install it.
 
 You can pass update.sh several perl-style regexes as arguments to only download specific files.
-You can pass build.sh a specific pack's conf name instead of all to build only the specif pack.
+You can pass build.sh a specific pack's conf name instead of all to build only the specific pack.
 
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 
