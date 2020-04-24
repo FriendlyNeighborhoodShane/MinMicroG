@@ -170,6 +170,16 @@ If they don't log into an account, try force stop and wipe data. Or perhaps logg
 
 If nothing else works, backing up the app from a working GApps setup and then restoring it should. Stuff like MagicGapps or WeebGApps should be helpful.
 
+##### Paid apps, license verification and IAPs
+You can directly buy apps from the Play Store if you have it installed with microG. But if you don't, a much cleaner way is to buy it from the [Google Play](https://play.google.com) website through a browser.
+
+If you've bought an app, you can download it without Play Store by using Aurora Store by logging in with your own account.
+
+License verification, unfortunately, is something tied to Play Store and probably always will be. If you don't want to install it, all you can do is pester the devs to remove it or atleast offer alternative means of verification.
+ - The Titanium Backup devs are a bunch of nice people. If you email them, they'll give you offline verification codes.
+
+In App Purchases are even more tied to Play Store. Not even vanilla Play Store will do, it has to be patched for sigspoofing to be able to use IAPs. Setialpha regularly grabs the latest release and patches it, and the product can be found in the NanoDroid F-Droid repository.
+
 ##### Making swipe work on AOSP keyboard
 If you do not wish to switch to the superior AnySoft keyboard and the swipe libs don't work with AOSP kb on your ROM, try this:
 https://forum.xda-developers.com/android/apps-games/enhancedime-aosp-latinime-enhancements-t3366639
