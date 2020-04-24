@@ -73,9 +73,9 @@ It technically should not be needed for the functioning of most apps, but poorly
 
 Most ROMs should support it, but some OnePlus's and Xaiomi's have other providers (like com.qualcomm.location) that do not allow other providers to bind with system.
 
-Ask maintainer to apply this patch if UNLP doesn't bind on your N+ ROM:
-https://github.com/microg/android_packages_apps_UnifiedNlp/blob/master/patches/android_frameworks_base-N.patch
-Also make sure your the ROM looks for com.google.android.gms as a location provider.
+If UNLP doesn't bind on your N+ ROM:
+ - Ask maintainer to apply this [patch](https://github.com/microg/android_packages_apps_UnifiedNlp/blob/master/patches/android_frameworks_base-N.patch)
+ - Make sure your the ROM looks for com.google.android.gms as a location provider
 
 ##### No preinstalled GApps, obviously
 MinMicroG does a little debloating that may even make it work on GApps-infected ROMs, but I've never tested and give no guarantees. (Well I don't give guarantees for clean ROMs either, but that'a a different thing)
@@ -127,9 +127,7 @@ mtalk.google.com
 
 If you can't get any app to register for Google Cloud Messaging, try dialing this:
 
-\*\#\*\#2432546\#\*\#\*
-or
-\*\#\*\#CHECKIN\#\*\#\*
+`*#*#2432546#*#*` or `*#*#CHECKIN#*#*`
 
 ##### Play Store RH-01 error
 Go to System > Apps > Play Store
@@ -153,19 +151,18 @@ The standard package includes sync adapters that work automatically after loggin
 But giving all your contacts to Google is not on the "top 100 ideas of all time" list. You should probably look into selfhosting.
 
 You can retieve your contacts directly from your Google account in a vcf file:
- - Go to https://contacts.google.com/ and login
+ - Go to [Google Contacts](https://contacts.google.com) and login
  - Use sidebar > Export > select 'Export as VCard' > Export
 
 You should also be able to sync contacts with Google without proprietary apps or microG using the open-source CardDAV client DAVdroid (available on F-Droid or Play)
- - First of all, go to https://www.google.com/settings/security/lesssecureapps
-With your account and enable the setting
+ - First of all, go to Google dashboard's [less secure apps setting](https://www.google.com/settings/security/lesssecureapps) with your account and enable the setting
  - When logging in with DAVDroid, Use "Login with URL and user name"
    - Base URL: https://www.google.com/calendar/dav/your_gmail_id@gmail.com/events
    - User name: your_gmail_id@gmail.com
    - Password: Your Google account password
 
 ##### Android Wear companion apps
- - https://f-droid.org/app/nodomain.freeyourgadget.gadgetbridge
+ - GatgetBridge companion app on F-Droid
  - AsteroidOS and similar projects
 
 ##### Making miscelleneous Google Apps work
