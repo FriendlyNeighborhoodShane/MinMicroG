@@ -199,6 +199,7 @@ debloat() {
   if [ "$(basename "$(dirname "$debloatingobject")").apk" = "$(basename "$debloatingobject")" ]; then
     if touch "$(dirname "$debloatingobject")/.replace"; then log "DEBLOATER: Object directory debloated ($debloatobject)"; else { log "ERROR: Could not create replace file for object $debloatobject"; return 1; }; fi;
   elif [ -d "$debloatobject" ]; then
+    mkdir -p "$debloatingobject";
     if touch "$debloatingobject/.replace"; then log "DEBLOATER: directory debloated ($debloatobject)"; else { log "ERROR: Could not create replace file for directory $debloatobject"; return 1; }; fi;
   else
     if echo "# This is a dummy for debloating" > "$debloatingobject"; then log "DEBLOATER: Object dummy debloated ($debloatobject)"; else { log "ERROR: Could not create dummy file for $debloatobject"; return 1; }; fi;
