@@ -47,31 +47,6 @@ microg_cleanup() {
       fi;
       touch "$root/system/etc/.mmg";
     fi;
-    if [ "$magisk" = "yes" ]; then
-      # Kanged from MagicGapps
-      # Thanks VR25
-      for dir in /data/adb/magisk_simple /cache/magisk_mount; do
-        rm -rf "$dir/system/etc";
-        mkdir -p "$dir/system";
-        cp -rf "$root/system/etc" "$dir/system/";
-      done;
-      for dir in /magisk /sbin/.core/img /magisk_merge; do
-        [ -e "$dir/.core/service.d/MagicGApps.sh" ] && { log "PREPPER: Removing $dir/.core/service.d/MagicGApps.sh"; rm -rf "$dir/.core/service.d/MagicGApps.sh"; }
-      done;
-      serviceb='
-{
-  # To apparently fix permissions
-  until [ -e "/data" -a -e "/cache" ]; do sleep 5; done;
-  [ -f "/system/system/build.prop" ] && sysroot=/system;
-  for dir in /data/adb/magisk_simple /cache/magisk_mount; do
-    rm -rf "$dir/system/etc";
-    mkdir -p "$dir/system";
-    cp -rf "$sysroot/system/etc" "$dir/system/";
-  done;
-}
-';
-      service="$service$serviceb";
-    fi;
   fi;
 
 }

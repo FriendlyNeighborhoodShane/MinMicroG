@@ -357,14 +357,14 @@ EOF
 
 microg_cleanup() {
 
-  if [ "$(echo $stuff | grep MicroG)" ]; then
+  if [ "$(echo "$stuff" | grep MicroG)" ]; then
     ui_print " ";
     ui_print "Doing MicroG preparations...";
     if [ "$bootmode" != "true" ]; then
       # Kanged from NanoDroid
       # Thanks Setialpha
-      cleanup_folders="GoogleServicesFramework PrebuiltGmsCore GmsCore MicroGGSFProxy MicroGGMSCore PlayStore Vending Phonesky";
-      cleanup_packages="com.google.android.gsf com.google.android.gms com.android.vending";
+      cleanup_folders="BlankStore GmsCore GmsCore_update GmsCoreSetupPrebuilt GoogleServicesFramework GsfProxy Phonesky PlayStore PrebuiltGmsCorePi PrebuiltGmsCorePix PrebuiltGmsCore Vending";
+      cleanup_packages="com.android.vending com.google.android.feedback com.google.android.gms com.google.android.gsf com.google.android.gsf.login com.mgoogle.android.gms";
       for app in $cleanup_folders; do
         for file in /data/dalvik-cache/*/system"@priv-app@$app"[@\.]*@classes.* /data/dalvik-cache/*/system"@app@$app"[@\.]*@classes.*; do
           [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
@@ -380,33 +380,26 @@ microg_cleanup() {
         for file in /data/system/users/*/runtime-permissions.xml; do
           [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
         done;
+        if [ -f /data/system/packages.list ]; then
+          for app in $cleanup_packages; do
+            if [ "$(grep "$app" /data/system/packages.list)" ]; then
+              log "PREPPER: de-registering app: $app";
+              sed -i "s/.*${app}.*//g" /data/system/packages.list;
+            fi;
+          done;
+        else
+          log "PREPPER: This is a clean flash";
+        fi;
+        if [ "$(which sqlite3)" ]; then
+          find /data/system* -type f -name "accounts*db" 2>/dev/null | while read database; do
+            log "PREPPER: deleting Google Accounts from $database";
+            sqlite3 "$database" "DELETE FROM accounts WHERE type='com.google';";
+          done
+        else
+          log "PREPPER: sqlite3 not found";
+        fi;
       fi;
       touch "$root/system/etc/.mmg";
-    fi;
-    if [ "$magisk" == "yes" ]; then
-      # Kanged from MagicGapps
-      # Thanks VR25
-      for dir in /data/adb/magisk_simple /cache/magisk_mount; do
-        rm -rf "$dir/system/etc";
-        mkdir -p "$dir/system";
-        cp -rf "$root/system/etc" "$dir/system/";
-      done;
-      for dir in /magisk /sbin/.core/img /magisk_merge; do
-        [ -e "$dir/.core/service.d/MagicGApps.sh" ] && { log "PREPPER: Removing $dir/.core/service.d/MagicGApps.sh"; rm -rf "$dir/.core/service.d/MagicGApps.sh"; }
-      done;
-      serviceb='
-{
-  # To apparently fix permissions
-  until [ -e "/data" -a -e "/cache" ]; do sleep 5; done;
-  [ -f "/system/system/build.prop" ] && sysroot=/system;
-  for dir in /data/adb/magisk_simple /cache/magisk_mount; do
-    rm -rf "$dir/system/etc";
-    mkdir -p "$dir/system";
-    cp -rf "$sysroot/system/etc" "$dir/system/";
-  done;
-}
-';
-      service="$service$serviceb";
     fi;
   fi;
 
