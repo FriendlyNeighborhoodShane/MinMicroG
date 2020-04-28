@@ -24,7 +24,6 @@ stuff="
   /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
-  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
 
   /system/etc/default-permissions/microg-permissions-unlp.xml
   /system/etc/permissions/com.google.android.gms.xml
@@ -74,6 +73,7 @@ stuff_other="
 stuff_old="
   /system/addon.d/01-nogoolag.sh
   /system/app/FDroid/FDroid.apk
+  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
   /system/etc/permissions/org.fdroid.fdroid.privileged.xml
   /system/priv-app/AuroraStore/AuroraStore.apk
   /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk
@@ -117,7 +117,6 @@ stuff_perm="
   /system/app/LocalWiFiNLPBackend
   /system/app/MozillaUnifiedNLPBackend
   /system/app/NominatimNLPBackend
-  /system/app/RadioCellsNLPBackend
   /system/etc/default-permissions
   /system/etc/permissions
   /system/etc/sysconfig

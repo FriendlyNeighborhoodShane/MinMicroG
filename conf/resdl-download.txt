@@ -16,7 +16,6 @@ stuff_download="
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk						repo	microg/com.google.android.gsf
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk	repo	fdroid/org.microg.nlp.backend.ichnaea
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk			repo	fdroid/org.microg.nlp.backend.nominatim
-  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk			repo	fdroid/org.openbmap.unifiedNlp
   /system/framework/com.google.android.maps.zip						github	microg/android_frameworks_mapsv1				.zip
   /system/priv-app/AuroraServices/AuroraServices.apk				gitlab	AuroraOSS/AuroraServices						.apk
   /system/priv-app/FakeStore/FakeStore.apk							repo	microg/com.android.vending

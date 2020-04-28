@@ -27,7 +27,6 @@ stuff="
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
-  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
 
   /system/bin/npem
 
@@ -77,6 +76,7 @@ stuff_other="
 stuff_old="
   /system/addon.d/01-nogoolag.sh
   /system/app/FDroid/FDroid.apk
+  /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
   /system/etc/permissions/org.fdroid.fdroid.privileged.xml
   /system/priv-app/AuroraStore/AuroraStore.apk
   /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk
@@ -142,7 +142,6 @@ stuff_perm="
   /system/app/MicroGGSFProxy
   /system/app/MozillaUnifiedNLPBackend
   /system/app/NominatimNLPBackend
-  /system/app/RadioCellsNLPBackend
   /system/bin/npem
   /system/etc/default-permissions
   /system/etc/permissions
