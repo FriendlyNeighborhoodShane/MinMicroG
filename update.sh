@@ -129,7 +129,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
           objectserver="$(jq -r '.repo.address' "$tmpdir/repos/$objectrepo.json")";
           if [ "$objectarg" ]; then
             echo " ---- Getting object for arch $objectarg";
-            objectserverfile="$(jq -r --arg pkg "$objectpackage" --arg arch "$objectarg" '[.packages[$pkg][] | select (.nativecode[]==$arch).apkName][]' "$tmpdir/repos/$objectrepo.json" | head -n1)";
+            objectserverfile="$(jq -r --arg pkg "$objectpackage" --arg arch "$objectarg" '.packages[$pkg][] | select ( .nativecode[] == $arch ) | .apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
