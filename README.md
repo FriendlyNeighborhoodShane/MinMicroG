@@ -66,7 +66,7 @@ For example, **MinMicroG-Standard-2.7-beta3-signed.zip** to **system-MinMicroG-S
 The zip debloats three specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
 WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over GApped ROMs, but don't take my word for it. Debloat before you flash.
 
-If play store does not get signature spoofing permission for some reason. Type these commands in a terminal app (like Termux) :
+If play store does not get signature spoofing permission for some reason, Type these commands in a terminal app (like Termux) :
 
    `su`
 
