@@ -4,7 +4,7 @@ variant="";
 ver="";
 verc="";
 date="";
-minsdk=;
+minsdk="";
 
 modprop="id=$modname
 name=
