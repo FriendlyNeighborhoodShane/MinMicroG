@@ -60,9 +60,16 @@ NOTE: Control by name is not possible in Magisk Manager, since it copies the zip
  - Add 'uninstall' to its filename to uninstall it from your device, whether in Magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
 
 Just rename it and flash it again for the intended effect.
+For example, MinMicroG-Standard-2.7-beta3-milkandbootloops-20200428133205-signed.zip to system-MinMicroG-Standard-2.7-beta3-milkandbootloops-20200428133205-signed.zip (same for uninstall)
 
 The zip debloats three specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
 WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over GApped ROMs, but don't take my word for it. Debloat before you flash.
+
+If play store does can not get signature spoofing permission for some reason. Type these commands in a terminal app (like Termux) :
+su
+pm grant com.android.vending android.permission.FAKE_PACKAGE_SIGNATURE
+
+Remember that choosing magisk mode (which is default if magisk is installed already) will remove the minmicrog package if you uninstall magisk.
 
 For support with flashing:
 If you flashed through recovery, provide its logs.
