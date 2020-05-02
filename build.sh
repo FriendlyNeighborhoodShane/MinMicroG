@@ -20,10 +20,9 @@ echo "--     The Essentials only MicroG pack      --";
 echo "--      From the MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
-for bin in cp grep java ls mv rm sed zip; do
+for bin in cp grep ls mv rm sed zip; do
   [ "$(which $bin)" ] || { echo " " >&2; echo "FATAL: No $bin found" >&2; return 1; }
 done;
-[ -f "$zipsigner" ] || { echo " " >&2; echo "FATAL: No zipsigner jar found" >&2; return 1; }
 
 echo " ";
 echo " - Working from $workdir";
@@ -104,24 +103,33 @@ cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 
 [ -f "$tmpdir/release.zip" ] || { echo " " >&2; echo "FATAL: Zip failed" >&2; return 1; }
 
-# Sign
+# Sign and copy zip
 
-echo " ";
-echo " - Signing zip...";
+if [ "$(which java)" ] && [ -f "$zipsigner" ]; then
 
-java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
+  echo " ";
+  echo " - Signing zip...";
 
-[ -f "$tmpdir/release-signed.zip" ] || { echo " " >&2; echo "FATAL: Zipsigner failed" >&2; return 1; }
+  java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
+  [ -f "$tmpdir/release-signed.zip" ] || { echo " " >&2; echo "FATAL: Zipsigner failed" >&2; return 1; }
 
-# Finish up
+  echo " ";
+  echo " - Copying zip to releases...";
 
-echo " ";
-echo " - Copying zip to releases...";
+  mkdir -p "$reldir";
+  mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip";
+  [ -f "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
 
-mkdir -p "$reldir";
-mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip";
+else
 
-[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
+  echo " ";
+  echo " - Copying zip to releases...";
+
+  mkdir -p "$reldir";
+  mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
+  [ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
+
+fi;
 
 # Done
 
