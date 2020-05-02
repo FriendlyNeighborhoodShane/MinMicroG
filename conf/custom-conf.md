@@ -30,7 +30,7 @@ Fortunately, I am wise. I foresaw this situation, and so I added a way to filter
 ```
 Note that while here I am using a simple suffix for this filtering since there are no other APKs to be confused by, you can also use a more complicated perl-style regex like 'AuroraServices-v[.1-9]*.apk' to protect against future additional APKs in the releases.
 Also note that exact same behaviour applies to the fourth column for the 'github' source type.
-Additionally note that the fourth column for the 'repo' source type has a different function but similar purpose; It is the architecture to filter all the available APKs by.
+Additionally note that the fourth column for the 'repo' source type has a different function but similar purpose; It is the architecture and minimum SDK level to filter all the available APKs by.
 
 Now, when we run update.sh, as long as the internet is still up, we will get a correct AuroraServices.apk where we wanted.
 

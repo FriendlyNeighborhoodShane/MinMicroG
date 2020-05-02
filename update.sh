@@ -123,13 +123,17 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
         repo)
           objectrepo="$(dirname "$objectpath")";
           objectpackage="$(basename "$objectpath")";
+          [ "$objectarg" ] && {
+            objectarch="$(echo "$objectarg" | awk -F":" '{ print $1 }')";
+            objectsdk="$(echo "$objectarg" | awk -F":" '{ print $2 }')";
+          }
           [ "$objectrepo" ] && [ "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments" >&2; continue; }
           [ -f "$tmpdir/repos/$objectrepo.json" ] || { echo "ERROR: $object repo $objectrepo does not exist" >&2; continue; }
           echo " ---- Getting repo URL for $object from repo $objectrepo";
           objectserver="$(jq -r '.repo.address' "$tmpdir/repos/$objectrepo.json")";
           if [ "$objectarg" ]; then
-            echo " ---- Getting object for arch $objectarg";
-            objectserverfile="$(jq -r --arg pkg "$objectpackage" --arg arch "$objectarg" '.packages[$pkg][] | select ( .nativecode[] == $arch ) | .apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
+            echo " ---- Getting object for args $objectarg [$objectarch] [$objectsdk]";
+            objectserverfile="$(jq -r --arg pkg "$objectpackage" --arg arch "$objectarch" --arg sdk "$objectsdk" '.packages[$pkg][] | if ( $arch | length ) == 0 then . elif has ( "nativecode" ) then select ( .nativecode[]? == $arch ) else . end | if ( $sdk | length ) == 0 then . else select ( ( .minSdkVersion | tonumber ) <= ( $sdk | tonumber ) ) end | .apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
