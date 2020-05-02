@@ -133,7 +133,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
-          [ "$objectserver" ] && [ "$objectserverfile" ] || { echo "ERROR: $object has no URL available" >&2; continue; }
+          [ "$objectserver" ] && [ "$objectserver" != "null" ] && [ "$objectserverfile" ] && [ "$objectserverfile" != "null" ] || { echo "ERROR: $object has no URL available" >&2; continue; }
           objecturl="$objectserver/$objectserverfile";
         ;;
         *)
