@@ -116,13 +116,13 @@ updatedelta() {
     [ "$newlog" ] && oldlogs="$oldlogs $(basename "$log")" || newlog="$(basename "$log")";
   done;
   [ "$oldlogs" ] || { echo " -- No old logs to compare"; return 0; }
-  for entry in $(cat "$reldir/$newlog" | grep -Po "FILE: [^,]*" | cut -d" " -f2); do
+  for entry in $(cat "$reldir/$newlog" | grep -Po "FILE: [^,;]*" | cut -d" " -f2); do
     line="$(grep "FILE: $entry," "$reldir/$newlog")";
     file="$entry";
-    url="$(echo $line | grep -Po "URL: [^,]*" | cut -d" " -f2)";
+    url="$(echo $line | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
     oldurl="";
     for log in $oldlogs; do
-      oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -Po "URL: [^,]*" | cut -d" " -f2)";
+      oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
       [ "$oldurl" ] && break;
     done;
     [ "$oldurl" ] || oldurl="None";
