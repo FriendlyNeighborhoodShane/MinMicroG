@@ -53,11 +53,8 @@ log "Zip File is $zipfile";
 log "Bootmode is $bootmode";
 
 $bootmode || {
-  if [ -e "/system_root" ]; then
-    mount -o ro /system_root;
-  else
-    mount -o ro /system;
-  fi;
+  [ -e "/system" ] && mount -o ro /system;
+  [ -e "/system_root" ] && mount -o ro /system_root;
   mount /data;
 }
 [ -e "/system/system/build.prop" ] && sysroot="system";
