@@ -384,7 +384,7 @@ if [ "$action" = "installation" ]; then
   uninstall_pack;
   log "Debloating";
   if [ "$magisk" = "yes" ]; then
-    for thing in $stuff_debloat; do
+    for thing in $stuff_debloat $stuff_uninstall; do
       [ "$thing" ] && debloat "/$sysroot/$thing" "$root/$thing";
     done;
   elif [ "$magisk" = "no" ]; then
