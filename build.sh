@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env sh
+
 # Build a package with $1 variant
 #
 # Copyright 2018-2020 FriendlyNeighborhoodShane

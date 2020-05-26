@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env sh
+
 # Update all assets
 #
 # Copyright 2018-2020 FriendlyNeighborhoodShane
