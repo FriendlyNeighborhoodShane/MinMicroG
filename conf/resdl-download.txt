@@ -71,6 +71,7 @@ post_update_actions() {
   getzipsigner;
   updatedelta;
   verifycerts;
+  checkwhitelist;
   return 0;
 
 }
@@ -189,6 +190,57 @@ verifycerts() {
       echo "  !! Cert mismatch for APK ($object)" >&2;
       cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
     }
+  done;
+
+}
+
+checkwhitelist() {
+
+  [ "$(which aapt)" ] || {
+    echo " ";
+    echo " !! Not checking privperms (missing aapt)";
+    return 0;
+  }
+
+  privpermlist="util/privperms.lst";
+  privpermurl="https://developer.android.com/reference/android/Manifest.permission";
+
+  echo " ";
+  echo " - Getting priv-app permissions...";
+
+  wget -q --show-progress "$privpermurl" -O "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download" >&2; return 1; }
+
+  lines="$(grep -Pn "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | select_word 1)";
+  for line in $lines; do
+    [ "$startline" ] && endline="$line" || startline="$line";
+  done;
+  cat "$tmpdir/tmppage" | tail -n+"$(($startline + 1))" | head -n"$(($endline - $startline - 1))" | tr -d "\n" | sed "s|<div data|\n|g" | grep "Not for use by third-party applications" | grep -oE "android.permission.[A-Z_]*" > "$tmpdir/tmplist";
+  echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "$tmpdir/tmplist";
+
+  cat "$resdldir/$privpermlist" "$tmpdir/tmplist" 2>/dev/null | sort -u > "$tmpdir/sortedlist";
+  mkdir -p "$resdldir/$(dirname "$privpermlist")"
+  mv -f "$tmpdir/sortedlist" "$resdldir/$privpermlist";
+
+  echo " ";
+  echo " - Checking priv-app permissions...";
+
+  for object in $(echo "$stuff_download" | grep -P "^[ \t]*/system/priv-app/[^ \t]+.apk[ \t]+" | select_word 1); do
+    [ -f "$resdldir/$object" ] || { echo "ERROR: Privapp $object not found" >&2; continue; }
+    privperms="";
+    privapppackage="$(aapt dump badging "$resdldir/$object" | grep -o "package: name=[^ ]*" | sed "s|'| |g" | select_word 3)"
+    privappperms="$(aapt dump permissions "$resdldir/$object" | grep -o "uses-permission: name=[^ ]*" | sed "s|'| |g" | select_word 3 | sort -u)";
+    for privperm in in $privappperms; do
+      grep -q "$privperm" "$resdldir/$privpermlist" || continue;
+      grep -q "$privperm" "$resdir/system/etc/permissions/$privapppackage.xml" 2>/dev/null && continue;
+      privperms="$privperm $privperms";
+    done;
+    [ "$privperms" ] || continue;
+    echo " ";
+    echo " -- File: $object";
+    echo " -- Package: $privapppackage";
+    for permentry in $privperms; do
+      echo "   ++ Needs whitelisting perm $permentry";
+    done;
   done;
 
 }

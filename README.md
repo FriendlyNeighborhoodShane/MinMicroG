@@ -89,6 +89,8 @@ You can pass build.sh a specific pack's conf name instead of all to build only t
 
 If you have the Java SDK and openssl tool installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to resdl/util/certs. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
 
+If you have aapt installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in res/system/etc/permissions/[package].xml files.
+
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 
 ### Credits

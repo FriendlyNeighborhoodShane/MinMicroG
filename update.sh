@@ -8,9 +8,10 @@
 workdir="$(pwd)";
 cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 confdir="$workdir/conf";
+resdir="$workdir/res";
 resdldir="$workdir/resdl";
-reldir="$workdir/releases";
 tmpdir="$workdir/tmp";
+reldir="$workdir/releases";
 updatetime="$(date -u +%Y%m%d%H%M%S)";
 updatelog="$reldir/update-$updatetime.log";
 
