@@ -87,6 +87,8 @@ That's it! If it tells you that some dependency is missing, install it.
 You can pass update.sh several perl-style regexes as arguments to only download specific files.
 You can pass build.sh a specific pack's conf name instead of all to build only the specific pack.
 
+If you have the Java SDK and openssl tool installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to resdl/util/certs. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
+
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 
 ### Credits

@@ -70,6 +70,7 @@ post_update_actions() {
   unzipmaps;
   getzipsigner;
   updatedelta;
+  verifycerts;
   return 0;
 
 }
@@ -132,6 +133,62 @@ updatedelta() {
     echo "   ++ New URL: $url"
     echo "   ++ Old name: $(basename $oldurl)"
     echo "   ++ New name: $(basename $url)"
+  done;
+
+}
+
+verifycerts() {
+
+  [ "$(which jarsigner)" ] && [ "$(which openssl)" ] || {
+    echo " ";
+    echo " !! Not checking certificates (missing jarsigner or openssl)";
+    return 0;
+  }
+
+  certdir="$resdldir/util/certs";
+
+  echo " ";
+  echo " - Checking certs for repos...";
+
+  for repo in $(echo "$stuff_repo" | select_word 1); do
+    certobject="repo/$repo.cer";
+     jarsigner verify "$tmpdir/repos/$repo.jar" > /dev/null || {
+      echo "  !! Verification failed for repo ($repo)" >&2;
+      continue;
+    }
+    [ -f "$certdir/$certobject" ] || {
+      echo "  -- Adding cert for new repo ($repo)";
+      mkdir -p "$certdir/$(dirname "$certobject")";
+      unzip -p "$tmpdir/repos/$repo.jar" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$certdir/$certobject";
+      continue;
+    }
+    unzip -p "$tmpdir/repos/$repo.jar" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$tmpdir/tmp.cer";
+    [ "$(diff -w "$tmpdir/tmp.cer" "$certdir/$certobject")" ] && {
+      echo "  !! Cert mismatch for repo ($repo)" >&2;
+      cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
+    }
+  done;
+
+  echo " ";
+  echo " - Checking certs for APKs...";
+
+  for object in $(echo "$stuff_download" | grep -P "^[ \t]*[^ \t]+.apk[ \t]+" | select_word 1); do
+    certobject="$(dirname "$object")/$(basename "$object" .apk).cer";
+    jarsigner verify "$resdldir/$object" > /dev/null || {
+      echo "  !! Verification failed for APK ($object)" >&2;
+      continue;
+    }
+    [ -f "$certdir/$certobject" ] || {
+      echo "  -- Adding cert for new APK ($object)";
+      mkdir -p "$certdir/$(dirname "$certobject")";
+      unzip -p "$resdldir/$object" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$certdir/$certobject";
+      continue;
+    }
+    unzip -p "$resdldir/$object" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$tmpdir/tmp.cer";
+    [ "$(diff -w "$tmpdir/tmp.cer" "$certdir/$certobject")" ] && {
+      echo "  !! Cert mismatch for APK ($object)" >&2;
+      cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
+    }
   done;
 
 }
