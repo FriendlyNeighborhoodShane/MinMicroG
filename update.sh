@@ -14,6 +14,19 @@ tmpdir="$workdir/tmp";
 updatetime="$(date -u +%Y%m%d%H%M%S)";
 updatelog="$reldir/update-$updatetime.log";
 
+select_word() {
+  select_term="$1";
+  cat | while read -r select_line; do
+    select_current=0;
+    select_found="";
+    for select_each in $select_line; do
+      select_current="$(( $select_current + 1 ))";
+      [ "$select_current" = "$select_term" ] && { select_found="yes"; break; }
+    done;
+    [ "$select_found" = "yes" ] && echo "$select_each";
+  done;
+}
+
 echo " ";
 echo "--       Minimal MicroG Update Script       --";
 echo "--      The Essentials Only MicroG Pack     --";
@@ -21,7 +34,7 @@ echo "--      From The MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
 # Bin check
-for bin in awk chmod cp curl grep head jq mv rm sort unzip wget; do
+for bin in chmod cp curl grep head jq mv rm sort unzip wget; do
   [ "$(which $bin)" ] || { echo " " >&2; echo "FATAL: No $bin found" >&2; return 1; }
 done;
 
@@ -57,7 +70,7 @@ $(echo "$stuff_download" | grep -Pi "^[ \t]*[^ \t]*$include[^ \t]*[ \t]+")
   done;
   stuff_download="$(echo "$stuff_download_new" | sort -u)";
   repo_apps="$(echo "$stuff_download" | grep -P "^[ \t]*[^ \t]+[ \t]+repo[ \t]+")";
-  for repo in $(echo "$repo_apps" | awk '{ print $3 }'); do
+  for repo in $(echo "$repo_apps" | select_word 3); do
     stuff_repo_new="$stuff_repo_new
 $(echo "$stuff_repo" | grep -P "^[ \t]*$(dirname "$repo")[ \t]+" | head -n1)
 ";
@@ -74,9 +87,9 @@ pre_update_actions;
 echo " ";
 echo " - Downloading repos...";
 
-for repo in $(echo "$stuff_repo" | awk '{ print $1 }'); do
+for repo in $(echo "$stuff_repo" | select_word 1); do
   line="$(echo "$stuff_repo" | grep -P "^[ \t]*$repo[ \t]+" | head -n1)";
-  repourl="$(echo "$line" | awk '{ print $2 }')";
+  repourl="$(echo "$line" | select_word 2)";
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL" >&2; continue; }
   echo " -- REPO: Downloading repo $repo";
   wget -q --show-progress "$repourl/index-v1.jar" -O "$tmpdir/repos/$repo.jar";
@@ -92,11 +105,11 @@ done;
 echo " ";
 echo " - Downloading assets...";
 
-for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
+for object in $(echo "$stuff_download" | select_word 1); do
   line="$(echo "$stuff_download" | grep -P "^[ \t]*$object[ \t]+" | head -n1)";
-  source="$(echo "$line" | awk '{ print $2 }')";
-  objectpath="$(echo "$line" | awk '{ print $3 }')";
-  objectarg="$(echo "$line" | awk '{ print $4 }')";
+  source="$(echo "$line" | select_word 2)";
+  objectpath="$(echo "$line" | select_word 3)";
+  objectarg="$(echo "$line" | select_word 4)";
   [ "$objectpath" ] || { echo "ERROR: $object has no source arguments" >&2; continue; }
   echo " -- ASSET: Downloading object $object from source $source";
   case "$source" in
@@ -114,7 +127,7 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
         ;;
         gitlab)
           echo " ---- Getting GitLab project ID for $object";
-          objectid="$(curl -sN "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | awk '{ print $3 }')";
+          objectid="$(curl -sN "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | select_word 3)";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found" >&2; continue; }
           echo " ---- Getting GitLab URL for $object";
           objectupload="$(curl -sN "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
@@ -125,8 +138,8 @@ for object in $(echo "$stuff_download" | awk '{ print $1 }'); do
           objectrepo="$(dirname "$objectpath")";
           objectpackage="$(basename "$objectpath")";
           [ "$objectarg" ] && {
-            objectarch="$(echo "$objectarg" | awk -F":" '{ print $1 }')";
-            objectsdk="$(echo "$objectarg" | awk -F":" '{ print $2 }')";
+            objectarch="$(echo "$objectarg" | sed "s|:| |g" | select_word 1)";
+            objectsdk="$(echo "$objectarg" | sed "s|:| |g" | select_word 2)";
           }
           [ "$objectrepo" ] && [ "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments" >&2; continue; }
           [ -f "$tmpdir/repos/$objectrepo.json" ] || { echo "ERROR: $object repo $objectrepo does not exist" >&2; continue; }

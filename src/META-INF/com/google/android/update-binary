@@ -22,8 +22,21 @@ log() { echo "$1"; }
 
 $bootmode || mount -o bind /dev/urandom /dev/random;
 
+select_word() {
+  select_term="$1";
+  cat | while read -r select_line; do
+    select_current=0;
+    select_found="";
+    for select_each in $select_line; do
+      select_current="$(( $select_current + 1 ))";
+      [ "$select_current" = "$select_term" ] && { select_found="yes"; break; }
+    done;
+    [ "$select_found" = "yes" ] && echo "$select_each";
+  done;
+}
+
 file_getprop() {
-  grep "^$2" "$1" | head -n1 | awk '{ print $1 }' | cut -d= -f2;
+  grep "^$2" "$1" | head -n1 | select_word 1 | cut -d= -f2;
 }
 
 abort() {
@@ -77,7 +90,7 @@ $bootmode || {
   }
 }
 
-for bin in awk cat chcon chmod chown cp cut df du echo find grep head losetup ls mkdir mount ps rm sed tail touch umount unzip; do
+for bin in cat chcon chmod chown cp cut df du echo find grep head losetup ls mkdir mount ps rm sed tail touch umount unzip; do
   [ "$(which "$bin")" ] || abort "No $bin available";
 done;
 
@@ -142,7 +155,7 @@ sizecheck() {
     break;
   done;
   [ -e "$sizeobject" ] || { echo 0; return 0; }
-  objectsize="$(du -s "$sizeobject" | awk '{ print $1 }')";
+  objectsize="$(du -s "$sizeobject" | select_word 1)";
   libsize=0;
   case "$sizeobject" in
     *.apk)
@@ -151,7 +164,7 @@ sizecheck() {
         for archlib in $libarches; do
           if [ "$(echo "$apkunzip" | grep "lib/$archlib/lib.*.so")" ]; then
             libsizeb=0;
-            for entry in $(unzip -l "$sizeobject" | grep "lib/$archlib/lib.*.so" | awk '{ print $1 }'); do
+            for entry in $(unzip -l "$sizeobject" | grep "lib/$archlib/lib.*.so" | select_word 1); do
               libsizeb="$(($libsizeb + $entry))";
             done;
             libsize="$(($libsizeb / 1024 + 1))";
@@ -418,11 +431,11 @@ if [ "$action" = "installation" ]; then
   packsizem="$(($packsize / 1024 + 1))";
   log "Pack size is $packsizem";
   if [ "$magisk" = "yes" ]; then
-    datfreem="$(($(df -Pk "/data" | tail -n 1 | awk '{ print $4 }') / 1024))";
+    datfreem="$(($(df -Pk "/data" | tail -n 1 | select_word 4) / 1024))";
     log "Free data space is $datfreem";
     [ "$datfreem" -lt "$packsizem" ] && abort "Not enough free space in your data!";
   elif [ "$magisk" = "no" ]; then
-    sysfreem="$(($(df -Pk "/$sysroot/system" | tail -n 1 | awk '{ print $4 }') / 1024))";
+    sysfreem="$(($(df -Pk "/$sysroot/system" | tail -n 1 | select_word 4) / 1024))";
     log "Free system space is $sysfreem";
     [ "$sysfreem" -lt "$packsizem" ] && abort "Not enough free space in your system!";
   fi;
