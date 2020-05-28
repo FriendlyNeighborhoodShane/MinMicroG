@@ -75,8 +75,6 @@ cd to this directory and run:
 > ./update.sh
 ```
 To download all the assets to resdl directory.
-
-NOTE: This will download a zipsigner.jar (topjohnwu's rewrite of the AOSP version) into resdl/util, if the file does not exist already. The source can be found in the Magisk repo, and prebuilt binaries in attachments [here](https://forum.xda-developers.com/showpost.php?p=56621542)
 ```
 > ./build.sh all
 ```
@@ -90,6 +88,8 @@ You can pass build.sh a specific pack's conf name instead of all to build only t
 If you have the Java SDK and openssl tool installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to resdl/util/certs. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
 
 If you have aapt installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in res/system/etc/permissions/[package].xml files.
+
+If you have java installed, you can automatically get the build script to sign all zips with testkeys. You will need to compile a zipsigner.jar (topjohnwu's rewrite of the AOSP version) and put it into into resdl/util. The source can be found in the Magisk repo, and a prebuilt binary [here](https://github.com/FriendlyNeighborhoodShane/MinMicroG_releases/releases/download/init/zipsigner.jar)
 
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 

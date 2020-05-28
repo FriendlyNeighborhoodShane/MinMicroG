@@ -68,7 +68,6 @@ pre_update_actions() {
 post_update_actions() {
 
   unzipmaps;
-  getzipsigner;
   updatedelta;
   verifycerts;
   checkwhitelist;
@@ -88,22 +87,6 @@ unzipmaps() {
   rm -rf "$resdldir/$mapsfile.jar";
   unzip -oq -j "$resdldir/$mapsfile.zip" "$mapsfile.jar" -d "$resdldir/$(dirname "$mapsfile")/";
   rm -rf "$resdldir/$mapsfile.zip";
-
-}
-
-getzipsigner() {
-
-  zipsigner="util/zipsigner.jar";
-  zipsignerurl="https://forum.xda-developers.com/attachment.php?attachmentid=4586999";
-
-  [ -f "$resdldir/$zipsigner" ] && return 0;
-
-  echo " ";
-  echo " - Downloading zipsigner JAR...";
-
-  wget -q --show-progress "$zipsignerurl" -O "$tmpdir/zipsigner.jar" || { echo "ERROR: zipsigner.jar failed to download" >&2; return 1; }
-  mkdir -p "$resdldir/$(dirname "$zipsigner")";
-  mv -f "$tmpdir/zipsigner.jar" "$resdldir/$zipsigner";
 
 }
 
