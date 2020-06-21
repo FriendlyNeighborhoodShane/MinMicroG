@@ -136,7 +136,7 @@ verifycerts() {
 
   for repo in $(echo "$stuff_repo" | select_word 1); do
     certobject="repo/$repo.cer";
-     jarsigner verify "$tmpdir/repos/$repo.jar" > /dev/null || {
+    jarsigner -verify "$tmpdir/repos/$repo.jar" > /dev/null || {
       echo "  !! Verification failed for repo ($repo)" >&2;
       continue;
     }
@@ -158,7 +158,7 @@ verifycerts() {
 
   for object in $(echo "$stuff_download" | grep -P "^[ \t]*[^ \t]+.apk[ \t]+" | select_word 1); do
     certobject="$(dirname "$object")/$(basename "$object" .apk).cer";
-    jarsigner verify "$resdldir/$object" > /dev/null || {
+    jarsigner -verify "$resdldir/$object" > /dev/null || {
       echo "  !! Verification failed for APK ($object)" >&2;
       continue;
     }
