@@ -55,7 +55,7 @@ mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 
 [ -f "$confdir/resdl-download.txt" ] || { echo " "; echo "F: No resdl-download.txt found"; return 1; }
 cp -f "$confdir/resdl-download.txt" "$tmpdir/resdlconf";
-chmod 0777 "$tmpdir/resdlconf";
+chmod +x "$tmpdir/resdlconf";
 . "$tmpdir/resdlconf" || { echo " "; echo "FATAL: resdl-download.txt cannot be executed" >&2; return 1; };
 
 if [ "$*" ]; then

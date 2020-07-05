@@ -38,7 +38,7 @@ case "$1" in
     echo " ";
     echo " - Building all packages...";
     echo " ";
-    for list in $(ls -1 "$workdir/conf" | grep -o "defconf-.*.txt" | sed -e "s|^defconf-||g" -e "s|.txt$||g"); do
+    for list in $(find "$workdir/conf" -name "defconf-*.txt" | sed -e "s|^$workdir/conf/defconf-||g" -e "s|.txt$||g"); do
       echo " - Executing build for $list...";
       "$workdir/build.sh" "$list";
     done;
@@ -57,7 +57,7 @@ mkdir -p "$tmpdir";
 # Config
 
 cp -f "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
-chmod 0777 "$tmpdir/defconf";
+chmod +x "$tmpdir/defconf";
 . "$tmpdir/defconf" || { echo " " >&2; echo "FATAL: Config for $confvar cannot be executed" >&2; return 1; };
 
 echo " ";

@@ -342,7 +342,7 @@ rm -rf "$filedir";
 mkdir -p "$filedir";
 unzip -o "$zipfile" "defconf" -d "$filedir/";
 [ -f "$filedir/defconf" ] || abort "Could not find a default config";
-chmod 0777 "$filedir/defconf";
+chmod +x "$filedir/defconf";
 . "$filedir/defconf" || abort "Could not execute default config";
 
 moddir="/data/media/0/$modname";
@@ -494,7 +494,7 @@ if [ "$action" = "installation" ]; then
         if [ "$(grep "^$(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop")" ]; then
           sed -i "s|^$(echo "$line" | cut -d= -f1)|#$modname $(echo "$line" | cut -d= -f1)|g" "/$sysroot/system/build.prop";
         fi;
-        echo -e "$line #$modname" >> "/$sysroot/system/build.prop";
+        echo "$line #$modname" >> "/$sysroot/system/build.prop";
       done;
     }
   fi;
@@ -503,7 +503,8 @@ if [ "$action" = "installation" ]; then
   ui_print "Setting permissions...";
   if [ "$magisk" = "yes" ]; then
     find "$root" -maxdepth 1 -exec chmod 0755 {} +;
-    find "$root" -maxdepth 1 -name "post-fs-data.sh" -o -name "service.sh" -exec chmod 0777 {} +;
+    [ -f "$root/post-fs-data.sh" ] && chmod 0777 "$root/post-fs-data.sh";
+    [ -f "$root/service.sh" ] && chmod 0777 "$root/service.sh";
   fi;
   for thing in $stuff_perm $initdfile $addondfile; do
     case "$thing" in
