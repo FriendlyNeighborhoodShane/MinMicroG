@@ -21,7 +21,7 @@ select_word() {
     select_current=0;
     select_found="";
     for select_each in $select_line; do
-      select_current="$(( $select_current + 1 ))";
+      select_current="$(( select_current + 1 ))";
       [ "$select_current" = "$select_term" ] && { select_found="yes"; break; }
     done;
     [ "$select_found" = "yes" ] && echo "$select_each";

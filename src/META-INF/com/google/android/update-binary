@@ -28,7 +28,7 @@ select_word() {
     select_current=0;
     select_found="";
     for select_each in $select_line; do
-      select_current="$(( $select_current + 1 ))";
+      select_current="$(( select_current + 1 ))";
       [ "$select_current" = "$select_term" ] && { select_found="yes"; break; }
     done;
     [ "$select_found" = "yes" ] && echo "$select_each";
@@ -165,16 +165,16 @@ sizecheck() {
           if echo "$apkunzip" | grep -q "lib/$archlib/lib.*.so"; then
             libsizeb=0;
             for entry in $(unzip -l "$sizeobject" | grep "lib/$archlib/lib.*.so" | select_word 1); do
-              libsizeb="$(($libsizeb + $entry))";
+              libsizeb="$(( libsizeb + entry ))";
             done;
-            libsize="$(($libsizeb / 1024 + 1))";
+            libsize="$(( libsizeb / 1024 + 1 ))";
             break;
           fi;
         done;
       fi;
     ;;
   esac;
-  echo "$(($objectsize + $libsize))";
+  echo "$(( objectsize + libsize ))";
 }
 
 remove() {
@@ -417,25 +417,25 @@ if [ "$action" = "installation" ]; then
   ui_print "Doing size checks...";
   packsize=0;
   for thing in defconf $stuff; do
-    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$thing")))";
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$thing") ))";
   done;
   for thing in $stuff_arch; do
-    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*/$(basename "$thing")")))";
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*/$(basename "$thing")") ))";
   done;
   for thing in $stuff_sdk; do
-    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$sdk-*/$(basename "$thing")")))";
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$sdk-*/$(basename "$thing")") ))";
   done;
   for thing in $stuff_arch_sdk; do
-    [ "$thing" ] && packsize="$(($packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*-$sdk-*/$(basename "$thing")")))";
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*-$sdk-*/$(basename "$thing")") ))";
   done;
-  packsizem="$(($packsize / 1024 + 1))";
+  packsizem="$(( packsize / 1024 + 1 ))";
   log "Pack size is $packsizem";
   if [ "$magisk" = "yes" ]; then
-    datfreem="$(($(df -Pk "/data" | tail -n 1 | select_word 4) / 1024))";
+    datfreem="$(( $(df -Pk "/data" | tail -n 1 | select_word 4) / 1024 ))";
     log "Free data space is $datfreem";
     [ "$datfreem" -lt "$packsizem" ] && abort "Not enough free space in your data!";
   elif [ "$magisk" = "no" ]; then
-    sysfreem="$(($(df -Pk "/$sysroot/system" | tail -n 1 | select_word 4) / 1024))";
+    sysfreem="$(( $(df -Pk "/$sysroot/system" | tail -n 1 | select_word 4) / 1024 ))";
     log "Free system space is $sysfreem";
     [ "$sysfreem" -lt "$packsizem" ] && abort "Not enough free space in your system!";
   fi;
