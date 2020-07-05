@@ -160,9 +160,9 @@ sizecheck() {
   case "$sizeobject" in
     *.apk)
       apkunzip="$(unzip -l "$sizeobject" "lib/*/lib*.so")";
-      if [ "$(echo "$apkunzip" | grep "lib/.*/lib.*.so")" ]; then
+      if echo "$apkunzip" | grep -q "lib/.*/lib.*.so"; then
         for archlib in $libarches; do
-          if [ "$(echo "$apkunzip" | grep "lib/$archlib/lib.*.so")" ]; then
+          if echo "$apkunzip" | grep -q "lib/$archlib/lib.*.so"; then
             libsizeb=0;
             for entry in $(unzip -l "$sizeobject" | grep "lib/$archlib/lib.*.so" | select_word 1); do
               libsizeb="$(($libsizeb + $entry))";
@@ -252,9 +252,9 @@ install_lib() {
   libobject="$1";
   mkdir -p "$tmplibdir";
   unzipout="$(unzip -l "$libobject" "lib/*/lib*.so")";
-  [ "$(echo "$unzipout" | grep "lib/.*/lib.*.so")" ] || return 0;
+  echo "$unzipout" | grep -q "lib/.*/lib.*.so" || return 0;
   for archlib in $libarches; do
-    if [ "$(echo "$unzipout" | grep "lib/$archlib/lib.*.so")" ]; then
+    if echo "$unzipout" | grep -q "lib/$archlib/lib.*.so"; then
       case "$archlib" in
         *arm64*)
           log "INSTALLER: Installing arm64 libs ($libobject)";
@@ -315,10 +315,10 @@ uninstall_pack() {
     uninstall "$addondfile";
     [ "$sysprop" ] && {
       for line in $sysprop; do
-        if [ "$(grep "^$line #$modname" "/$sysroot/system/build.prop")" ]; then
+        if grep -q "^$line #$modname" "/$sysroot/system/build.prop"; then
           sed -i "s|^$line #$modname||g" "/$sysroot/system/build.prop";
         fi;
-        if [ "$(grep "^#$modname $(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop")" ]; then
+        if grep -q "^#$modname $(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop"; then
           sed -i "s|^#$modname $(echo "$line" | cut -d= -f1)|$(echo "$line" | cut -d= -f1)|g" "/$sysroot/system/build.prop";
         fi;
       done;
@@ -488,10 +488,10 @@ if [ "$action" = "installation" ]; then
     [ "$addond" ] && { mkdir -p "$(dirname "$root/$addondfile")"; echo "$addond" > "$root/$addondfile" || abort "Could not create $addondfile in $root"; }
     [ "$sysprop" ] && {
       for line in $sysprop; do
-        if [ "$(grep "^$line" "/$sysroot/system/build.prop")" ]; then
+        if grep -q "^$line" "/$sysroot/system/build.prop"; then
           continue;
         fi;
-        if [ "$(grep "^$(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop")" ]; then
+        if grep -q "^$(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop"; then
           sed -i "s|^$(echo "$line" | cut -d= -f1)|#$modname $(echo "$line" | cut -d= -f1)|g" "/$sysroot/system/build.prop";
         fi;
         echo "$line #$modname" >> "/$sysroot/system/build.prop";
