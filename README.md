@@ -72,6 +72,13 @@ If you flashed through recovery, provide its logs.
 If you used Magisk Manager, provide its logs.
 
 ### How do I build these packs myself?
+List of hard dependencies:
+ - coreutils or equivalent [POSIX-compatible]
+ - curl (update.sh)
+ - jq (update.sh)
+ - unzip (update.sh)
+ - zip (build.sh)
+
 cd to this directory and run:
 ```
 > ./update.sh
