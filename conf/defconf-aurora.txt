@@ -102,6 +102,18 @@ service="
 addond="
 ";
 
+pre_build_actions() {
+
+  return 0;
+
+}
+
+post_build_actions() {
+
+  return 0;
+
+}
+
 pre_install_actions() {
 
   return 0;

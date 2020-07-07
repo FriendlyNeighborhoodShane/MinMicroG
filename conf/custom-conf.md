@@ -59,7 +59,7 @@ NOTE: I only reccomend doing this if you're familiar with shell scripts. DO NOT 
 
  - While an addon.d script might be useful, I ommitted it for simplicity in this file.
 
- - We don't have anything special to do with this package, so nothing in the install functions. But we don't remove the functions completely, that would cause an error.
+ - We don't have anything special to do with this package, so nothing in the build or install functions. But we don't remove the functions completely, that would cause an error.
 
 There, we have the config file for our brand new AuroraServices pack!
 

@@ -266,6 +266,18 @@ esac;
 
 addond="$addona $addonb";
 
+pre_build_actions() {
+
+  return 0;
+
+}
+
+post_build_actions() {
+
+  return 0;
+
+}
+
 pre_install_actions() {
 
   user_conf;

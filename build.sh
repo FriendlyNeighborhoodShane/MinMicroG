@@ -93,6 +93,10 @@ for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
   done;
 done;
 
+# Pre build actions
+
+pre_build_actions;
+
 # Zip
 
 echo " ";
@@ -131,6 +135,10 @@ else
   [ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
 
 fi;
+
+# Post build actions
+
+post_build_actions;
 
 # Done
 

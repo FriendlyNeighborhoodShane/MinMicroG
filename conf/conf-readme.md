@@ -28,6 +28,8 @@ For making your own pack and config file, check custom-pack.md
 
 ## Functions in defconf files
 
+ - pre_build_actions()
+ - post_build_actions()
  - pre_install_actions()
  - post_install_actions()
  - pre_uninstall_actions()
