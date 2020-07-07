@@ -10,7 +10,7 @@ cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 confvar="$1";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
-tmpdir="$workdir/tmp";
+tmpdir="$(mktemp -d)";
 reldir="$workdir/releases";
 zipsigner="$resdldir/util/zipsigner.jar";
 buildtime="$(date -u +%Y%m%d%H%M%S)";
