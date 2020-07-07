@@ -12,7 +12,6 @@ resdir="$workdir/res";
 resdldir="$workdir/resdl";
 tmpdir="$(mktemp -d)";
 reldir="$workdir/releases";
-zipsigner="$resdldir/util/zipsigner.jar";
 buildtime="$(date -u +%Y%m%d%H%M%S)";
 
 echo " ";
@@ -108,33 +107,14 @@ cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
 
 [ -f "$tmpdir/release.zip" ] || { echo " " >&2; echo "FATAL: Zip failed" >&2; return 1; }
 
-# Sign and copy zip
+# Copy zip
 
-if [ "$(which java)" ] && [ -f "$zipsigner" ]; then
+echo " ";
+echo " - Copying zip to releases...";
 
-  echo " ";
-  echo " - Signing zip...";
-
-  java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip";
-  [ -f "$tmpdir/release-signed.zip" ] || { echo " " >&2; echo "FATAL: Zipsigner failed" >&2; return 1; }
-
-  echo " ";
-  echo " - Copying zip to releases...";
-
-  mkdir -p "$reldir";
-  mv -f "$tmpdir/release-signed.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip";
-  [ -f "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
-
-else
-
-  echo " ";
-  echo " - Copying zip to releases...";
-
-  mkdir -p "$reldir";
-  mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
-  [ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
-
-fi;
+mkdir -p "$reldir";
+mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
+[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
 
 # Post build actions
 
