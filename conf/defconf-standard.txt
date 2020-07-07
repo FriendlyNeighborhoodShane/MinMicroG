@@ -280,6 +280,7 @@ pre_build_actions() {
 
 post_build_actions() {
 
+  sign_zip;
   return 0;
 
 }
@@ -308,6 +309,20 @@ post_uninstall_actions() {
 
   rm -rf "$root/system/etc/.mmg";
   return 0;
+
+}
+
+sign_zip() {
+
+  zipsigner="$resdldir/util/zipsigner.jar";
+
+  [ "$(which java)" ] && [ -f "$zipsigner" ] || return 0;
+
+  echo " ";
+  echo " - Signing zip...";
+
+  java -jar "$zipsigner" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" || { echo " " >&2; echo "ERROR: Zipsigner failed" >&2; return 1; }
+  rm -rf "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
 
 }
 
