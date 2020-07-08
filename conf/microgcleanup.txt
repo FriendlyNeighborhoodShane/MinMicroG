@@ -3,7 +3,7 @@
 
 microg_cleanup() {
 
-  if [ "$(echo "$stuff" | grep MicroG)" ]; then
+  if echo "$stuff" | grep -q "MicroG"; then
     ui_print " ";
     ui_print "Doing MicroG preparations...";
     if [ "$bootmode" != "true" ]; then
@@ -19,7 +19,7 @@ microg_cleanup() {
       if [ ! -f "$root/system/etc/.mmg" ]; then
         log "Doing the clean install treatment";
         for app in $cleanup_packages; do
-          for file in "/data/data/${app}" "/data/user/*/$app" "/data/user_de/*/$app" "/data/app/$app"-* "/mnt/asec/$app"-* "/data/media/0/Android/data/$app"; do
+          for file in "/data/data/$app" "/data/user/*/$app" "/data/user_de/*/$app" "/data/app/$app"-* "/mnt/asec/$app"-* "/data/media/0/Android/data/$app"; do
             [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
           done;
         done;
@@ -28,7 +28,7 @@ microg_cleanup() {
         done;
         if [ -f /data/system/packages.list ]; then
           for app in $cleanup_packages; do
-            if [ "$(grep "$app" /data/system/packages.list)" ]; then
+            if grep -q "$app" "/data/system/packages.list"; then
               log "PREPPER: de-registering app: $app";
               sed -i "s/.*${app}.*//g" /data/system/packages.list;
             fi;
@@ -37,7 +37,7 @@ microg_cleanup() {
           log "PREPPER: This is a clean flash";
         fi;
         if [ "$(which sqlite3)" ]; then
-          find /data/system* -type f -name "accounts*db" 2>/dev/null | while read database; do
+          find /data/system* -type f -name "accounts*db" 2>/dev/null | while read -r database; do
             log "PREPPER: deleting Google Accounts from $database";
             sqlite3 "$database" "DELETE FROM accounts WHERE type='com.google';";
           done

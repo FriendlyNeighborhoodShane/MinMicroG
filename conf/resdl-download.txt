@@ -97,14 +97,14 @@ updatedelta() {
 
   newlog=""
   oldlogs=""
-  for log in $(ls -t $reldir/update-*.log); do
+  for log in "$reldir"/update-*.log; do
     [ "$newlog" ] && oldlogs="$oldlogs $(basename "$log")" || newlog="$(basename "$log")";
   done;
   [ "$oldlogs" ] || { echo " -- No old logs to compare"; return 0; }
-  for entry in $(cat "$reldir/$newlog" | grep -Po "FILE: [^,;]*" | cut -d" " -f2); do
+  for entry in $(grep -Po "FILE: [^,;]*" "$reldir/$newlog" | cut -d" " -f2); do
     line="$(grep "FILE: $entry," "$reldir/$newlog")";
     file="$entry";
-    url="$(echo $line | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
+    url="$(echo "$line" | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
     oldurl="";
     for log in $oldlogs; do
       oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
@@ -115,8 +115,8 @@ updatedelta() {
     echo " -- Updated file: $file"
     echo "   ++ Old URL: $oldurl"
     echo "   ++ New URL: $url"
-    echo "   ++ Old name: $(basename $oldurl)"
-    echo "   ++ New name: $(basename $url)"
+    echo "   ++ Old name: $(basename "$oldurl")"
+    echo "   ++ New name: $(basename "$url")"
   done;
 
 }
@@ -197,7 +197,7 @@ checkwhitelist() {
   for line in $lines; do
     [ "$startline" ] && endline="$line" || startline="$line";
   done;
-  cat "$tmpdir/tmppage" | tail -n+"$(($startline + 1))" | head -n"$(($endline - $startline - 1))" | tr -d "\n" | sed "s|<div data|\n|g" | grep "Not for use by third-party applications" | grep -oE "android.permission.[A-Z_]*" > "$tmpdir/tmplist";
+  tail -n+"$(( startline + 1 ))" "$tmpdir/tmppage" | head -n"$(( endline - startline - 1 ))" | tr -d "\n" | sed "s|<div data|\n|g" | grep "Not for use by third-party applications" | grep -oE "android.permission.[A-Z_]*" > "$tmpdir/tmplist";
   echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "$tmpdir/tmplist";
 
   cat "$resdldir/$privpermlist" "$tmpdir/tmplist" 2>/dev/null | sort -u > "$tmpdir/sortedlist";
