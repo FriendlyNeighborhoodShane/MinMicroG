@@ -129,14 +129,14 @@ addona="#!/sbin/sh
 
 save_files() {
 cat <<EOF
-$(echo $stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile /system/etc/.mmg | sed 's| |\n|g' | sort -u | tr -s '\n')
+$(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "$initdfile" "$addondfile" "/system/etc/.mmg" | sed 's| |\n|g' | sort -u | tr -s '\n')
 
 EOF
 }
 
 delete_files() {
 cat <<EOF
-$(echo $stuff_debloat | sed 's| |\n|g' | sort -u | tr -s '\n')
+$(echo "$stuff_debloat" | sed 's| |\n|g' | sort -u | tr -s '\n')
 
 EOF
 }
@@ -277,7 +277,7 @@ user_conf() {
   for file in "$(dirname "$0")/mmg-conf.txt" "$(dirname "$zipfile")/mmg-conf.txt" "$moddir/mmg-conf.txt" "/data/adb/mmg-conf.txt"; do
     [ -f "$file" ] && {
       ui_print " "; ui_print "Processing user config $file...";
-      includelist="$(cat "$file" | sed -e 's|\#.*||g' -e 's|[^a-zA-Z0-9.-]| |g')";
+      includelist="$(sed -e 's|\#.*||g' -e 's|[^a-zA-Z0-9.-]| |g' "$file")";
       break;
     }
   done;
@@ -313,14 +313,14 @@ user_conf() {
 
 save_files() {
 cat <<EOF
-$(echo $stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile /system/etc/.mmg | sed 's| |\n|g' | sort -u | tr -s '\n')
+$(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "$initdfile" "$addondfile" "/system/etc/.mmg" | sed 's| |\n|g' | sort -u | tr -s '\n')
 
 EOF
 }
 
 delete_files() {
 cat <<EOF
-$(echo $stuff_debloat | sed 's| |\n|g' | sort -u | tr -s '\n')
+$(echo "$stuff_debloat" | sed 's| |\n|g' | sort -u | tr -s '\n')
 
 EOF
 }
@@ -328,13 +328,12 @@ EOF
     addond="$addona$addonb";
   }
 
-  [ "$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk" ] || abort "Nothing left to install after config";
-
+  [ "$stuff" ] || [ "$stuff_arch" ] || [ "$stuff_sdk" ] || [ "$stuff_arch_sdk" ] || abort "Nothing left to install after config";
 }
 
 microg_cleanup() {
 
-  if [ "$(echo $stuff | grep MicroG)" ]; then
+  if echo "$stuff" | grep -q "MicroG"; then
     ui_print " ";
     ui_print "Doing MicroG preparations...";
     if [ "$bootmode" != "true" ]; then
@@ -347,12 +346,15 @@ microg_cleanup() {
           [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
         done;
       done;
-      log "Doing the clean install treatment";
-      for app in $cleanup_packages; do
-        for file in "/data/data/${app}" "/data/user/*/${app}" "/data/user_de/*/${app}" "/data/app/${app}"-* "/mnt/asec/${app}"-* "/data/media/0/Android/data/${app}"; do
-          [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
+      if [ ! -f "$root/system/etc/.mmg" ]; then
+        log "Doing the clean install treatment";
+        for app in $cleanup_packages; do
+          for file in "/data/data/$app" "/data/user/*/$app" "/data/user_de/*/$app" "/data/app/$app"-* "/mnt/asec/$app"-* "/data/media/0/Android/data/$app"; do
+            [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
+          done;
         done;
-      done;
+      fi;
+      touch "$root/system/etc/.mmg";
     fi;
   fi;
 
