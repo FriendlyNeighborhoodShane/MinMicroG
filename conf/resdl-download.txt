@@ -97,7 +97,7 @@ updatedelta() {
 
   newlog=""
   oldlogs=""
-  for log in "$reldir"/update-*.log; do
+  for log in $(ls -td "$reldir"/update-*.log); do
     [ "$newlog" ] && oldlogs="$oldlogs $(basename "$log")" || newlog="$(basename "$log")";
   done;
   [ "$oldlogs" ] || { echo " -- No old logs to compare"; return 0; }
