@@ -93,7 +93,7 @@ for repo in $(echo "$stuff_repo" | select_word 1); do
   repourl="$(echo "$line" | select_word 2)";
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL" >&2; continue; }
   echo " -- REPO: Downloading repo $repo";
-  curl --progress-bar "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar";
+  curl -L --progress-bar "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar";
   [ -f "$tmpdir/repos/$repo.jar" ] || { echo "ERROR: Repo $repo failed to download" >&2; continue; }
   unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/";
   [ -f "$tmpdir/repos/index-v1.json" ] || { echo "ERROR: Repo $repo failed to unzip" >&2; continue; }
@@ -124,14 +124,14 @@ for object in $(echo "$stuff_download" | select_word 1); do
         ;;
         github)
           echo " ---- Getting GitHub URL for $object";
-          objecturl="$(curl -sN "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep -P "$objectarg$" | head -n1)";
+          objecturl="$(curl -Ls "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep -P "$objectarg$" | head -n1)";
         ;;
         gitlab)
           echo " ---- Getting GitLab project ID for $object";
-          objectid="$(curl -sN "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | select_word 3)";
+          objectid="$(curl -Ls "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | select_word 3)";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found" >&2; continue; }
           echo " ---- Getting GitLab URL for $object";
-          objectupload="$(curl -sN "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
+          objectupload="$(curl -Ls "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
           [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found" >&2; continue; }
           objecturl="https://gitlab.com/$objectpath$objectupload";
         ;;
@@ -163,7 +163,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
-      curl --progress-bar "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download" >&2; continue; }
+      curl -L --progress-bar "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download" >&2; continue; }
       [ -f "$objectfile" ] || { echo "ERROR: $object failed to download" >&2; continue; }
       echo "NAME: $objectname, FILE: $object, URL: $objecturl;" >> "$updatelog";
     ;;
