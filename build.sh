@@ -112,8 +112,11 @@ echo " - Zipping files...";
 cd "$tmpdir" || abort "Can't cd to $tmpdir";
 zip -r9q "$tmpdir/release.zip" "." || abort "Can't zip package";
 cd "$workdir" || abort "Can't cd to $workdir";
-
 [ -f "$tmpdir/release.zip" ] || abort "Zip failed";
+
+# Post build actions
+
+post_build_actions;
 
 # Copy zip
 
@@ -123,10 +126,6 @@ echo " - Copying zip to releases...";
 mkdir -p "$reldir";
 mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
 [ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || abort "Move failed";
-
-# Post build actions
-
-post_build_actions;
 
 # Done
 

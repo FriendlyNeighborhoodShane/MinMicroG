@@ -321,8 +321,8 @@ sign_zip() {
   echo " ";
   echo " - Signing zip...";
 
-  java -jar "$zipsigner" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime-signed.zip" || { echo " " >&2; echo "ERROR: Zipsigner failed" >&2; return 1; }
-  rm -rf "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
+  java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip" || { echo " " >&2; echo "ERROR: Zipsigner failed" >&2; return 1; }
+  mv -f "$tmpdir/release-signed.zip" "$tmpdir/release.zip";
 
 }
 
