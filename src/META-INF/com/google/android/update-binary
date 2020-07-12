@@ -24,7 +24,7 @@ $bootmode || mount -o bind /dev/urandom /dev/random;
 
 select_word() {
   select_term="$1";
-  cat | while read -r select_line; do
+  while read -r select_line; do
     select_current=0;
     select_found="";
     for select_each in $select_line; do
@@ -90,7 +90,7 @@ $bootmode || {
   }
 }
 
-for bin in cat chcon chmod chown cp cut df du echo find grep head losetup ls mkdir mount ps rm sed tail touch umount unzip; do
+for bin in chcon chmod chown cp cut df du echo find grep head mkdir mount ps rm sed tail touch umount unzip; do
   [ "$(which "$bin")" ] || abort "No $bin available";
 done;
 
