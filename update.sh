@@ -42,7 +42,7 @@ echo "--      From The MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
 # Bin check
-for bin in chmod cp curl grep head jq mv rm sort unzip; do
+for bin in chmod cp curl grep head jq mv rm sort tr unzip; do
   [ "$(which $bin)" ] || abort "No $bin found";
 done;
 
@@ -66,6 +66,11 @@ cp -f "$confdir/resdl-download.txt" "$tmpdir/resdlconf";
 chmod +x "$tmpdir/resdlconf";
 . "$tmpdir/resdlconf" || abort "Cannot execute resdl-download.txt";
 
+# Remove all tabs because they can't be caught by regex
+stuff_download="$(echo "$stuff_download" | tr "\t" " ")";
+stuff_repo="$(echo "$stuff_repo" | tr "\t" " ")";
+
+# Filter list by arguments if given
 if [ "$*" ]; then
   echo " ";
   echo " - Building update list...";
@@ -74,14 +79,14 @@ if [ "$*" ]; then
   for include in "$@"; do
     echo " -- CONFIG: Including $include";
     stuff_download_new="$stuff_download_new
-$(echo "$stuff_download" | grep -Pi "^[ \t]*[^ \t]*$include[^ \t]*[ \t]+")
+$(echo "$stuff_download" | grep -iE "^[ ]*[^ ]*$include[^ ]*[ ]+")
 ";
   done;
   stuff_download="$(echo "$stuff_download_new" | sort -u)";
-  repo_apps="$(echo "$stuff_download" | grep -P "^[ \t]*[^ \t]+[ \t]+repo[ \t]+")";
+  repo_apps="$(echo "$stuff_download" | grep -E "^[ ]*[^ ]+[ ]+repo[ ]+")";
   for repo in $(echo "$repo_apps" | select_word 3); do
     stuff_repo_new="$stuff_repo_new
-$(echo "$stuff_repo" | grep -P "^[ \t]*$(dirname "$repo")[ \t]+" | head -n1)
+$(echo "$stuff_repo" | grep -E "^[ ]*$(dirname "$repo")[ ]+" | head -n1)
 ";
   done;
   stuff_repo="$(echo "$stuff_repo_new" | sort -u)";
@@ -97,7 +102,7 @@ echo " ";
 echo " - Downloading repos...";
 
 for repo in $(echo "$stuff_repo" | select_word 1); do
-  line="$(echo "$stuff_repo" | grep -P "^[ \t]*$repo[ \t]+" | head -n1)";
+  line="$(echo "$stuff_repo" | grep -E "^[ ]*$repo[ ]+" | head -n1)";
   repourl="$(echo "$line" | select_word 2)";
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL" >&2; continue; }
   echo " -- REPO: Downloading repo $repo";
@@ -115,7 +120,7 @@ echo " ";
 echo " - Downloading assets...";
 
 for object in $(echo "$stuff_download" | select_word 1); do
-  line="$(echo "$stuff_download" | grep -P "^[ \t]*$object[ \t]+" | head -n1)";
+  line="$(echo "$stuff_download" | grep -E "^[ ]*$object[ ]+" | head -n1)";
   source="$(echo "$line" | select_word 2)";
   objectpath="$(echo "$line" | select_word 3)";
   objectarg="$(echo "$line" | select_word 4)";
@@ -132,14 +137,14 @@ for object in $(echo "$stuff_download" | select_word 1); do
         ;;
         github)
           echo " ---- Getting GitHub URL for $object";
-          objecturl="$(curl -Ls "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep -P "$objectarg$" | head -n1)";
+          objecturl="$(curl -Ls "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep "$objectarg$" | head -n1)";
         ;;
         gitlab)
           echo " ---- Getting GitLab project ID for $object";
           objectid="$(curl -Ls "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | select_word 3)";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found" >&2; continue; }
           echo " ---- Getting GitLab URL for $object";
-          objectupload="$(curl -Ls "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -Po "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
+          objectupload="$(curl -Ls "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -oE "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
           [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found" >&2; continue; }
           objecturl="https://gitlab.com/$objectpath$objectupload";
         ;;

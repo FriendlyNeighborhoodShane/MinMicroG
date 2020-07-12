@@ -102,13 +102,13 @@ updatedelta() {
   done;
   [ "$newlog" ] || { echo " -- No log to compare"; return 0; }
   [ "$oldlogs" ] || { echo " -- No old logs to compare"; return 0; }
-  for entry in $(grep -Po "FILE: [^,;]*" "$reldir/$newlog" | cut -d" " -f2); do
+  for entry in $(grep -oE "FILE: [^,;]*" "$reldir/$newlog" | cut -d" " -f2); do
     line="$(grep "FILE: $entry," "$reldir/$newlog")";
     file="$entry";
-    url="$(echo "$line" | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
+    url="$(echo "$line" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
     oldurl="";
     for log in $oldlogs; do
-      oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -Po "URL: [^,;]*" | cut -d" " -f2)";
+      oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
       [ "$oldurl" ] && break;
     done;
     [ "$oldurl" ] || oldurl="None";
@@ -157,7 +157,7 @@ verifycerts() {
   echo " ";
   echo " - Checking certs for APKs...";
 
-  for object in $(echo "$stuff_download" | grep -P "^[ \t]*[^ \t]+.apk[ \t]+" | select_word 1); do
+  for object in $(echo "$stuff_download" | grep -E "^[ ]*[^ ]+.apk[ ]+" | select_word 1); do
     certobject="$(dirname "$object")/$(basename "$object" .apk).cer";
     jarsigner -verify "$resdldir/$object" > /dev/null || {
       echo "  !! Verification failed for APK ($object)" >&2;
@@ -194,7 +194,7 @@ checkwhitelist() {
 
   curl -L --progress-bar "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download" >&2; return 1; }
 
-  lines="$(grep -Pn "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | select_word 1)";
+  lines="$(grep -nE "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | select_word 1)";
   for line in $lines; do
     [ "$startline" ] && endline="$line" || startline="$line";
   done;
@@ -208,11 +208,11 @@ checkwhitelist() {
   echo " ";
   echo " - Checking priv-app permissions...";
 
-  for object in $(echo "$stuff_download" | grep -P "^[ \t]*/system/priv-app/[^ \t]+.apk[ \t]+" | select_word 1); do
+  for object in $(echo "$stuff_download" | grep -E "^[ ]*/system/priv-app/[^ ]+.apk[ ]+" | select_word 1); do
     [ -f "$resdldir/$object" ] || { echo "ERROR: Privapp $object not found" >&2; continue; }
     privperms="";
-    privapppackage="$(aapt dump badging "$resdldir/$object" | grep -o "package: name=[^ ]*" | sed "s|'| |g" | select_word 3)"
-    privappperms="$(aapt dump permissions "$resdldir/$object" | grep -o "uses-permission: name=[^ ]*" | sed "s|'| |g" | select_word 3 | sort -u)";
+    privapppackage="$(aapt dump badging "$resdldir/$object" | grep -oE "package: name=[^ ]*" | sed "s|'| |g" | select_word 3)"
+    privappperms="$(aapt dump permissions "$resdldir/$object" | grep -oE "uses-permission: name=[^ ]*" | sed "s|'| |g" | select_word 3 | sort -u)";
     for privperm in in $privappperms; do
       grep -q "$privperm" "$resdldir/$privpermlist" || continue;
       grep -q "$privperm" "$resdir/system/etc/permissions/$privapppackage.xml" 2>/dev/null && continue;
