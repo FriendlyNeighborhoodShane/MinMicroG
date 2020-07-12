@@ -98,8 +98,9 @@ updatedelta() {
   newlog=""
   oldlogs=""
   for log in $(ls -td "$reldir"/update-*.log); do
-    [ "$newlog" ] && oldlogs="$oldlogs $(basename "$log")" || newlog="$(basename "$log")";
+    [ "$log" = "update-$updatetime.log" ] && newlog="$(basename "$log")" || oldlogs="$oldlogs $(basename "$log")";
   done;
+  [ "$newlog" ] || { echo " -- No log to compare"; return 0; }
   [ "$oldlogs" ] || { echo " -- No old logs to compare"; return 0; }
   for entry in $(grep -Po "FILE: [^,;]*" "$reldir/$newlog" | cut -d" " -f2); do
     line="$(grep "FILE: $entry," "$reldir/$newlog")";
