@@ -5,12 +5,19 @@
 # Copyright 2018-2020 FriendlyNeighborhoodShane
 # Distributed under the terms of the GNU GPL v3
 
+abort() {
+  echo " " >&2;
+  echo "!!! FATAL ERROR: $1" >&2;
+  echo " " >&2;
+  [ -d "$tmpdir" ] && rm -rf "$tmpdir";
+  exit 1;
+}
+
 workdir="$(pwd)";
-cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
+cd "$workdir" || abort "Can't cd to $workdir";
 confvar="$1";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
-tmpdir="$(mktemp -d)";
 reldir="$workdir/releases";
 buildtime="$(date -u +%Y%m%d%H%M%S)";
 
@@ -21,7 +28,7 @@ echo "--      From the MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
 
 for bin in cp grep ls mv rm sed zip; do
-  [ "$(which $bin)" ] || { echo " " >&2; echo "FATAL: No $bin found" >&2; return 1; }
+  [ "$(which $bin)" ] || abort "No $bin found";
 done;
 
 echo " ";
@@ -30,7 +37,7 @@ echo " - Working from $workdir";
 echo " ";
 echo " - Build started at $buildtime";
 
-[ "$1" ] || { echo " " >&2; echo "FATAL: No variant specified to build" >&2; return 1; }
+[ "$1" ] || abort "No variant specified to build";
 
 case "$1" in
   all)
@@ -41,23 +48,24 @@ case "$1" in
       echo " - Executing build for $list...";
       "$workdir/build.sh" "$list";
     done;
-    return;
+    exit;
   ;;
 esac;
 
-[ -f "$workdir/conf/defconf-$confvar.txt" ] || { echo " " >&2; echo "FATAL: No variant defconf found" >&2; return 1; }
+[ -f "$workdir/conf/defconf-$confvar.txt" ] || abort "No $confvar variant defconf found";
 
 echo " ";
 echo " - Building package $confvar";
 
-rm -Rf "$tmpdir";
+tmpdir="$(mktemp -d)";
+rm -rf "$tmpdir";
 mkdir -p "$tmpdir";
 
 # Config
 
 cp -f "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
 chmod +x "$tmpdir/defconf";
-. "$tmpdir/defconf" || { echo " " >&2; echo "FATAL: Config for $confvar cannot be executed" >&2; return 1; };
+. "$tmpdir/defconf" || abort "Config for $confvar cannot be executed";
 
 echo " ";
 echo " - Config says variant $variant";
@@ -101,11 +109,11 @@ pre_build_actions;
 echo " ";
 echo " - Zipping files...";
 
-cd "$tmpdir" || { echo " "; echo "FATAL: Can't cd to $tmpdir"; return 1; };
-zip -r9q "$tmpdir/release.zip" "." || { echo " "; echo "FATAL: Can't zip package"; return 1; };
-cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
+cd "$tmpdir" || abort "Can't cd to $tmpdir";
+zip -r9q "$tmpdir/release.zip" "." || abort "Can't zip package";
+cd "$workdir" || abort "Can't cd to $workdir";
 
-[ -f "$tmpdir/release.zip" ] || { echo " " >&2; echo "FATAL: Zip failed" >&2; return 1; }
+[ -f "$tmpdir/release.zip" ] || abort "Zip failed";
 
 # Copy zip
 
@@ -114,7 +122,7 @@ echo " - Copying zip to releases...";
 
 mkdir -p "$reldir";
 mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip";
-[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || { echo " " >&2; echo "FATAL: Move failed" >&2; return 1; }
+[ -f "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" ] || abort "Move failed";
 
 # Post build actions
 
@@ -125,5 +133,5 @@ post_build_actions;
 echo " ";
 echo " - Done!";
 
-rm -Rf "$tmpdir";
+rm -rf "$tmpdir";
 echo " ";

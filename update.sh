@@ -5,12 +5,19 @@
 # Copyright 2018-2020 FriendlyNeighborhoodShane
 # Distributed under the terms of the GNU GPL v3
 
+abort() {
+  echo " " >&2;
+  echo "!!! FATAL ERROR: $1" >&2;
+  echo " " >&2;
+  [ -d "$tmpdir" ] && rm -rf "$tmpdir";
+  exit 1;
+}
+
 workdir="$(pwd)";
-cd "$workdir" || { echo " "; echo "FATAL: Can't cd to $workdir"; return 1; };
+cd "$workdir" || abort "Can't cd to $workdir";
 confdir="$workdir/conf";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
-tmpdir="$(mktemp -d)";
 reldir="$workdir/releases";
 updatetime="$(date -u +%Y%m%d%H%M%S)";
 updatelog="$reldir/update-$updatetime.log";
@@ -36,7 +43,7 @@ echo "--         No, not the Official one         --";
 
 # Bin check
 for bin in chmod cp curl grep head jq mv rm sort unzip; do
-  [ "$(which $bin)" ] || { echo " " >&2; echo "FATAL: No $bin found" >&2; return 1; }
+  [ "$(which $bin)" ] || abort "No $bin found";
 done;
 
 echo " ";
@@ -48,15 +55,16 @@ echo " - Update started at $updatetime";
 echo " ";
 echo " - Cleaning...";
 
-rm -Rf "$tmpdir";
+tmpdir="$(mktemp -d)";
+rm -rf "$tmpdir";
 mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 
 # Config
 
-[ -f "$confdir/resdl-download.txt" ] || { echo " "; echo "F: No resdl-download.txt found"; return 1; }
+[ -f "$confdir/resdl-download.txt" ] || abort "No resdl-download.txt found";
 cp -f "$confdir/resdl-download.txt" "$tmpdir/resdlconf";
 chmod +x "$tmpdir/resdlconf";
-. "$tmpdir/resdlconf" || { echo " "; echo "FATAL: resdl-download.txt cannot be executed" >&2; return 1; };
+. "$tmpdir/resdlconf" || abort "Cannot execute resdl-download.txt";
 
 if [ "$*" ]; then
   echo " ";
@@ -182,5 +190,5 @@ post_update_actions;
 echo " ";
 echo " - Done!";
 
-rm -Rf "$tmpdir";
+rm -rf "$tmpdir";
 echo " ";
