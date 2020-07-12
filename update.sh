@@ -106,12 +106,9 @@ for repo in $(echo "$stuff_repo" | select_word 1); do
   repourl="$(echo "$line" | select_word 2)";
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL" >&2; continue; }
   echo " -- REPO: Downloading repo $repo";
-  curl -L --progress-bar "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar";
-  [ -f "$tmpdir/repos/$repo.jar" ] || { echo "ERROR: Repo $repo failed to download" >&2; continue; }
-  unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/";
-  [ -f "$tmpdir/repos/index-v1.json" ] || { echo "ERROR: Repo $repo failed to unzip" >&2; continue; }
-  mv -f "$tmpdir/repos/index-v1.json" "$tmpdir/repos/$repo.json";
-  [ -f "$tmpdir/repos/$repo.json" ] || { echo "ERROR: Repo $repo failed to rename" >&2; continue; }
+  curl -L --progress-bar "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar" || { echo "ERROR: Repo $repo failed to download" >&2; continue; }
+  unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/" || { echo "ERROR: Repo $repo failed to unzip" >&2; continue; }
+  mv -f "$tmpdir/repos/index-v1.json" "$tmpdir/repos/$repo.json" || { echo "ERROR: Repo $repo failed to rename" >&2; continue; }
 done;
 
 # Download assets
@@ -177,13 +174,11 @@ for object in $(echo "$stuff_download" | select_word 1); do
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
       curl -L --progress-bar "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download" >&2; continue; }
-      [ -f "$objectfile" ] || { echo "ERROR: $object failed to download" >&2; continue; }
       echo "NAME: $objectname, FILE: $object, URL: $objecturl;" >> "$updatelog";
     ;;
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
-  mv -f "$objectfile" "$resdldir/$object";
-  [ -f "$resdldir/$object" ] || { echo "ERROR: $object failed to copy" >&2; continue; }
+  mv -f "$objectfile" "$resdldir/$object" || { echo "ERROR: $object failed to copy" >&2; continue; }
 done;
 
 # Post update actions
