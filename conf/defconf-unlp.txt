@@ -1,6 +1,6 @@
 # Config
 
-variant="Backend";
+variant="UNLP";
 ver="2.6";
 verc="260"
 date="10th february, 2020";
