@@ -17,7 +17,7 @@ Now, we don't need any new FDroid repo for this, so we leave the stuff_repos lis
 
 For AuroraServices, we'll be keeping the file at path /system/priv-app/AuroraServices/AuroraServices.apk (inside resdl). The URL for the project is https://gitlab.com/AuroraOSS/AuroraServices at the official gitlab server, so our source type is 'gitlab' and source path is 'AuroraOSS/AuroraServices'. So we add the line:
 ```
-  /system/priv-app/AuroraServices/AuroraServices.apk	gitlab	AuroraOSS/AuroraServices
+  /system/priv-app/AuroraServices/AuroraServices.apk    gitlab  AuroraOSS/AuroraServices
 
 ```
 To stuff_download.
@@ -26,7 +26,7 @@ But ding-ding! When you run the script, you may or may not notice that you may o
 
 Fortunately, I am wise. I foresaw this situation, and so I added a way to filter through the release files from a GitLab page. All we have to do is add a '.apk' in the fourth column, so that update.sh will first filter all the release attachments into only those having .apk at the end, and then grab the latest of them. So what we have to change that entry into is:
 ```
-  /system/priv-app/AuroraServices/AuroraServices.apk	gitlab	AuroraOSS/AuroraServices	.apk
+  /system/priv-app/AuroraServices/AuroraServices.apk    gitlab  AuroraOSS/AuroraServices    .apk
 ```
 Note that while here I am using a simple suffix for this filtering since there are no other APKs to be confused by, you can also use a more complicated perl-style regex like 'AuroraServices-v[.1-9]*.apk' to protect against future additional APKs in the releases.
 Also note that exact same behaviour applies to the fourth column for the 'github' source type.

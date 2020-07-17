@@ -66,10 +66,6 @@ cp -f "$confdir/resdl-download.txt" "$tmpdir/resdlconf";
 chmod +x "$tmpdir/resdlconf";
 . "$tmpdir/resdlconf" || abort "Cannot execute resdl-download.txt";
 
-# Remove all tabs because they can't be caught by regex
-stuff_download="$(echo "$stuff_download" | tr "\t" " ")";
-stuff_repo="$(echo "$stuff_repo" | tr "\t" " ")";
-
 # Filter list by arguments if given
 if [ "$*" ]; then
   echo " ";
