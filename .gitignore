@@ -1,9 +1,3 @@
-wget-log
-releases/
-releases
-resdl/system/
-resdl/system
-resdl/util/
-resdl/util
-tmp/
-tmp
+/releases
+/resdl/system
+/resdl/util
