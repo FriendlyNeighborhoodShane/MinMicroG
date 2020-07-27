@@ -1,9 +1,9 @@
 # Config
 
-variant="Standard"
-ver="2.6";
-verc="260"
-date="10th february, 2020";
+variant="Standard";
+ver="2.7";
+verc="270";
+date="27th july, 2020";
 minsdk=19;
 
 modprop="id=MinMicroG
