@@ -6,6 +6,7 @@
 
 ### Links
 * [GitHub](https://github.com/FriendlyNeighborhoodShane/MinMicroG)
+* [GitLab](https://gitlab.com/FriendlyNeighborhoodShane/MinMicroG)
 * [Support in TeleGram group](https://t.me/microgsupport) (Ping me at @shanetheawesome)
 
 ### What is this?
