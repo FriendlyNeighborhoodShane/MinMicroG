@@ -15,7 +15,6 @@ abort() {
 
 workdir="$(pwd)";
 cd "$workdir" || abort "Can't cd to $workdir";
-confvar="$1";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
 reldir="$workdir/releases";
@@ -39,19 +38,27 @@ echo " - Build started at $buildtime";
 
 [ "$1" ] || abort "No variant specified to build";
 
-case "$1" in
-  all)
-    echo " ";
-    echo " - Building all packages...";
-    echo " ";
-    for list in $(find "$workdir/conf" -name "defconf-*.txt" | sed -e "s|^$workdir/conf/defconf-||g" -e "s|.txt$||g"); do
-      echo " - Executing build for $list...";
-      "$workdir/build.sh" "$list";
-    done;
-    exit;
-  ;;
-esac;
+if [ "$1" = "all" ]; then
+  echo " ";
+  echo " - Building all packages...";
+  echo " ";
+  for var in $(find "$workdir/conf" -name "defconf-*.txt" | sed -e "s|^$workdir/conf/defconf-||g" -e "s|.txt$||g"); do
+    echo " - Executing build for $var...";
+    "$workdir/build.sh" "$var";
+  done;
+  exit;
+elif [ "$#" -gt "1" ]; then
+  echo " ";
+  echo " - Building packages: $*...";
+  echo " ";
+  for var in "$@"; do
+    echo " - Executing build for $var...";
+    "$workdir/build.sh" "$var";
+  done;
+  exit;
+fi;
 
+confvar="$1";
 [ -f "$workdir/conf/defconf-$confvar.txt" ] || abort "No $confvar variant defconf found";
 
 echo " ";
