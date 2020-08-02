@@ -25,6 +25,8 @@ stuff="
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
 
+  /system/bin/npem
+
   /system/etc/default-permissions/microg-permissions-unlp.xml
   /system/etc/permissions/com.google.android.gms.xml
   /system/etc/sysconfig/nogoolag-unlp.xml
@@ -47,7 +49,6 @@ stuff_other="
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
-  /system/bin/npem
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml
   /system/etc/permissions/com.aurora.services.xml
@@ -117,6 +118,7 @@ stuff_perm="
   /system/app/LocalWiFiNLPBackend
   /system/app/MozillaUnifiedNLPBackend
   /system/app/NominatimNLPBackend
+  /system/bin/npem
   /system/etc/default-permissions
   /system/etc/permissions
   /system/etc/sysconfig
