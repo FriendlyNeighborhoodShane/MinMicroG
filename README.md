@@ -44,6 +44,12 @@ The things included in the UNLP Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
+The things included in the Minimal Edition zip are:
+ - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
+ - FakeStore (from MicroG FDroid repo)
+ - Permission files for all of this
+ - An addon.d file to backup/restore everything on a rom flash
+
 The things included in the AuroraServices Edition zip are:
  - AuroraServices (From Whyorean's GitLab)
  - Permission files for all of this
