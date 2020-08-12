@@ -109,6 +109,8 @@ If you have java installed, you can automatically get the build script to sign a
 
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 
+Any changes made to the code should ideally be tested with test.sh, which runs the shellcheck linter program on every script.
+
 ### Credits
  - Thanks to @osm0sis for the base magisk/recovery code and inspiration and guidance on the majority of the stuff in here.
  - Thanks to @Setialpha, the creator of NanoDroid, and ale5000 for the lib installation code, permissions code, and patched play.
