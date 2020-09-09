@@ -82,10 +82,10 @@ echo " - Config says variant $variant";
 echo " ";
 echo " - Copying files...";
 
-for file in "$workdir/src/META-INF" "$workdir/install.md" "$workdir/LICENSE" "$workdir/README.md"; do
-  [ -e "$file" ] || { echo "ERROR: $file doesn't exist" >&2; continue; }
+for file in "src/META-INF" "install.md" "LICENSE" "README.md"; do
+  [ -e "$workdir/$file" ] || { echo "ERROR: $file doesn't exist" >&2; continue; }
   echo " -- BUILDER: Copying $file";
-  cp -Rf "$file" "$tmpdir/";
+  cp -Rf "$workdir/$file" "$tmpdir/";
 done;
 
 for object in $stuff $stuff_util; do
