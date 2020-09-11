@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <permissions>
     <privapp-permissions package="com.google.android.gms">
+        <permission name="android.permission.BLUETOOTH" />
         <permission name="android.permission.CHANGE_DEVICE_IDLE_TEMP_WHITELIST" />
         <permission name="android.permission.FAKE_PACKAGE_SIGNATURE" />
         <permission name="android.permission.GET_ACCOUNTS" />
