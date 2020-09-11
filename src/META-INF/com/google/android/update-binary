@@ -69,10 +69,12 @@ log "Bootmode is $bootmode";
 $bootmode || {
   [ -e "/system" ] && mount -o ro /system;
   [ -e "/system_root" ] && mount -o ro /system_root;
+  [ -e "/mnt/system" ] && mount -o ro /mnt/system;
   mount /data;
 }
 [ -e "/system/system/build.prop" ] && sysroot="system";
 [ -e "/system_root/system/build.prop" ] && sysroot="system_root";
+[ -e "/mnt/system/system/build.prop" ] && sysroot="mnt/system";
 [ -f "/$sysroot/system/build.prop" ] || abort "Could not find a ROM in /$sysroot";
 
 bbdir="/tmp/busybox";
