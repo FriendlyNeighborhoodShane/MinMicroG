@@ -146,17 +146,13 @@ service='#!/system/bin/sh
 # MinMicroG bootup script
 {
 sleep 30;
-dg="$(find /system -name MicroGDroidGuard.apk -type f | head -n1)";
+gms="$(find /system -name MicroGGMSCore.apk -type f | head -n1)";
 for i in 1 2 3; do
-  # Fixes wrong signature for Phonesky in self-check
-  /system/bin/pm grant com.android.vending android.permission.FAKE_PACKAGE_SIGNATURE;
+  # Fixes GMS permission troubles
+  /system/bin/pm install -r "$gms";
   sleep 5;
-  # Fixes GroidGuard crash on safetynet check
-  /system/bin/pm install -r "$dg";
-  sleep 5;
-  # Fixes the motherfuckery caused by MagicGApps
-  rm -rf "/magisk/.core/service.d/MagicGApps.sh" "/sbin/.core/img/.core/service.d/MagicGApps.sh";
-  pm enable "com.google.android.gms";
+  # Grant permissions
+  npem;
   sleep 5;
 done;
 }
