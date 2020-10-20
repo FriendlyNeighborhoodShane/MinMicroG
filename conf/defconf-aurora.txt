@@ -1,9 +1,9 @@
 # Config
 
 variant="AuroraServices";
-ver="2.7";
-verc="270";
-date="27th july, 2020";
+ver="2.8";
+verc="280";
+date="20th october, 2020";
 minsdk=21;
 
 modprop="id=MinMicroG
