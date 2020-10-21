@@ -22,7 +22,7 @@ stuff_download="
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk                  repo    microg/com.google.android.gms
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk                        repo    fdroid/com.google.android.gms
 
-  /system/app/GoogleCalendarSyncAdapter/-19-21-22-23-24-25-26-27-28-29-30-/GoogleCalendarSyncAdapter.apk   direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/21/nodpi/2016267990.apk
+  /system/app/GoogleCalendarSyncAdapter/-19-21-22-23-24-25-26-27-28-29-30-/GoogleCalendarSyncAdapter.apk    direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/21/nodpi/2016267990.apk
   /system/app/GoogleContactsSyncAdapter/-19-/GoogleContactsSyncAdapter.apk                              	direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/19/nodpi/19.apk
   /system/app/GoogleContactsSyncAdapter/-21-22-/GoogleContactsSyncAdapter.apk                           	direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/21/nodpi/21.apk
   /system/app/GoogleContactsSyncAdapter/-23-/GoogleContactsSyncAdapter.apk                              	direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.contacts/23/nodpi/23.apk
@@ -44,7 +44,7 @@ stuff_download="
   /system/lib/-arm--28-29-30-/libjni_latinimegoogle.so                                                     	direct  https://gitlab.opengapps.org/opengapps/arm/raw/master/lib/28/libjni_latinimegoogle.so
   /system/lib/-x86--19-21-22-23-24-25-26-27-28-29-30-/libjni_latinimegoogle.so                             	direct  https://gitlab.opengapps.org/opengapps/x86/raw/master/lib/23/libjni_latinimegoogle.so
   /system/lib64/-arm64--19-21-22-23-24-25-26-27-28-29-30-/libjni_keyboarddecoder.so                        	direct  https://gitlab.opengapps.org/opengapps/arm64/raw/master/lib64/23/libjni_keyboarddecoder.so
-  /system/lib64/-x86_64--19-21-22-23-24-25-26-27-28-29-30-/libjni_keyboarddecoder.so         		direct  https://gitlab.opengapps.org/opengapps/x86_64/raw/master/lib64/23/libjni_keyboarddecoder.so	
+  /system/lib64/-x86_64--19-21-22-23-24-25-26-27-28-29-30-/libjni_keyboarddecoder.so         		        direct  https://gitlab.opengapps.org/opengapps/x86_64/raw/master/lib64/23/libjni_keyboarddecoder.so	
   /system/lib64/-arm64--19-21-/libjni_latinimegoogle.so                                                 	direct  https://gitlab.opengapps.org/opengapps/arm64/raw/master/lib64/21/libjni_latinimegoogle.so
   /system/lib64/-arm64--22-/libjni_latinimegoogle.so                                                    	direct  https://gitlab.opengapps.org/opengapps/arm64/raw/master/lib64/22/libjni_latinimegoogle.so
   /system/lib64/-arm64--23-24-25-26-/libjni_latinimegoogle.so                                           	direct  https://gitlab.opengapps.org/opengapps/arm64/raw/master/lib64/23/libjni_latinimegoogle.so
