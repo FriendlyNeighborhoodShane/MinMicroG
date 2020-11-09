@@ -315,16 +315,6 @@ uninstall_pack() {
     done;
     uninstall "$initdfile";
     uninstall "$addondfile";
-    [ "$sysprop" ] && {
-      for line in $sysprop; do
-        if grep -q "^$line #$modname" "/$sysroot/system/build.prop"; then
-          sed -i "s|^$line #$modname||g" "/$sysroot/system/build.prop";
-        fi;
-        if grep -q "^#$modname $(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop"; then
-          sed -i "s|^#$modname $(echo "$line" | cut -d= -f1)|$(echo "$line" | cut -d= -f1)|g" "/$sysroot/system/build.prop";
-        fi;
-      done;
-    }
   fi;
 }
 
@@ -473,9 +463,7 @@ if [ "$action" = "installation" ]; then
   log " ";
   log "Executing other actions";
   if [ "$magisk" = "yes" ]; then
-    [ "$postfs" ] && { echo "$postfs" > "$root/post-fs-data.sh" || abort "Could not create post-fs-data.sh in $root"; }
     [ "$service" ] && { echo "$service" > "$root/service.sh" || abort "Could not create service.sh in $root"; }
-    [ "$sysprop" ] && { echo "$sysprop" > "$root/system.prop" || abort "Could not create system.prop in $root"; }
     [ "$modprop" ] && { echo "$modprop" > "$root/module.prop" || abort "Could not create module.prop in $root"; }
     touch "$root/auto_mount" || abort "Could not create auto_mount in $root";
     if $bootmode && [ "$modulesdir" = "/data/adb/modules_update" ]; then
@@ -485,20 +473,8 @@ if [ "$action" = "installation" ]; then
       [ "$modprop" ] && { echo "$modprop" > "$modmnt/$modname/module.prop" || abort "Could not create module.prop in $modmnt/$modname"; }
     fi;
   elif [ "$magisk" = "no" ]; then
-    [ "$postfs" ] && { mkdir -p "$(dirname "$root/$initdfile")"; echo "$postfs" > "$root/$initdfile" || abort "Could not create $initdfile in $root"; }
     [ "$service" ] && { mkdir -p "$(dirname "$root/$initdfile")"; echo "$service" > "$root/$initdfile" || abort "Could not create $initdfile in $root"; }
     [ "$addond" ] && { mkdir -p "$(dirname "$root/$addondfile")"; echo "$addond" > "$root/$addondfile" || abort "Could not create $addondfile in $root"; }
-    [ "$sysprop" ] && {
-      for line in $sysprop; do
-        if grep -q "^$line" "/$sysroot/system/build.prop"; then
-          continue;
-        fi;
-        if grep -q "^$(echo "$line" | cut -d= -f1)" "/$sysroot/system/build.prop"; then
-          sed -i "s|^$(echo "$line" | cut -d= -f1)|#$modname $(echo "$line" | cut -d= -f1)|g" "/$sysroot/system/build.prop";
-        fi;
-        echo "$line #$modname" >> "/$sysroot/system/build.prop";
-      done;
-    }
   fi;
 
   ui_print " ";
