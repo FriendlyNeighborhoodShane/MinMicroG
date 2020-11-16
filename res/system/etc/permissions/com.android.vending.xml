@@ -18,6 +18,8 @@
         <permission name="android.permission.GET_APP_OPS_STATS" />
         <permission name="android.permission.INSTALL_PACKAGES" />
         <permission name="android.permission.INTERACT_ACROSS_USERS" />
+        <permission name="android.permission.LOADER_USAGE_STATS" />
+        <permission name="android.permission.MANAGE_ROLLBACKS" />
         <permission name="android.permission.MANAGE_USERS" />
         <permission name="android.permission.NFC" />
         <permission name="android.permission.PACKAGE_USAGE_STATS" />
