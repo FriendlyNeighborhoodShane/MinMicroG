@@ -49,9 +49,9 @@ NOTE: I only reccomend doing this if you're familiar with shell scripts. DO NOT 
  - Then we fill up the empty values in modprop, seeing as id has to be the modname defined in update-binary, and the Magisk module template is at 1900.
 
  - Since we have only two files (I wrote up the perm file) to be installed and they both are the same for various architectures and SDKs, we just add them to stuff.
-(To understand how the others like stuff_ arch and stuff_sdk work, I'd reccomend running update.sh and looking at the keyboard swipe and contact sync files.)
+(To understand how the others like stuff_arch and stuff_sdk work, I'd reccomend running update.sh and looking at the keyboard swipe and contact sync files.)
 
- - They don't have anything they conflict with, so nothing to add to stuff_perm.
+ - They don't have anything they conflict with, so nothing to add to stuff_debloat.
 
  - We need to add permissions to the two files, so we add their respective directories to stuff_perm.
 
