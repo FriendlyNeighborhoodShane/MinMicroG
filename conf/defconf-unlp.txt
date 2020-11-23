@@ -331,6 +331,7 @@ EOF
   }
 
   [ "$stuff" ] || [ "$stuff_arch" ] || [ "$stuff_sdk" ] || [ "$stuff_arch_sdk" ] || abort "Nothing left to install after config";
+
 }
 
 microg_cleanup() {
