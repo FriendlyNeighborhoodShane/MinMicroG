@@ -96,12 +96,6 @@ stuff_perm="
   /system/priv-app/AuroraServices
 ";
 
-service="
-";
-
-addond="
-";
-
 pre_build_actions() {
 
   return 0;

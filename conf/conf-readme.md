@@ -23,8 +23,6 @@ For making your own pack and config file, check custom-pack.md
  - stuff_uninstall: Everything in this list is removed from system during a system installation and uninstallation. Should include everything in the pack, along with anything that used to be in it and anything that might be from alternative conflicting packs.
  - stuff_debloat: Anything not from these packs that might conflict with it. For example GApps, other location providers, etc. They are removed (and backed up) during a system install and pseudo-debloated during a Magisk install.
  - stuff_perm: Subdirectories of /system on which permission are to be applied in case of a system installation. This variable exists because perming the whole system takes too long.
- - service (optional): The contents of what should be in service.sh in Magisk installations and init.d scripts in system installations.
- - addond (optional): The contents of what should be in the addon.d scripts in system installations. No need for this on Magisk, since modules are already stored in data.
 
 ## Functions in defconf files
 

@@ -37,12 +37,6 @@ stuff_debloat="
 stuff_perm="
 ";
 
-addond="
-";
-
-service="
-";
-
 pre_build_actions() {
 
   return 0;
