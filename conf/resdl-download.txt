@@ -125,7 +125,7 @@ updatedelta() {
 
 verifycerts() {
 
-  [ "$stuff_repo" ] || [ "$(echo "$stuff_download" | grep -E "^[ ]*[^ ]+.apk[ ]+")" ] || return 0;
+  [ "$stuff_repo" ] || echo "$stuff_download" | grep -qE "^[ ]*[^ ]+.apk[ ]+" || return 0;
 
   [ "$(which jarsigner)" ] && [ "$(which openssl)" ] || {
     echo " ";
@@ -183,7 +183,7 @@ verifycerts() {
 
 checkwhitelist() {
 
-  [ "$(echo "$stuff_download" | grep -E "^[ ]*/system/priv-app/[^ ]+.apk[ ]+")" ] || return 0;
+  echo "$stuff_download" | grep -qE "^[ ]*/system/priv-app/[^ ]+.apk[ ]+" || return 0;
 
   [ "$(which aapt)" ] || {
     echo " ";
