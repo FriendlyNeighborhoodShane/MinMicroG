@@ -203,7 +203,7 @@ checkwhitelist() {
   for line in $lines; do
     [ "$startline" ] && endline="$line" || startline="$line";
   done;
-  tail -n+"$(( startline + 1 ))" "$tmpdir/tmppage" | head -n"$(( endline - startline - 1 ))" | tr -d "\n" | sed "s|<div data|\n|g" | grep -E "Protection level: [a-z|]*privileged" | grep -oE "android.permission.[A-Z_]*" > "$tmpdir/tmplist";
+  tail -n+"$(( startline + 1 ))" "$tmpdir/tmppage" | head -n"$(( endline - startline - 1 ))" | tr -d "\n" | sed "s|<div data|\n|g" | grep -E -e "Protection level: [a-z|]*privileged" -e "Not for use by third-party applications" | grep -oE "android.permission.[A-Z_]*" > "$tmpdir/tmplist";
   echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "$tmpdir/tmplist";
 
   cat "$resdldir/$privpermlist" "$tmpdir/tmplist" 2>/dev/null | sort -u > "$tmpdir/sortedlist";
