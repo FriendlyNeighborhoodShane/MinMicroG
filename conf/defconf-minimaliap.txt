@@ -165,12 +165,15 @@ pre_install_actions() {
 
 post_install_actions() {
 
+  addon_install;
+  initscript_install;
   return 0;
 
 }
 
 pre_uninstall_actions() {
 
+  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall /system/addon.d/10-$modname.sh /system/etc/init.d/10-$modname";
   return 0;
 
 }
@@ -284,5 +287,154 @@ microg_cleanup() {
       touch "$root/system/etc/.mmg";
     fi;
   fi;
+
+}
+
+addon_install() {
+
+  [ "$magisk" = "no" ] || return 0;
+
+  log " ";
+  log "POST-INSTALL: Installing addon.d script";
+
+  addond="/system/addon.d/10-$modname.sh";
+  mkdir -p "$(dirname "$root/$addond")";
+  touch "$root/$addond";
+  perm 0 0 0755 0644 "$(dirname "$root/$addond")";
+  chcon -hR 'u:object_r:system_file:s0' "$(dirname "$root/$addond")";
+
+  cat << EOF > "$root/$addond";
+#!/sbin/sh
+#
+# MinMicroG addon.d
+
+save_files() {
+cat <<EOL
+$(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "/system/addon.d/10-$modname.sh" "/system/etc/init.d/10-$modname" "/system/etc/.mmg" | sed 's| |\n|g' | sort -u | tr -s '\n')
+
+EOL
+}
+
+delete_files() {
+cat <<EOL
+$(echo "$stuff_debloat" | sed 's| |\n|g' | sort -u | tr -s '\n')
+
+EOL
+}
+
+EOF
+
+  cat << 'EOF' >> "$root/$addond";
+log() { echo "$1"; }
+
+abort() {
+  log " ";
+  log "!!! ERROR: $1";
+  exit 1;
+}
+
+log " ";
+log "=== MinMicroG addon.d script ===";
+
+[ -e "/system/system/build.prop" ] && sysroot="system";
+[ -e "/system_root/system/build.prop" ] && sysroot="system_root";
+[ -e "/mnt/system/system/build.prop" ] && sysroot="mnt/system";
+[ -f "/$sysroot/system/build.prop" ] || abort "could not find a ROM in /$sysroot";
+
+sdk="$(grep ro.build.version.sdk "/$sysroot/system/build.prop" | head -n1 | cut -d= -f2)";
+[ "$sdk" ] && [ "$sdk" -gt "0" ] || abort "could not find SDK";
+backupdir="/data/media/0/MinMicroG/backups";
+[ "$C" ] && tmpdir="$C" || tmpdir="/tmp/backupdir";
+
+move() {
+  sourceobject="$1";
+  destobject="$2";
+  if [ "$sdk" -lt 21 ]; then
+    [ "$(basename "$(dirname "$sourceobject")").apk" = "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$(dirname "$sourceobject")")/$(basename "$sourceobject")"; destobject="$(dirname "$(dirname "$destobject")")/$(basename "$destobject")"; }
+  fi;
+  [ "$(basename "$(dirname "$sourceobject")").apk" = "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$sourceobject")"; destobject="$(dirname "$destobject")"; }
+  [ -e "$sourceobject" ] || return 0;
+  mkdir -p "$(dirname "$destobject")";
+  cp -rf "$sourceobject" "$(dirname "$destobject")/" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
+  [ -e "$destobject" ] && log "MOVER: Object moved ($sourceobject to $destobject)" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
+  rm -rf "$sourceobject" || { log "ERROR: Could not remove ($sourceobject)"; return 1; }
+  [ -e "$sourceobject" ] && { log "ERROR: Could not remove ($sourceobject)"; return 1; } || log "MOVER: Object removed ($sourceobject)";
+}
+
+perm_r() {
+  uid="$1";
+  gid="$2";
+  dmod="$3";
+  fmod="$4";
+  dir="$5";
+  [ -d "$dir" ] || return 0;
+  chown -R $uid:$gid "$dir" || chown -R $uid.$gid "$dir";
+  find "$dir" -type d -exec chmod $dmod {} +;
+  find "$dir" -type f -exec chmod $fmod {} +;
+}
+
+case "$1" in
+  backup)
+    log " ";
+    log "Backing up...";
+    save_files | while read object dummy; do
+      [ "$object" ] || continue;
+      move "/$sysroot/$object" "$tmpdir/$object";
+    done;
+  ;;
+  restore)
+    log " ";
+    log "Restoring...";
+    save_files | while read object dummy; do
+      [ "$object" ] || continue;
+      move "$tmpdir/$object" "/$sysroot/$object";
+    done;
+  ;;
+  post-restore)
+    log " ";
+    log "Debloating...";
+    mount /data;
+    delete_files | while read object dummy; do
+      [ "$object" ] || continue;
+      move "/$sysroot/$object" "$backupdir/$object";
+    done;
+    [ -d "$backupdir" ] && { perm_r 1023 1023 775 664 "$backupdir"; chcon -hR "u:object_r:media_rw_data_file:s0" "$backupdir"; }
+  ;;
+esac;
+EOF
+
+}
+
+initscript_install() {
+
+  log " ";
+  log "POST-INSTALL: Installing init script";
+
+  if [ "$magisk" = "yes" ]; then
+    init="/service.sh";
+    touch "$root/$init";
+    chmod 0777 "$root/$init";
+  elif [ "$magisk" = "no" ]; then
+    init="/system/etc/init.d/10-$modname";
+    mkdir -p "$(dirname "$root/$init")";
+    touch "$root/$init";
+    perm 0 0 0755 0777 "$(dirname "$root/$init")";
+    chcon -hR 'u:object_r:system_file:s0' "$(dirname "$root/$init")";
+  fi;
+
+  cat << 'EOF' > "$root/$init";
+#!/system/bin/sh
+# MinMicroG bootup script
+
+# Wait for bootup
+while true; do [ "$(getprop sys.boot_completed)" = "1" ] && break; sleep 5; done;
+
+# Fix GMS permission troubles
+apk="/system/priv-app/MicroGGMSCore/MicroGGMSCore.apk";
+[ -f "$apk" ] && pm install -r "$apk";
+
+# Grant permissions
+npem;
+EOF
 
 }
