@@ -13,7 +13,6 @@
         <permission name="android.permission.DUMP" />
         <permission name="android.permission.FAKE_PACKAGE_SIGNATURE" />
         <permission name="android.permission.FORCE_STOP_PACKAGES" />
-        <permission name="android.permission.GET_ACCOUNTS" />
         <permission name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
         <permission name="android.permission.GET_APP_OPS_STATS" />
         <permission name="android.permission.INSTALL_PACKAGES" />
@@ -21,7 +20,6 @@
         <permission name="android.permission.LOADER_USAGE_STATS" />
         <permission name="android.permission.MANAGE_ROLLBACKS" />
         <permission name="android.permission.MANAGE_USERS" />
-        <permission name="android.permission.NFC" />
         <permission name="android.permission.PACKAGE_USAGE_STATS" />
         <permission name="android.permission.PACKAGE_VERIFICATION_AGENT" />
         <permission name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
@@ -29,7 +27,6 @@
         <permission name="android.permission.REAL_GET_TASKS" />
         <permission name="android.permission.REBOOT" />
         <permission name="android.permission.SEND_DEVICE_CUSTOMIZATION_READY" />
-        <permission name="android.permission.SEND_SMS" />
         <permission name="android.permission.SEND_SMS_NO_CONFIRMATION" />
         <permission name="android.permission.START_ACTIVITIES_FROM_BACKGROUND" />
         <permission name="android.permission.STATUS_BAR" />
