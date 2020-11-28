@@ -1,9 +1,9 @@
 # Config
 
 variant="UNLP";
-ver="2.8";
-verc="280";
-date="20th october, 2020";
+ver="2.9";
+verc="290";
+date="28th november, 2020";
 minsdk=19;
 
 modprop="id=MinMicroG
