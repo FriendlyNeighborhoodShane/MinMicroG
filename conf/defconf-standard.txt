@@ -65,6 +65,9 @@ stuff_arch_sdk="
   /system/lib64/libjni_latinimegoogle.so
 ";
 
+stuff_util="
+";
+
 stuff_other="
   /system/app/AuroraStore/AuroraStore.apk
   /system/etc/default-permissions/microg-permissions-unlp.xml

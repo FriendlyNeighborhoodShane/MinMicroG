@@ -43,6 +43,9 @@ stuff_sdk="
 stuff_arch_sdk="
 ";
 
+stuff_util="
+";
+
 stuff_other="
   /system/app/AppleNLPBackend/AppleNLPBackend.apk
   /system/app/AuroraDroid/AuroraDroid.apk
