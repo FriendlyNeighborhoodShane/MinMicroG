@@ -44,6 +44,7 @@ stuff_arch_sdk="
 ";
 
 stuff_util="
+  /util/funcs.txt
 ";
 
 stuff_other="
@@ -160,6 +161,8 @@ post_build_actions() {
 
 pre_install_actions() {
 
+  unzip -o "$zipfile" "util/funcs.txt" -d "$filedir/";
+  . "$filedir/util/funcs.txt";
   user_conf;
   microg_cleanup;
   return 0;
