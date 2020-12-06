@@ -179,23 +179,28 @@ post_install_actions() {
 
   addon_install;
   initscript_install;
+  touch "$root/$mark_file";
   return 0;
 
 }
 
 pre_uninstall_actions() {
 
-  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall /system/addon.d/10-$modname.sh /system/etc/init.d/10-$modname";
+  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall $addond_file $init_file";
   return 0;
 
 }
 
 post_uninstall_actions() {
 
-  rm -rf "$root/system/etc/.mmg";
+  rm -rf "$root/$mark_file";
   return 0;
 
 }
+
+mark_file="/system/etc/.mmg";
+addond_file="/system/addon.d/10-$modname.sh";
+init_file="/system/etc/init.d/10-$modname";
 
 sign_zip() {
 
@@ -208,245 +213,5 @@ sign_zip() {
 
   java -jar "$zipsigner" "$tmpdir/release.zip" "$tmpdir/release-signed.zip" || { echo " " >&2; echo "ERROR: Zipsigner failed" >&2; return 1; }
   mv -f "$tmpdir/release-signed.zip" "$tmpdir/release.zip";
-
-}
-
-user_conf() {
-
-  for file in "$(dirname "$0")/mmg-conf.txt" "$(dirname "$zipfile")/mmg-conf.txt" "$moddir/mmg-conf.txt" "/data/adb/mmg-conf.txt"; do
-    [ -f "$file" ] && {
-      ui_print " "; ui_print "Processing user config $file...";
-      includelist="$(sed -e 's|\#.*||g' -e 's|[^a-zA-Z0-9.-]| |g' "$file")";
-      break;
-    }
-  done;
-  [ "$includelist" ] && {
-    new_stuff="";
-    new_stuff_arch="";
-    new_stuff_sdk="";
-    new_stuff_arch_sdk="";
-    for include in $includelist; do
-      log "Including keyword $include";
-      new_stuff="$new_stuff $(echo "$stuff" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
-      new_stuff_arch="$new_stuff_arch $(echo "$stuff_arch" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
-      new_stuff_sdk="$new_stuff_sdk $(echo "$stuff_sdk" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
-      new_stuff_arch_sdk="$new_stuff_arch_sdk $(echo "$stuff_arch_sdk" | grep -oi "[ ]*[^ ]*$include[^ ]*[ ]*")";
-    done;
-    stuff="$new_stuff";
-    stuff_arch="$new_stuff_arch";
-    stuff_sdk="$new_stuff_sdk";
-    stuff_arch_sdk="$new_stuff_arch_sdk";
-  }
-  [ "$includelist" ] && {
-    stuff="$(echo "$stuff" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
-";
-    stuff_arch="$(echo "$stuff_arch" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
-";
-    stuff_sdk="$(echo "$stuff_sdk" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
-";
-    stuff_arch_sdk="$(echo "$stuff_arch_sdk" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
-";
-  }
-
-  [ "$stuff" ] || [ "$stuff_arch" ] || [ "$stuff_sdk" ] || [ "$stuff_arch_sdk" ] || abort "Nothing left to install after config";
-
-}
-
-microg_cleanup() {
-
-  if echo "$stuff" | grep -q "MicroG"; then
-    ui_print " ";
-    ui_print "Doing MicroG preparations...";
-    if [ "$bootmode" != "true" ]; then
-      # Kanged from NanoDroid
-      # Thanks Setialpha
-      cleanup_folders="BlankStore GmsCore GmsCore_update GmsCoreSetupPrebuilt GoogleServicesFramework GsfProxy Phonesky PlayStore PrebuiltGmsCorePi PrebuiltGmsCorePix PrebuiltGmsCore Vending";
-      cleanup_packages="com.android.vending com.google.android.feedback com.google.android.gms com.google.android.gsf com.google.android.gsf.login com.mgoogle.android.gms";
-      for app in $cleanup_folders; do
-        for file in /data/dalvik-cache/*/system"@priv-app@$app"[@\.]*@classes.* /data/dalvik-cache/*/system"@app@$app"[@\.]*@classes.*; do
-          [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
-        done;
-      done;
-      if [ ! -f "$root/system/etc/.mmg" ]; then
-        log "Doing the clean install treatment";
-        for app in $cleanup_packages; do
-          for file in "/data/data/$app" "/data/user/*/$app" "/data/user_de/*/$app" "/data/app/$app"-* "/mnt/asec/$app"-* "/data/media/0/Android/data/$app"; do
-            [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
-          done;
-        done;
-        for file in /data/system/users/*/runtime-permissions.xml; do
-          [ -e "$file" ] && { log "PREPPER: Removing $file"; rm -rf "$file"; }
-        done;
-        if [ -f /data/system/packages.list ]; then
-          for app in $cleanup_packages; do
-            if grep -q "$app" "/data/system/packages.list"; then
-              log "PREPPER: de-registering app: $app";
-              sed -i "s/.*${app}.*//g" /data/system/packages.list;
-            fi;
-          done;
-        else
-          log "PREPPER: This is a clean flash";
-        fi;
-        if [ "$(which sqlite3)" ]; then
-          find /data/system* -type f -name "accounts*db" 2>/dev/null | while read -r database; do
-            log "PREPPER: deleting Google Accounts from $database";
-            sqlite3 "$database" "DELETE FROM accounts WHERE type='com.google';";
-          done
-        else
-          log "PREPPER: sqlite3 not found";
-        fi;
-      fi;
-      touch "$root/system/etc/.mmg";
-    fi;
-  fi;
-
-}
-
-addon_install() {
-
-  [ "$magisk" = "no" ] || return 0;
-
-  log " ";
-  log "POST-INSTALL: Installing addon.d script";
-
-  addond="/system/addon.d/10-$modname.sh";
-  mkdir -p "$(dirname "$root/$addond")";
-  touch "$root/$addond";
-  perm 0 0 0755 0644 "$(dirname "$root/$addond")";
-  chcon -hR 'u:object_r:system_file:s0' "$(dirname "$root/$addond")";
-
-  cat << EOF > "$root/$addond";
-#!/sbin/sh
-#
-# MinMicroG addon.d
-
-save_files() {
-cat <<EOL
-$(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "/system/addon.d/10-$modname.sh" "/system/etc/init.d/10-$modname" "/system/etc/.mmg" | sed 's| |\n|g' | sort -u | tr -s '\n')
-
-EOL
-}
-
-delete_files() {
-cat <<EOL
-$(echo "$stuff_debloat" | sed 's| |\n|g' | sort -u | tr -s '\n')
-
-EOL
-}
-
-EOF
-
-  cat << 'EOF' >> "$root/$addond";
-log() { echo "$1"; }
-
-abort() {
-  log " ";
-  log "!!! ERROR: $1";
-  exit 1;
-}
-
-log " ";
-log "=== MinMicroG addon.d script ===";
-
-[ -e "/system/system/build.prop" ] && sysroot="system";
-[ -e "/system_root/system/build.prop" ] && sysroot="system_root";
-[ -e "/mnt/system/system/build.prop" ] && sysroot="mnt/system";
-[ -f "/$sysroot/system/build.prop" ] || abort "could not find a ROM in /$sysroot";
-
-sdk="$(grep ro.build.version.sdk "/$sysroot/system/build.prop" | head -n1 | cut -d= -f2)";
-[ "$sdk" ] && [ "$sdk" -gt "0" ] || abort "could not find SDK";
-backupdir="/data/media/0/MinMicroG/backups";
-[ "$C" ] && tmpdir="$C" || tmpdir="/tmp/backupdir";
-
-move() {
-  sourceobject="$1";
-  destobject="$2";
-  if [ "$sdk" -lt 21 ]; then
-    [ "$(basename "$(dirname "$sourceobject")").apk" = "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$(dirname "$sourceobject")")/$(basename "$sourceobject")"; destobject="$(dirname "$(dirname "$destobject")")/$(basename "$destobject")"; }
-  fi;
-  [ "$(basename "$(dirname "$sourceobject")").apk" = "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$sourceobject")"; destobject="$(dirname "$destobject")"; }
-  [ -e "$sourceobject" ] || return 0;
-  mkdir -p "$(dirname "$destobject")";
-  cp -rf "$sourceobject" "$(dirname "$destobject")/" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
-  [ -e "$destobject" ] && log "MOVER: Object moved ($sourceobject to $destobject)" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
-  rm -rf "$sourceobject" || { log "ERROR: Could not remove ($sourceobject)"; return 1; }
-  [ -e "$sourceobject" ] && { log "ERROR: Could not remove ($sourceobject)"; return 1; } || log "MOVER: Object removed ($sourceobject)";
-}
-
-perm_r() {
-  uid="$1";
-  gid="$2";
-  dmod="$3";
-  fmod="$4";
-  dir="$5";
-  [ -d "$dir" ] || return 0;
-  chown -R $uid:$gid "$dir" || chown -R $uid.$gid "$dir";
-  find "$dir" -type d -exec chmod $dmod {} +;
-  find "$dir" -type f -exec chmod $fmod {} +;
-}
-
-case "$1" in
-  backup)
-    log " ";
-    log "Backing up...";
-    save_files | while read object dummy; do
-      [ "$object" ] || continue;
-      move "/$sysroot/$object" "$tmpdir/$object";
-    done;
-  ;;
-  restore)
-    log " ";
-    log "Restoring...";
-    save_files | while read object dummy; do
-      [ "$object" ] || continue;
-      move "$tmpdir/$object" "/$sysroot/$object";
-    done;
-  ;;
-  post-restore)
-    log " ";
-    log "Debloating...";
-    mount /data;
-    delete_files | while read object dummy; do
-      [ "$object" ] || continue;
-      move "/$sysroot/$object" "$backupdir/$object";
-    done;
-    [ -d "$backupdir" ] && { perm_r 1023 1023 775 664 "$backupdir"; chcon -hR "u:object_r:media_rw_data_file:s0" "$backupdir"; }
-  ;;
-esac;
-EOF
-
-}
-
-initscript_install() {
-
-  log " ";
-  log "POST-INSTALL: Installing init script";
-
-  if [ "$magisk" = "yes" ]; then
-    init="/service.sh";
-    touch "$root/$init";
-    chmod 0777 "$root/$init";
-  elif [ "$magisk" = "no" ]; then
-    init="/system/etc/init.d/10-$modname";
-    mkdir -p "$(dirname "$root/$init")";
-    touch "$root/$init";
-    perm 0 0 0755 0777 "$(dirname "$root/$init")";
-    chcon -hR 'u:object_r:system_file:s0' "$(dirname "$root/$init")";
-  fi;
-
-  cat << 'EOF' > "$root/$init";
-#!/system/bin/sh
-# MinMicroG bootup script
-
-# Wait for bootup
-while true; do [ "$(getprop sys.boot_completed)" = "1" ] && break; sleep 5; done;
-
-# Fix GMS permission troubles
-apk="/system/priv-app/MicroGGMSCore/MicroGGMSCore.apk";
-[ -f "$apk" ] && pm install -r "$apk";
-
-# Grant permissions
-npem;
-EOF
 
 }
