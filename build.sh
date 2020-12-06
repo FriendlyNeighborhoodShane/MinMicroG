@@ -71,7 +71,6 @@ mkdir -p "$tmpdir";
 # Config
 
 cp -f "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
-chmod +x "$tmpdir/defconf";
 . "$tmpdir/defconf" || abort "Config for $confvar cannot be executed";
 
 echo " ";

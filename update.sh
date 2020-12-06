@@ -62,9 +62,7 @@ mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 # Config
 
 [ -f "$confdir/resdl-download.txt" ] || abort "No resdl-download.txt found";
-cp -f "$confdir/resdl-download.txt" "$tmpdir/resdlconf";
-chmod +x "$tmpdir/resdlconf";
-. "$tmpdir/resdlconf" || abort "Cannot execute resdl-download.txt";
+. "$confdir/resdl-download.txt" || abort "Cannot execute resdl-download.txt";
 
 # Filter list by arguments if given
 if [ "$*" ]; then
