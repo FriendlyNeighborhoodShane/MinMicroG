@@ -4,12 +4,12 @@ The MinMicrog update, build, and install scripts were written with one primary g
 
 To prove this, we're gonna write a new config and resdl-download file for an entirely new and relatively simple pack: the AuroraServices package containing just AuroraServices along with a perm file.
 
-If you've read through this document (or perhaps want to play Russian roulette with rm and your device), there is a blank config file in defconf-dummy.txt that you can fill in.
+If you've read through this document (or perhaps want to play Russian roulette with `rm` and your device), there is a blank config file in defconf-dummy.txt that you can fill in.
 
-### update.sh and resdl-download.txt
+### `update.sh` and resdl-download.txt
 First, before making a pack, we gotta get the Aurora APK files from somewhere. We could've just downloaded and put them in the res directory, but they'd need to be updated and I'm lazy, so no.
 
-What update.sh does for me is get everything I would need for a pack itself from a list of predefined sources and puts them in their proper places in the resdl directory so the build script picks them up. Now, update.sh knows what to get by executing and getting the variables from resdl-download.txt (open it and see) in the conf directory, so we're gonna add a few lines to it to get the three Aurora APKs downloaded automatically when we run the script.
+What `update.sh` does for me is get everything I would need for a pack itself from a list of predefined sources and puts them in their proper places in the resdl directory so the build script picks them up. Now, `update.sh` knows what to get by executing and getting the variables from resdl-download.txt (open it and see) in the conf directory, so we're gonna add a few lines to it to get the Aurora APKs downloaded automatically when we run the script.
 
 We could get them from FDroid, but their releases are usually out of date and I trust Whyorean so we're gonna grab them from his GitLab page. Fortunately, he has precompiled binaries on his releases page.
 
@@ -22,9 +22,9 @@ For AuroraServices, we'll be keeping the file at path /system/priv-app/AuroraSer
 ```
 To stuff_download.
 
-But ding-ding! When you run the script, you may or may not notice that you may or may not get a valid APK file as the result. Why is that? open AuroraServices's GitLab releases page for yourself and see. The problem is that Whyorean provides a Flashable zip with each release too! How considerate. But that's a problem for the script, because as you may or may not have seen, our poor update.sh can get confused between different files in a release, and we can't exactly blame it; It has no way to know what we wanted and what we got are different, it's simply grabbing the latest file from a release's attachments.
+But ding-ding! When you run the script, you may or may not notice that you may or may not get a valid APK file as the result. Why is that? open AuroraServices's GitLab releases page for yourself and see. The problem is that Whyorean provides a Flashable zip with each release too! How considerate. But that's a problem for the script, because as you may or may not have seen, our poor `update.sh` can get confused between different files in a release, and we can't exactly blame it; It has no way to know what we wanted and what we got are different, it's simply grabbing the latest file from a release's attachments.
 
-Fortunately, I am wise. I foresaw this situation, and so I added a way to filter through the release files from a GitLab page. All we have to do is add a '.apk' in the fourth column, so that update.sh will first filter all the release attachments into only those having .apk at the end, and then grab the latest of them. So what we have to change that entry into is:
+Fortunately, I am wise. I foresaw this situation, and so I added a way to filter through the release files from a GitLab page. All we have to do is add a '.apk' in the fourth column, so that `update.sh` will first filter all the release attachments into only those having .apk at the end, and then grab the latest of them. So what we have to change that entry into is:
 ```
   /system/priv-app/AuroraServices/AuroraServices.apk    gitlab  AuroraOSS/AuroraServices    .apk
 ```
@@ -32,9 +32,9 @@ Note that while here I am using a simple suffix for this filtering since there a
 Also note that exact same behaviour applies to the fourth column for the 'github' source type.
 Additionally note that the fourth column for the 'repo' source type has a different function but similar purpose; It is the architecture and minimum SDK level to filter all the available APKs by.
 
-Now, when we run update.sh, as long as the internet is still up, we will get a correct AuroraServices.apk where we wanted.
+Now, when we run `update.sh`, as long as the internet is still up, we will get a correct AuroraServices.apk where we wanted.
 
-### build.sh and defconf-aurora.txt
+### `build.sh` and defconf-aurora.txt
 
 For a new pack, we make a new defconf file. Note that the name in the defconf file is only used to execute the build command, the name of the zip in releases will be using the variant variable in the defconf. Open the defconf-aurora.txt file and see what the final result is.
 
@@ -49,7 +49,7 @@ NOTE: I only reccomend doing this if you're familiar with shell scripts. DO NOT 
  - Then we fill up the empty values in modprop, seeing as id has to be the modname defined in update-binary, and the Magisk module template is at 1900.
 
  - Since we have only two files (I wrote up the perm file) to be installed and they both are the same for various architectures and SDKs, we just add them to stuff.
-(To understand how the others like stuff_arch and stuff_sdk work, I'd reccomend running update.sh and looking at the keyboard swipe and contact sync files.)
+(To understand how the others like stuff_arch and stuff_sdk work, I'd reccomend running `update.sh` and looking at the keyboard swipe and contact sync files.)
 
  - They don't have anything they conflict with, so nothing to add to stuff_debloat.
 

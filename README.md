@@ -12,7 +12,7 @@
 ### What is this?
 This is a simple MicroG installer. It can install MicroG and other stuff into your system partition or as a Magisk module. It supports virtually all mobile architectures (arm/64, x86/64, mips/64) and fully supports KitKat and above. It can also (mostly) support much older versions, but sync adapters and some location providers won't work. It can even uninstall itself from your device, just rename it and flash it again.
 
-The things included in the Standard Edition zip are:
+The things included in the `Standard` Edition zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - Google Play store (modded for IAPs by Setialpha)
  - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
@@ -25,7 +25,7 @@ The things included in the Standard Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the NoGoolag Edition zip are:
+The things included in the `NoGoolag` Edition zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - FakeStore (from MicroG FDroid repo)
  - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
@@ -36,7 +36,7 @@ The things included in the NoGoolag Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the UNLP Edition zip are:
+The things included in the `UNLP` Edition zip are:
  - UNLP (From FDroid repo)
  - Maps APIv1
  - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
@@ -44,20 +44,20 @@ The things included in the UNLP Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the Minimal Edition zip are:
+The things included in the `Minimal` Edition zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - FakeStore (from MicroG FDroid repo)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the MinimalIAP zip are:
+The things included in the `MinimalIAP` zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - Google Play store (modded for IAPs by Setialpha)
  - Some Google DRM jars (From OpenGApps GitHub repo)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the AuroraServices Edition zip are:
+The things included in the `AuroraServices` Edition zip are:
  - AuroraServices (From Whyorean's GitLab)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
@@ -69,14 +69,14 @@ The maker does not support or endorse dirty flashing. It will harm you and your 
 How to control the zip by changing its name:
 NOTE: Control by name is not possible in Magisk Manager, since it copies the zip to a cache directory and renames it install.zip. This is unavoidable behaviour.
 
- - Add 'system' to its filename to force it to install/uninstall from system. Otherwise, it looks for Magisk, and if not found, installs to system. Obviously, if you flash it through Magisk Manager, you want to install it to Magisk. If not, you have to flash it through recovery.
+ - Add `system` to its filename to force it to install/uninstall from system. Otherwise, it looks for Magisk, and if not found, installs to system. Obviously, if you flash it through Magisk Manager, you want to install it to Magisk. If not, you have to flash it through recovery.
    - Remember that choosing Magisk mode (which is the default if Magisk is installed already) will remove the MinMicroG package if you uninstall Magisk.
 
- - Add 'uninstall' to its filename to uninstall it from your device, whether in Magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
+ - Add `uninstall` to its filename to uninstall it from your device, whether in Magisk mode or system mode. If you use Magisk Manager, your preffered method of uninstallation is from there.
 
-Just rename it and flash it again for the intended effect. For example, **MinMicroG-variant-version-signed.zip** to **system-MinMicroG-variant-version-signed.zip** (and the same for uninstall).
+Just rename it and flash it again for the intended effect. For example, `MinMicroG-variant-version-signed.zip` to `system-MinMicroG-variant-version-signed.zip` (and the same for uninstall).
 
-NOTE: If you have made a system install but have Magisk installed as well, you will have to use both "system" and "uninstall" keywords in the name for an uninstall flash.
+NOTE: If you have made a system install but have Magisk installed as well, you will have to use both `system` and `uninstall` keywords in the name for an uninstall flash.
 
 The zip debloats three specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
 WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over GApped ROMs, but don't take my word for it. Debloat before you flash.
@@ -88,10 +88,10 @@ If you used Magisk Manager, provide its logs.
 ### How do I build these packs myself?
 List of hard dependencies:
  - coreutils or equivalent [POSIX-compatible]
- - curl (update.sh)
- - jq (update.sh)
- - unzip (update.sh)
- - zip (build.sh)
+ - `curl` (update.sh)
+ - `jq` (update.sh)
+ - `unzip` (update.sh)
+ - `zip` (build.sh)
 
 cd to this directory and run:
 ```
@@ -105,18 +105,18 @@ To build all the packs and place them in the releases directory.
 
 That's it! If it tells you that some dependency is missing, install it.
 
-You can pass update.sh several perl-style regexes as arguments to only download specific files.
-You can pass build.sh some specific pack's conf names instead of all to build only the specific packs.
+You can pass `update.sh` several perl-style regexes as arguments to only download specific files.
+You can pass `build.sh` some specific pack's conf names instead of all to build only the specific packs.
 
-If you have the Java SDK and openssl tool installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to resdl/util/certs. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
+If you have the Java SDK and `openssl` installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to resdl/util/certs. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
 
-If you have aapt installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in res/system/etc/permissions/[package].xml files.
+If you have `aapt` installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in res/system/etc/permissions/[package].xml files.
 
-If you have java installed, you can automatically get the build script to sign all zips with testkeys. You will need to compile a zipsigner.jar (topjohnwu's rewrite of the AOSP version) and put it into into resdl/util. The source can be found in the Magisk repo, and a prebuilt binary [here](https://github.com/FriendlyNeighborhoodShane/MinMicroG_releases/releases/download/init/zipsigner.jar)
+If you have `java` installed, you can automatically get the build script to sign all zips with testkeys. You will need to compile a zipsigner.jar (topjohnwu's rewrite of the AOSP version) and put it into into resdl/util. The source can be found in the Magisk repo, and a prebuilt binary [here](https://github.com/FriendlyNeighborhoodShane/MinMicroG_releases/releases/download/init/zipsigner.jar)
 
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 
-Any changes made to the code should ideally be tested with test.sh, which runs the shellcheck linter program on every script.
+Any changes made to the code should ideally be tested with `test.sh`, which runs the shellcheck linter program on every script.
 
 ### Credits
  - Thanks to @osm0sis for the base magisk/recovery code and inspiration and guidance on the majority of the stuff in here.
