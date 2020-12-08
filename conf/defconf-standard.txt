@@ -195,14 +195,13 @@ post_install_actions() {
 
 pre_uninstall_actions() {
 
-  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall $addond_file $init_file";
+  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall $mark_file $addond_file $init_file";
   return 0;
 
 }
 
 post_uninstall_actions() {
 
-  rm -rf "$root/$mark_file";
   return 0;
 
 }
