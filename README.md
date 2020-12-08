@@ -112,8 +112,6 @@ If you have the Java SDK and `openssl` installed, the update script will dump th
 
 If you have `aapt` installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in res/system/etc/permissions/[package].xml files.
 
-If you have `java` installed, you can automatically get the build script to sign all zips with testkeys. You will need to compile a zipsigner.jar (topjohnwu's rewrite of the AOSP version) and put it into into resdl/util. The source can be found in the Magisk repo, and a prebuilt binary [here](https://github.com/FriendlyNeighborhoodShane/MinMicroG_releases/releases/download/init/zipsigner.jar)
-
 To build your own custom pack, refer to custom-pack.md in the conf directory.
 
 Any changes made to the code should ideally be tested with `test.sh`, which runs the shellcheck linter program on every script.
