@@ -23,6 +23,8 @@ nlpIchnaea="org.microg.nlp.backend.ichnaea"
 nlpDejavu="org.fitchfamily.android.dejavu"
 nlpApple="org.microg.nlp.backend.apple"
 nlpBmap="org.openbmap.unifiedNlp"
+nlpGsm="org.fitchfamily.android.gsmlocation"
+nlpWifi="org.fitchfamily.android.wifi_backend"
 
 # GmsCore userId
 gms_uid=$(dumpsys package com.google.android.gms | awk -F= '/userId/{print $2; exit}')
@@ -67,11 +69,11 @@ permissions ${microG} ${perm_fake}
 permissions ${PlayStore} ${perm_fake}
 
 # Location
-for app in ${microG} ${nlpIchnaea} ${nlpDejavu} ${nlpApple} ${nlpBmap}; do
+for app in ${microG} ${nlpIchnaea} ${nlpDejavu} ${nlpApple} ${nlpBmap} ${nlpGsm} ${nlpWifi}; do
 	permissions ${app} ${perm_cloc}
 done
 
-for app in ${microG} ${nlpIchnaea} ${nlpDejavu} ${nlpApple}; do
+for app in ${microG} ${nlpIchnaea} ${nlpDejavu} ${nlpApple} ${nlpGsm} ${nlpWifi}; do
 	permissions ${app} ${perm_floc}
 done
 
