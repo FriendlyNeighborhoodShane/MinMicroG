@@ -1,4 +1,4 @@
-# Functions for use by defonfs
+# Functions for use by defconfs
 
 # Process user confs
 user_conf() {

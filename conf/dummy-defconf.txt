@@ -32,7 +32,7 @@ stuff_arch_sdk="
 stuff_util="
 ";
 
-stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $initdfile $addondfile";
+stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk";
 
 stuff_debloat="
 ";
