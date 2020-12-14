@@ -25,6 +25,7 @@ echo "--       Minimal MicroG Build Script        --";
 echo "--     The Essentials only MicroG pack      --";
 echo "--      From the MicroG Telegram group      --";
 echo "--         No, not the Official one         --";
+modname="MinMicroG";
 
 for bin in cp grep ls mv rm sed zip; do
   [ "$(which $bin)" ] || abort "No $bin found";
@@ -129,7 +130,7 @@ echo " ";
 echo " - Copying zip to releases...";
 
 mkdir -p "$reldir";
-mv -f "$tmpdir/release.zip" "$reldir/MinMicroG-$variant-$ver-$buildtime.zip" || abort "Move failed";
+mv -f "$tmpdir/release.zip" "$reldir/$modname-$variant-$ver-$buildtime.zip" || abort "Move failed";
 
 # Done
 

@@ -111,6 +111,8 @@ addon_install() {
 #
 # MinMicroG addon.d
 
+modname="$modname";
+
 save_files() {
 cat <<EOL
 $(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "$addond_file" "$init_file" "$mark_file" | sed 's| |\n|g' | sort -u | tr -s '\n')
@@ -146,7 +148,7 @@ log "=== MinMicroG addon.d script ===";
 
 sdk="$(grep ro.build.version.sdk "/$sysroot/system/build.prop" | head -n1 | cut -d= -f2)";
 [ "$sdk" ] && [ "$sdk" -gt "0" ] || abort "could not find SDK";
-backupdir="/data/media/0/MinMicroG/backups";
+backupdir="/data/media/0/$modname/backups";
 [ "$C" ] && tmpdir="$C" || tmpdir="/tmp/backupdir";
 
 move() {
