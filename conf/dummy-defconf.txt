@@ -6,7 +6,7 @@ verc=""
 date="";
 minsdk=;
 
-modprop="id=MinMicroG
+modprop="id=$modname
 name=
 version=$ver
 versionCode=$verc
