@@ -14,7 +14,6 @@ abort() {
 }
 
 workdir="$(pwd)";
-cd "$workdir" || abort "Can't cd to $workdir";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
 reldir="$workdir/releases";
@@ -89,7 +88,7 @@ for file in "src/META-INF" "install.md" "LICENSE" "README.md"; do
 done;
 
 for object in $stuff $stuff_util; do
-  for realobject in $resdir/"$object" $resdldir/"$object"; do
+  for realobject in "$resdir/$object" "$resdldir/$object"; do
     [ -e "$realobject" ] || continue;
     echo " -- BUILDER: Copying $object";
     mkdir -p "$tmpdir/$(dirname "$object")/";
@@ -116,9 +115,9 @@ pre_build_actions;
 echo " ";
 echo " - Zipping files...";
 
-cd "$tmpdir" || abort "Can't cd to $tmpdir";
-zip -r9q "$tmpdir/release.zip" "." || abort "Zip failed";
-cd "$workdir" || abort "Can't cd to $workdir";
+(
+  cd "$tmpdir" && zip -r9q "$tmpdir/release.zip" ".";
+) || abort "Zip failed";
 
 # Post build actions
 

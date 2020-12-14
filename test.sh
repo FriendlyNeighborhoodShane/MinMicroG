@@ -14,7 +14,6 @@ abort() {
 }
 
 workdir="$(pwd)";
-cd "$workdir" || abort "Can't cd to $workdir";
 
 echo " ";
 echo "--        Minimal MicroG Test Script        --";

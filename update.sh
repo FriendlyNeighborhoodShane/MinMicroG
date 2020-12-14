@@ -14,7 +14,6 @@ abort() {
 }
 
 workdir="$(pwd)";
-cd "$workdir" || abort "Can't cd to $workdir";
 confdir="$workdir/conf";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
