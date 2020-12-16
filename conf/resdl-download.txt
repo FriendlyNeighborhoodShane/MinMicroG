@@ -141,7 +141,7 @@ verifycerts() {
   for repo in $(echo "$stuff_repo" | select_word 1); do
     certobject="repo/$repo.cer";
     unzip -l "$tmpdir/repos/$repo.jar" "META-INF/*" | grep -q "META-INF/MANIFEST.MF" && jarsigner -verify "$tmpdir/repos/$repo.jar" > /dev/null || {
-      echo "  !! Verification failed for repo ($repo)" >&2;
+      echo "  !! Verification failed for repo ($repo)";
       continue;
     }
     [ -f "$certdir/$certobject" ] || {
@@ -152,7 +152,7 @@ verifycerts() {
     }
     unzip -p "$tmpdir/repos/$repo.jar" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$tmpdir/tmp.cer";
     [ "$(diff -w "$tmpdir/tmp.cer" "$certdir/$certobject")" ] && {
-      echo "  !! Cert mismatch for repo ($repo)" >&2;
+      echo "  !! Cert mismatch for repo ($repo)";
       cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
     }
   done;
@@ -163,7 +163,7 @@ verifycerts() {
   for object in $(echo "$stuff_download" | grep -E "^[ ]*[^ ]+.apk[ ]+" | select_word 1); do
     certobject="$(dirname "$object")/$(basename "$object" .apk).cer";
     unzip -l "$resdldir/$object" "META-INF/*" | grep -q "META-INF/MANIFEST.MF" && jarsigner -verify "$resdldir/$object" > /dev/null || {
-      echo "  !! Verification failed for APK ($object)" >&2;
+      echo "  !! Verification failed for APK ($object)";
       continue;
     }
     [ -f "$certdir/$certobject" ] || {
@@ -174,7 +174,7 @@ verifycerts() {
     }
     unzip -p "$resdldir/$object" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$tmpdir/tmp.cer";
     [ "$(diff -w "$tmpdir/tmp.cer" "$certdir/$certobject")" ] && {
-      echo "  !! Cert mismatch for APK ($object)" >&2;
+      echo "  !! Cert mismatch for APK ($object)";
       cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
     }
   done;
@@ -197,7 +197,7 @@ checkwhitelist() {
   echo " ";
   echo " - Getting priv-app permissions...";
 
-  curl -L "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download" >&2; return 1; }
+  curl -L "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download"; return 1; }
 
   lines="$(grep -nE "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | select_word 1)";
   for line in $lines; do
@@ -214,7 +214,7 @@ checkwhitelist() {
   echo " - Checking priv-app permissions...";
 
   for object in $(echo "$stuff_download" | grep -E "^[ ]*/system/priv-app/[^ ]+.apk[ ]+" | select_word 1); do
-    [ -f "$resdldir/$object" ] || { echo "ERROR: Privapp $object not found" >&2; continue; }
+    [ -f "$resdldir/$object" ] || { echo "ERROR: Privapp $object not found"; continue; }
     privperms="";
     privapppackage="$(aapt dump badging "$resdldir/$object" | grep -oE "package: name=[^ ]*" | sed "s|'| |g" | select_word 3)"
     privappperms="$(aapt dump permissions "$resdldir/$object" | grep -oE "uses-permission: name=[^ ]*" | sed "s|'| |g" | select_word 3 | sort -u)";

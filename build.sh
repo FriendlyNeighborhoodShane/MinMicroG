@@ -6,9 +6,9 @@
 # Distributed under the terms of the GNU GPL v3
 
 abort() {
-  echo " " >&2;
-  echo "!!! FATAL ERROR: $1" >&2;
-  echo " " >&2;
+  echo " ";
+  echo "!!! FATAL ERROR: $1";
+  echo " ";
   [ -d "$tmpdir" ] && rm -rf "$tmpdir";
   exit 1;
 }
@@ -82,7 +82,7 @@ echo " ";
 echo " - Copying files...";
 
 for file in "src/META-INF" "install.md" "LICENSE" "README.md"; do
-  [ -e "$workdir/$file" ] || { echo "ERROR: $file doesn't exist" >&2; continue; }
+  [ -e "$workdir/$file" ] || { echo "ERROR: $file doesn't exist"; continue; }
   echo " -- BUILDER: Copying $file";
   cp -Rf "$workdir/$file" "$tmpdir/";
 done;

@@ -6,9 +6,9 @@
 # Distributed under the terms of the GNU GPL v3
 
 abort() {
-  echo " " >&2;
-  echo "!!! FATAL ERROR: $1" >&2;
-  echo " " >&2;
+  echo " ";
+  echo "!!! FATAL ERROR: $1";
+  echo " ";
   [ -d "$tmpdir" ] && rm -rf "$tmpdir";
   exit 1;
 }

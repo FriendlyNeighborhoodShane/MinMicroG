@@ -6,9 +6,9 @@
 # Distributed under the terms of the GNU GPL v3
 
 abort() {
-  echo " " >&2;
-  echo "!!! FATAL ERROR: $1" >&2;
-  echo " " >&2;
+  echo " ";
+  echo "!!! FATAL ERROR: $1";
+  echo " ";
   [ -d "$tmpdir" ] && rm -rf "$tmpdir";
   exit 1;
 }
@@ -97,11 +97,11 @@ echo " - Downloading repos...";
 for repo in $(echo "$stuff_repo" | select_word 1); do
   line="$(echo "$stuff_repo" | grep -E "^[ ]*$repo[ ]+" | head -n1)";
   repourl="$(echo "$line" | select_word 2)";
-  [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL" >&2; continue; }
+  [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL"; continue; }
   echo " -- REPO: Downloading repo $repo";
-  curl -L "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar" || { echo "ERROR: Repo $repo failed to download" >&2; continue; }
-  unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/" || { echo "ERROR: Repo $repo failed to unzip" >&2; continue; }
-  mv -f "$tmpdir/repos/index-v1.json" "$tmpdir/repos/$repo.json" || { echo "ERROR: Repo $repo failed to rename" >&2; continue; }
+  curl -L "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar" || { echo "ERROR: Repo $repo failed to download"; continue; }
+  unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/" || { echo "ERROR: Repo $repo failed to unzip"; continue; }
+  mv -f "$tmpdir/repos/index-v1.json" "$tmpdir/repos/$repo.json" || { echo "ERROR: Repo $repo failed to rename"; continue; }
 done;
 
 # Download assets
@@ -114,7 +114,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
   source="$(echo "$line" | select_word 2)";
   objectpath="$(echo "$line" | select_word 3)";
   objectarg="$(echo "$line" | select_word 4)";
-  [ "$objectpath" ] || { echo "ERROR: $object has no source arguments" >&2; continue; }
+  [ "$objectpath" ] || { echo "ERROR: $object has no source arguments"; continue; }
   echo " -- ASSET: Downloading object $object from source $source";
   case "$source" in
     local)
@@ -132,10 +132,10 @@ for object in $(echo "$stuff_download" | select_word 1); do
         gitlab)
           echo " ---- Getting GitLab project ID for $object";
           objectid="$(curl -Ls "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | select_word 3)";
-          [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found" >&2; continue; }
+          [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found"; continue; }
           echo " ---- Getting GitLab URL for $object";
           objectupload="$(curl -Ls "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -oE "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
-          [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found" >&2; continue; }
+          [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found"; continue; }
           objecturl="https://gitlab.com/$objectpath$objectupload";
         ;;
         repo)
@@ -145,8 +145,8 @@ for object in $(echo "$stuff_download" | select_word 1); do
             objectarch="$(echo "$objectarg" | sed "s|:| |g" | select_word 1)";
             objectsdk="$(echo "$objectarg" | sed "s|:| |g" | select_word 2)";
           }
-          [ "$objectrepo" ] && [ "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments" >&2; continue; }
-          [ -f "$tmpdir/repos/$objectrepo.json" ] || { echo "ERROR: $object repo $objectrepo does not exist" >&2; continue; }
+          [ "$objectrepo" ] && [ "$objectpackage" ] || { echo "ERROR: $object has no valid repo arguments"; continue; }
+          [ -f "$tmpdir/repos/$objectrepo.json" ] || { echo "ERROR: $object repo $objectrepo does not exist"; continue; }
           echo " ---- Getting repo URL for $object from repo $objectrepo";
           objectserver="$(jq -r '.repo.address' "$tmpdir/repos/$objectrepo.json")";
           if [ "$objectarg" ]; then
@@ -155,23 +155,23 @@ for object in $(echo "$stuff_download" | select_word 1); do
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
-          [ "$objectserver" ] && [ "$objectserver" != "null" ] && [ "$objectserverfile" ] && [ "$objectserverfile" != "null" ] || { echo "ERROR: $object has no URL available" >&2; continue; }
+          [ "$objectserver" ] && [ "$objectserver" != "null" ] && [ "$objectserverfile" ] && [ "$objectserverfile" != "null" ] || { echo "ERROR: $object has no URL available"; continue; }
           objecturl="$objectserver/$objectserverfile";
         ;;
         *)
-          echo "ERROR: Source $source for $object unknown" >&2;
+          echo "ERROR: Source $source for $object unknown";
         ;;
       esac;
-      [ "$objecturl" ] || { echo "ERROR: $object has no URL available" >&2; continue; }
+      [ "$objecturl" ] || { echo "ERROR: $object has no URL available"; continue; }
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
-      curl -L "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download" >&2; continue; }
+      curl -L "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       echo "NAME: $objectname, FILE: $object, URL: $objecturl;" >> "$updatelog";
     ;;
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
-  mv -f "$objectfile" "$resdldir/$object" || { echo "ERROR: $object failed to copy" >&2; continue; }
+  mv -f "$objectfile" "$resdldir/$object" || { echo "ERROR: $object failed to copy"; continue; }
 done;
 
 # Post update actions
