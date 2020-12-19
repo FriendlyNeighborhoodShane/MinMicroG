@@ -99,6 +99,7 @@ for repo in $(echo "$stuff_repo" | select_word 1); do
   repourl="$(echo "$line" | select_word 2)";
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL"; continue; }
   echo " -- REPO: Downloading repo $repo";
+  echo " ---- Downloading $repourl";
   curl -L "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar" || { echo "ERROR: Repo $repo failed to download"; continue; }
   unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/" || { echo "ERROR: Repo $repo failed to unzip"; continue; }
   mv -f "$tmpdir/repos/index-v1.json" "$tmpdir/repos/$repo.json" || { echo "ERROR: Repo $repo failed to rename"; continue; }
