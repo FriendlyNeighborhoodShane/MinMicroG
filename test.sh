@@ -38,4 +38,4 @@ done;
   # Can't add directives because it's all dynamic
 
 echo " ";
-shellcheck -s sh -e 1087,1090,2034,2154 "$@" -- "$workdir/src/META-INF/com/google/android/update-binary" "$workdir/build.sh" "$workdir/test.sh" "$workdir/update.sh" "$workdir"/conf/*.txt;
+shellcheck -s sh -e 1087,1090,2034,2154 "$@" -- ./src/META-INF/com/google/android/update-binary ./build.sh ./test.sh ./update.sh ./conf/*.txt;
