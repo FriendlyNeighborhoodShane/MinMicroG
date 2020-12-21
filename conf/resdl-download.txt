@@ -11,7 +11,7 @@ stuff_download="
   /system/app/AuroraDroid/AuroraDroid.apk                           gitlab  AuroraOSS/auroradroid                           .apk
   /system/app/AuroraStore/AuroraStore.apk                           gitlab  AuroraOSS/AuroraStore                           .apk
   /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk                 repo    fdroid/org.fitchfamily.android.dejavu
-  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk             github  ploink/Local-GSM-Backend                        .apk
+  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk             repo    fdroid/org.fitchfamily.android.gsmlocation
   /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk           repo    fdroid/org.fitchfamily.android.wifi_backend
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk                     repo    microg/com.google.android.gsf
   /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk repo    fdroid/org.microg.nlp.backend.ichnaea
