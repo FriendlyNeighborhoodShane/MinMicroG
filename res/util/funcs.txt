@@ -112,6 +112,8 @@ addon_install() {
 #!/sbin/sh
 #
 # MinMicroG addon.d
+#
+# ADDOND_VERSION=2
 
 modname="$modname";
 
