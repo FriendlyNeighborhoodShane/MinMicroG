@@ -187,14 +187,15 @@ post_install_actions() {
 
   addon_install;
   initscript_install;
-  touch "$root/$mark_file";
+  touch "$mark_file";
   return 0;
 
 }
 
 pre_uninstall_actions() {
 
-  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall $mark_file $addond_file $init_file";
+  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall $addond_file $init_file";
+  rm -f "$mark_file";
   return 0;
 
 }
@@ -205,6 +206,6 @@ post_uninstall_actions() {
 
 }
 
-mark_file="/system/etc/.mmg";
+mark_file="/data/.mmg";
 addond_file="/system/addon.d/10-$modname.sh";
 init_file="/system/etc/init.d/10-$modname";
