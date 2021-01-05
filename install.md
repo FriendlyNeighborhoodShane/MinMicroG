@@ -20,8 +20,8 @@ You can install MinMicroG as a Magisk module or directly to the system. If you i
  - Reboot.
 
 ##### Chapter 3: UnifiedNLP
- - In microG settings, go to UnifiedNLP settings, and enable every backend you want in "Configure location backends" and "Configure address lookup backends".
- - Open gear icons on the backends that have it and grant all neccessary permissions and configuration.
+ - Open microG Settings > Self-Check and check all boxes under "Permissions Granted" some may not enable at this moment.
+ - In microG settings, go to UnifiedNLP settings, and enable every backend you want in "Location Modules" grant all neccessary permissions and configuration.
  - Reboot.
 
 Most of your self-check should be checked by now. If the last one or two are not, just enable high accuracy location, open the map tab on Satstat (from FDroid) and wait until a blue circle appears. They should be okay now.
