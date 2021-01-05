@@ -20,7 +20,8 @@ You can install MinMicroG as a Magisk module or directly to the system. If you i
  - Reboot.
 
 ##### Chapter 3: UnifiedNLP
- - In microG settings, go to UnifiedNLP settings, and enable every backend you want in "Configure location backends" and "Configure address lookup backends".
+ - Open microG Settings > Self-Check and check all boxes under "Permissions Granted" some may not enable at this moment.
+ - In microG settings, go to UnifiedNLP settings, and enable every backend you want in "Location Modules" 
  - Open gear icons on the backends that have it and grant all neccessary permissions and configuration.
  - Reboot.
 
