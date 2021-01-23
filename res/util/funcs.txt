@@ -115,8 +115,6 @@ addon_install() {
 #
 # ADDOND_VERSION=2
 
-modname="$modname";
-
 save_files() {
 cat <<EOL
 $(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "$addond_file" "$init_file" "$mark_file" | sed 's| |\n|g' | sort -u | tr -s '\n')
@@ -145,69 +143,55 @@ abort() {
 log " ";
 log "=== MinMicroG addon.d script ===";
 
-[ -e "/system/system/build.prop" ] && sysroot="system";
-[ -e "/system_root/system/build.prop" ] && sysroot="system_root";
-[ -e "/mnt/system/system/build.prop" ] && sysroot="mnt/system";
-[ -f "/$sysroot/system/build.prop" ] || abort "could not find a ROM in /$sysroot";
+if [ -f "/tmp/backuptool.functions" ]; then
+  . "/tmp/backuptool.functions" || abort "could not source addon.d helper";
+elif [ -f "/postinstall/tmp/backuptool.functions" ]; then
+  . "/postinstall/tmp/backuptool.functions" || abort "could not source addon.d helper";
+else
+  abort "could not find addon.d helper"
+fi;
 
-sdk="$(grep ro.build.version.sdk "/$sysroot/system/build.prop" | head -n1 | cut -d= -f2)";
+[ -f "$S/build.prop" ] || abort "could not find a ROM in $S";
+sdk="$(grep ro.build.version.sdk "$S/build.prop" | head -n1 | cut -d= -f2)";
 [ "$sdk" ] && [ "$sdk" -gt "0" ] || abort "could not find SDK";
-backupdir="/data/media/0/$modname/backups";
-[ "$C" ] && tmpdir="$C" || tmpdir="/tmp/backupdir";
 
-move() {
-  sourceobject="$1";
-  destobject="$2";
-  if [ "$sdk" -lt 21 ]; then
-    [ "$(basename "$(dirname "$sourceobject")").apk" = "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$(dirname "$sourceobject")")/$(basename "$sourceobject")"; destobject="$(dirname "$(dirname "$destobject")")/$(basename "$destobject")"; }
-  fi;
-  [ "$(basename "$(dirname "$sourceobject")").apk" = "$(basename "$sourceobject")" ] && { sourceobject="$(dirname "$sourceobject")"; destobject="$(dirname "$destobject")"; }
-  [ -e "$sourceobject" ] || return 0;
-  mkdir -p "$(dirname "$destobject")";
-  cp -rf "$sourceobject" "$(dirname "$destobject")/" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
-  [ -e "$destobject" ] && log "MOVER: Object moved ($sourceobject to $destobject)" || { log "ERROR: Could not move ($sourceobject to $destobject)"; return 1; }
-  rm -rf "$sourceobject" || { log "ERROR: Could not remove ($sourceobject)"; return 1; }
-  [ -e "$sourceobject" ] && { log "ERROR: Could not remove ($sourceobject)"; return 1; } || log "MOVER: Object removed ($sourceobject)";
-}
-
-perm_r() {
-  uid="$1";
-  gid="$2";
-  dmod="$3";
-  fmod="$4";
-  dir="$5";
-  [ -d "$dir" ] || return 0;
-  chown -R $uid:$gid "$dir" || chown -R $uid.$gid "$dir";
-  find "$dir" -type d -exec chmod $dmod {} +;
-  find "$dir" -type f -exec chmod $fmod {} +;
+translate_path() {
+  while read -r entry; do
+    if [ "$sdk" -lt 21 ]; then
+      [ "$(basename "$(dirname "$entry")").apk" = "$(basename "$entry")" ] && entry="$(dirname "$(dirname "$entry")")/$(basename "$entry")";
+    fi;
+    [ "$(basename "$(dirname "$entry")").apk" = "$(basename "$entry")" ] && entry="$(dirname "$entry")";
+    echo "${entry#/system/}";
+  done;
 }
 
 case "$1" in
   backup)
     log " ";
     log "Backing up...";
-    save_files | while read object dummy; do
-      [ "$object" ] || continue;
-      move "/$sysroot/$object" "$tmpdir/$object";
+    save_files | translate_path | while read -r object; do
+      [ "$object" ] && [ -e "$S/$object" ] || continue;
+      backup_file "$S/$object";
+      log "BACKUPER: Object backed up ($object)";
     done;
   ;;
   restore)
     log " ";
     log "Restoring...";
-    save_files | while read object dummy; do
-      [ "$object" ] || continue;
-      move "$tmpdir/$object" "/$sysroot/$object";
+    save_files | translate_path | while read -r object; do
+      [ "$object" ] && [ -e "$C/$S/$object" ] || continue;
+      restore_file "$S/$object";
+      log "RESTORER: Object restored ($object)";
     done;
   ;;
   post-restore)
     log " ";
     log "Debloating...";
-    mount /data;
-    delete_files | while read object dummy; do
-      [ "$object" ] || continue;
-      move "/$sysroot/$object" "$backupdir/$object";
+    delete_files | translate_path | while read -r object; do
+      [ "$object" ] && [ -e "$S/$object" ] || continue;
+      rm -rf "$S/$object";
+      log "DEBLOATER: Object debloated ($object)";
     done;
-    [ -d "$backupdir" ] && { perm_r 1023 1023 775 664 "$backupdir"; chcon -hR "u:object_r:media_rw_data_file:s0" "$backupdir"; }
   ;;
 esac;
 EOF
