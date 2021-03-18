@@ -78,7 +78,7 @@ Just rename it and flash it again for the intended effect. For example, `MinMicr
 
 NOTE: If you have made a system install but have Magisk installed as well, you will have to use both `system` and `uninstall` keywords in the name for an uninstall flash.
 
-The zip debloats three specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in internal-storage/MinMicroG/Backup.
+The zip debloats three specific Google apps from your phone (GmsCore, GoogleServicesFramework, Phonesky and their MicroG counterparts) and 4 NLP providers when the pack contents conflicts with them. In Magisk mode, they won't be removed from system, and if you uninstall the pack, they'll come back. If you install in system, the debloated stuff will be stored in `internal-storage/MinMicroG/Backup`.
 WARNING: This zip does not and never will debloat anything else because that is the minimum coming in MicroG's way. I have had my own share of PTSD with debloating. I believe (through instinct) that it should work even on flashes over GApped ROMs, but don't take my word for it. Debloat before you flash.
 
 For support with flashing:
@@ -93,28 +93,28 @@ List of hard dependencies:
  - `unzip` (update.sh)
  - `zip` (build.sh)
 
-cd to this directory and run:
+`cd` to this directory and run:
 ```
 > ./update.sh
 ```
-To download all the assets to resdl directory.
+To download all the assets to `resdl` directory.
 ```
 > ./build.sh all
 ```
-To build all the packs and place them in the releases directory.
+To build all the packs and place them in the `releases` directory.
 
 That's it! If it tells you that some dependency is missing, install it.
 
-You can pass `update.sh` several perl-style regexes as arguments to only download specific files.
+You can pass `update.sh` several extended regexes as arguments to only download specific files.
 You can pass `build.sh` some specific pack's conf names instead of all to build only the specific packs.
 
-If you have the Java SDK and `openssl` installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to resdl/util/certs. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
+If you have the Java SDK and `openssl` installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to `resdl/util/certs`. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
 
-If you have `aapt` installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in res/system/etc/permissions/[package].xml files.
+If you have `aapt` installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in `res/system/etc/permissions/[package].xml` files.
 
-To build your own custom pack, refer to custom-pack.md in the conf directory.
+To build your own custom pack, refer to `conf/custom-conf.md`.
 
-Any changes made to the code should ideally be tested with `test.sh`, which runs the shellcheck linter program on every script.
+Any changes made to the code should ideally be tested with `test.sh`, which runs the `shellcheck` linter program on every script.
 
 ### Credits
  - Thanks to @osm0sis for the base magisk/recovery code and inspiration and guidance on the majority of the stuff in here.

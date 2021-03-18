@@ -1,6 +1,7 @@
 # Install Guide
 
 **Where I force my opinions on you**
+
 **Kanged from the NoGoolag Telegram group and microG subreddit**
 
 ### Instructions for installation
@@ -31,13 +32,13 @@ Most of your self-check should be checked by now. If the last one or two are not
 ##### [microG] Signature spoofing
 Sigspoofing is a feature that is required by several core features of MicroG, namely those that require pretending to be the real Google Play Services.
 
-All apps basically call Play Services like, "Yo, package com.google.android.gms with signature x, I need this done". So for microg to receive that message, microg needs to have the same signature.
+All apps basically call Play Services like, "Yo, package `com.google.android.gms` with signature `x`, I need this done". So for microg to receive that message, microg needs to have the same signature.
 
 But since we don't have google's keys to sign the microg apk with the same signature as gapps, we add an extra feature in Android that makes microg look like it has the play services signature. The app asks, "Hey Android, is this really play services?" Android responds <crossing its fingers>, "Yeah, sure".
 
 Of course, this is only a simplified explanation. To be more technically accurate, it patches Android's signature checking mechanism at the core. Because of that, apps can misuse the permission and compromise your device by allowing APKs from different (possibly malicious) creators to be installed over the current one.
 
-ROMs with a source sigspoof patch are much less dangerous in this regard because they have sigspoofing as a part of the Android runtime permissions GUI, as opposed to dexpatched ROMs, which grant it universally without any user consent. Regardless, you should carefully watch who you grant sigspoof to, and how you update that app. I am not aware of any app that legitimately requires sigspoof other than microG and fakestore.
+ROMs with a source sigspoof patch are much less dangerous in this regard because they have sigspoofing as a part of the Android runtime permissions GUI, as opposed to dexpatched ROMs, which grant it universally without any user consent. Regardless, you should carefully watch who you grant sigspoof to, and how you update that app. I am not aware of any app that legitimately requires sigspoof other than microG, fakestore, and patched Playstore.
 
 Because the permission has the possibility to be misused, several ROM maintainers (including LOS) have rejected putting sigspoof in the official code. But most of them have rejected it just because they are averse to trying to leave Google. Some ROMs that do include sigspoof in official builds are:
  * LOS for µG
@@ -71,11 +72,11 @@ What is network location? It's a quick and rough estimate of your location, seve
 
 It technically should not be needed for the functioning of most apps, but poorly coded ones that depend on Google Play Services often crash without it.
 
-Most ROMs should support it, but some OnePlus's and Xaiomi's have other providers (like com.qualcomm.location) that do not allow other providers to bind with system.
+Most ROMs should support it, but some OnePlus's and Xaiomi's have other providers (like `com.qualcomm.location`) that do not allow other providers to bind with system.
 
 If UNLP doesn't bind on your N+ ROM:
  - Ask maintainer to apply this [patch](https://github.com/microg/android_packages_apps_UnifiedNlp/blob/master/patches/android_frameworks_base-N.patch)
- - Make sure your the ROM looks for com.google.android.gms as a location provider
+ - Make sure your the ROM looks for `com.google.android.gms` as a location provider
 
 ##### No preinstalled GApps, obviously
 MinMicroG does a little debloating that may even make it work on GApps-infected ROMs, but I've never tested and give no guarantees. (Well I don't give guarantees for clean ROMs either, but that'a a different thing)
@@ -96,7 +97,7 @@ Or if you're a masochist, there are several ways to clean those kinds of ROMs:
 ### Troubleshooting
 
 ##### Not registered as system location provider
-If multiple reboots do not solve this, some other provider might be overriding it, like com.qualcomm.location. Debloat them. If that doesn't solve it, your ROM may require source-level patches, detailed in the prerequisites section.
+If multiple reboots do not solve this, some other provider might be overriding it, like `com.qualcomm.location`. Debloat them. If that doesn't solve it, your ROM may require source-level patches, detailed in the prerequisites section.
 
 ##### Misc network location problems
 I should take these two paragraphs to clarify that Network location is NOT GPS. microG has nothing to do with your GPS. Network Location is that hugely approximated wide-circle that appears before you get a GPS Lock.
@@ -127,8 +128,7 @@ if no:
  - Before restoring a backup, first restore the app only (without data) and start it to register the app. After that you can restore the data.
 
 If yes:
- - Ensure you don't have an adblocker blocking the domain, whitelist it in adaway and similar:
-mtalk.google.com
+ - Ensure you don't have an adblocker blocking the domain, whitelist it in adaway and similar: `mtalk.google.com`
 
 If you can't get any app to register for Google Cloud Messaging, try dialing this:
 
@@ -166,9 +166,9 @@ You can retieve your contacts directly from your Google account in a vcf file:
 You should also be able to sync contacts with Google without proprietary apps or microG using the open-source CardDAV client DAVdroid (available on F-Droid or Play)
  - First of all, go to Google dashboard's [less secure apps setting](https://www.google.com/settings/security/lesssecureapps) with your account and enable the setting
  - When logging in with DAVDroid, Use "Login with URL and user name"
-   - Base URL: https://www.google.com/calendar/dav/your_gmail_id@gmail.com/events
-   - User name: your_gmail_id@gmail.com
-   - Password: Your Google account password
+   - Base URL: `https://www.google.com/calendar/dav/[your_gmail_id]@gmail.com/events`
+   - User name: `[your_gmail_id]@gmail.com`
+   - Password: `[your_google_password]`
 
 ##### Android Wear companion apps
  - GatgetBridge companion app on F-Droid
