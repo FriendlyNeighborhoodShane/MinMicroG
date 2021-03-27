@@ -131,8 +131,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
           objecturl="$(curl -Ls "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep "$objectarg$" | head -n1)";
         ;;
         gitlab)
-          echo " ---- Getting GitLab project ID for $object";
-          objectid="$(curl -Ls "https://gitlab.com/$objectpath" | grep "Project ID" | head -n1 | select_word 3)";
+          objectid="$(echo "$objectpath" | jq -Rr "@uri")";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found"; continue; }
           echo " ---- Getting GitLab URL for $object";
           objectupload="$(curl -Ls "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -oE "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
