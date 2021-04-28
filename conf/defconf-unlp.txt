@@ -1,9 +1,9 @@
 # Config
 
 variant="UNLP";
-ver="2.9";
-verc="290";
-date="28th november, 2020";
+ver="2.10";
+verc="2100";
+date="28th april, 2021";
 minsdk=19;
 
 modprop="id=$modname
