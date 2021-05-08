@@ -1,8 +1,8 @@
 # Config
 
-variant=""
+variant="";
 ver="";
-verc=""
+verc="";
 date="";
 minsdk=;
 
