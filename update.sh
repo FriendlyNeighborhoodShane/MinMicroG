@@ -151,7 +151,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
           objectserver="$(jq -r '.repo.address' "$tmpdir/repos/$objectrepo.json")";
           if [ "$objectarg" ]; then
             echo " ---- Getting object for args $objectarg [$objectarch] [$objectsdk]";
-            objectserverfile="$(jq -r --arg pkg "$objectpackage" --arg arch "$objectarch" --arg sdk "$objectsdk" '.packages[$pkg][] | if ( $arch | length ) == 0 then . elif has ( "nativecode" ) then select ( .nativecode[]? == $arch ) else . end | if ( $sdk | length ) == 0 then . else select ( ( .minSdkVersion | tonumber ) <= ( $sdk | tonumber ) ) end | .apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
+            objectserverfile="$(jq -r --arg pkg "$objectpackage" --arg arch "$objectarch" --arg sdk "$objectsdk" '.packages[$pkg][] | if $arch != "" and has("nativecode") then select(.nativecode[]? == $arch) else . end | if $sdk != "" then select((.minSdkVersion|tonumber?) <= ($sdk|tonumber?)) else . end | .apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           else
             objectserverfile="$(jq -r --arg pkg "$objectpackage" '.packages[$pkg][].apkName' "$tmpdir/repos/$objectrepo.json" | head -n1)";
           fi;
