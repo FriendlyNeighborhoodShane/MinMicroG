@@ -44,7 +44,7 @@ stuff_arch_sdk="
 ";
 
 stuff_util="
-  /util/funcs.txt
+  /util/func-defconf.sh
 ";
 
 stuff_other="
@@ -160,8 +160,8 @@ post_build_actions() {
 
 pre_install_actions() {
 
-  unzip -o "$zipfile" "util/funcs.txt" -d "$filedir/";
-  . "$filedir/util/funcs.txt";
+  unzip -o "$zipfile" "util/func-defconf.sh" -d "$filedir/";
+  . "$filedir/util/func-defconf.sh";
   user_conf;
   microg_cleanup;
   return 0;
