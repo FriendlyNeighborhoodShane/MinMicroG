@@ -88,22 +88,26 @@ for file in "src/META-INF" "install.md" "LICENSE" "README.md"; do
 done;
 
 for object in $stuff $stuff_util; do
+  found="";
   for realobject in "$resdir/$object" "$resdldir/$object"; do
-    [ -e "$realobject" ] || continue;
+    [ -e "$realobject" ] && found="yes" || continue;
     echo " -- BUILDER: Copying $object";
     mkdir -p "$tmpdir/$(dirname "$object")/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/";
   done;
+  [ "$found" ] || echo "ERROR: object not found ($object)";
 done;
 
 for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
+  found="";
   for realobject in "$resdir/$(dirname "$object")"/-*-/"$(basename "$object")" "$resdldir/$(dirname "$object")"/-*-/"$(basename "$object")"; do
-    [ -e "$realobject" ] || continue;
+    [ -e "$realobject" ] && found="yes" || continue;
     cond="$(basename "$(dirname "$realobject")")";
     echo " -- BUILDER: Copying $object ($cond)";
     mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
   done;
+  [ "$found" ] || echo "ERROR: object not found ($object)";
 done;
 
 # Pre build actions
