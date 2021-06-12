@@ -143,7 +143,6 @@ post_build_actions() {
 
 pre_install_actions() {
 
-  unzip -o "$zipfile" "util/func-defconf.sh" -d "$filedir/";
   . "$filedir/util/func-defconf.sh";
   user_conf;
   microg_cleanup;

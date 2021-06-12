@@ -431,6 +431,11 @@ fi;
 
 if [ "$action" = "installation" ]; then
 
+  ui_print " ";
+  ui_print "Extracting files...";
+  mkdir -p "$filedir";
+  unzip -o "$zipfile" -d "$filedir" || abort "Could not unzip $zipfile";
+
   pre_install_actions;
 
   ui_print " ";
@@ -451,11 +456,6 @@ if [ "$action" = "installation" ]; then
     perm 1023 1023 775 664 "$backupdir";
     chcon -hR 'u:object_r:media_rw_data_file:s0' "$backupdir";
   }
-
-  ui_print " ";
-  ui_print "Extracting files...";
-  mkdir -p "$filedir";
-  unzip -o "$zipfile" -d "$filedir" || abort "Could not unzip $zipfile";
 
   ui_print " ";
   ui_print "Doing size checks...";
