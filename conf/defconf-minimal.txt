@@ -12,7 +12,7 @@ version=$ver
 versionCode=$verc
 author=MOVZX and FatherJony and FriendlyNeighborhoodShane
 description=A Minimal MicroG installer with just the essentials
-support=https://t.me/joinchat/FyFlS0X2D7f6YNvdxhEsfw
+support=
 donate=
 minMagisk=1900
 ";

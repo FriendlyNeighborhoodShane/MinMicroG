@@ -69,8 +69,6 @@ abort() {
 ui_print " ";
 ui_print "--         Minimal MicroG Installer         --";
 ui_print "--     The Essentials only MicroG pack      --";
-ui_print "--      From the MicroG Telegram group      --";
-ui_print "--         No, not the Official one         --";
 modname="MinMicroG";
 
 log " ";
@@ -573,6 +571,5 @@ sync;
 
 ui_print " ";
 ui_print "Done!";
-ui_print "Join us on Telegram: @NoGooLag";
 ui_print " ";
 exit 0;

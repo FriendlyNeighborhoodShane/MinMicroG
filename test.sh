@@ -18,8 +18,6 @@ workdir="$(pwd)";
 echo " ";
 echo "--        Minimal MicroG Test Script        --";
 echo "--     The Essentials only MicroG pack      --";
-echo "--      From the MicroG Telegram group      --";
-echo "--         No, not the Official one         --";
 
 for bin in shellcheck; do
   [ "$(which $bin)" ] || abort "No $bin found";

@@ -22,8 +22,6 @@ buildtime="$(date -u +%Y%m%d%H%M%S)";
 echo " ";
 echo "--       Minimal MicroG Build Script        --";
 echo "--     The Essentials only MicroG pack      --";
-echo "--      From the MicroG Telegram group      --";
-echo "--         No, not the Official one         --";
 modname="MinMicroG";
 
 for bin in cp grep ls mv rm sed zip; do

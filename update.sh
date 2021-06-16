@@ -37,8 +37,6 @@ select_word() {
 echo " ";
 echo "--       Minimal MicroG Update Script       --";
 echo "--      The Essentials Only MicroG Pack     --";
-echo "--      From The MicroG Telegram group      --";
-echo "--         No, not the Official one         --";
 
 # Bin check
 for bin in chmod cp curl grep head jq mv rm sort tr unzip; do
