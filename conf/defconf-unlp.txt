@@ -4,7 +4,7 @@ variant="UNLP";
 ver="2.10";
 verc="2100";
 date="28th april, 2021";
-minsdk=19;
+minsdk="19";
 
 modprop="id=$modname
 name=Minimal MicroG Pack $variant Edition

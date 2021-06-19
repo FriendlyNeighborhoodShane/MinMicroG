@@ -4,7 +4,7 @@ variant="Minimal";
 ver="2.10";
 verc="2100";
 date="28th april, 2021";
-minsdk=21;
+minsdk="21";
 
 modprop="id=$modname
 name=Minimal MicroG Pack $variant Edition
