@@ -61,9 +61,9 @@ verifycerts() {
 
   [ "$stuff_repo" ] || echo "$stuff_download" | grep -qE "^[ ]*[^ ]+.apk[ ]+" || return 0;
 
-  command -v "jarsigner" >/dev/null && command -v "openssl" >/dev/null || {
+  command -v "apksigner" >/dev/null && command -v "openssl" >/dev/null || {
     echo " ";
-    echo " !! Not checking certificates (missing jarsigner or openssl)";
+    echo " !! Not checking certificates (missing apksigner or openssl)";
     return 0;
   }
 
@@ -75,7 +75,7 @@ verifycerts() {
   for repo in $(echo "$stuff_repo" | select_word 1); do
     [ -f "$tmpdir/repos/$repo.jar" ] || continue;
     certobject="repo/$repo.cer";
-    unzip -l "$tmpdir/repos/$repo.jar" "META-INF/*" | grep -q "META-INF/.*.RSA" && jarsigner -verify "$tmpdir/repos/$repo.jar" > /dev/null || {
+    apksigner verify --min-sdk-version=0 --max-sdk-version=0 "$tmpdir/repos/$repo.jar" > /dev/null || {
       echo "  !! Verification failed for repo ($repo)";
       continue;
     }
@@ -98,7 +98,7 @@ verifycerts() {
   for object in $(echo "$stuff_download" | grep -E "^[ ]*[^ ]+.apk[ ]+" | select_word 1); do
     [ -f "$resdldir/$object" ] || continue;
     certobject="$(dirname "$object")/$(basename "$object" .apk).cer";
-    unzip -l "$resdldir/$object" "META-INF/*" | grep -q "META-INF/.*.RSA" && jarsigner -verify "$resdldir/$object" > /dev/null || {
+    apksigner verify "$resdldir/$object" > /dev/null || {
       echo "  !! Verification failed for APK ($object)";
       continue;
     }
