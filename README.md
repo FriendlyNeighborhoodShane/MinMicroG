@@ -105,7 +105,7 @@ That's it! If it tells you that some dependency is missing, install it.
 You can pass `update.sh` several extended regexes as arguments to only download specific files.
 You can pass `build.sh` some specific pack's conf names instead of all to build only the specific packs.
 
-If you have the Java SDK and `openssl` installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to `resdl/util/certs`. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
+If you have `apksigner` and `openssl` installed, the update script will dump the signing certificates of all downloaded APKs and repo jars to `resdl/util/certs`. It will compare all future downloads with those certs, and in case of any signature errors or mismatches, will warn you.
 
 If you have `aapt` installed, the update script will download the permission docs from the Android website, check the priv-apps for any new privileged permissions and tell you to add them to the whitelist in `res/system/etc/permissions/[package].xml` files.
 
