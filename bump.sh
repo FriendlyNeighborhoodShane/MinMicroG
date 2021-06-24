@@ -13,6 +13,7 @@ abort() {
 }
 
 workdir="$(pwd)";
+confdir="$workdir/conf";
 
 quote_str() {
   printf '"%s"' "$1";
@@ -32,7 +33,7 @@ echo " ";
 echo " - Bumping defconfs: [$1] [$2] [$3]";
 
 for i in "ver=$(quote_str "$1")" "verc=$(quote_str "$2")" "date=$(quote_str "$3")"; do
-  sed -i "s|${i%%=*}=.*|$i;|g" -- "$workdir/conf"/defconf-*.txt;
+  sed -i "s|${i%%=*}=.*|$i;|g" -- "$confdir"/defconf-*.txt;
 done;
 
 echo " ";

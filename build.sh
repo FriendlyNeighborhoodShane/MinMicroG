@@ -14,6 +14,7 @@ abort() {
 }
 
 workdir="$(pwd)";
+confdir="$workdir/conf";
 resdir="$workdir/res";
 resdldir="$workdir/resdl";
 reldir="$workdir/releases";
@@ -40,7 +41,7 @@ if [ "$1" = "all" ]; then
   echo " ";
   echo " - Building all packages...";
   echo " ";
-  for var in $(find "$workdir/conf" -name "defconf-*.txt" | sed -e "s|^$workdir/conf/defconf-||g" -e "s|.txt$||g"); do
+  for var in $(find "$confdir" -name "defconf-*.txt" | sed -e "s|^$confdir/defconf-||g" -e "s|.txt$||g"); do
     echo " - Executing build for $var...";
     "$workdir/build.sh" "$var";
   done;
@@ -57,7 +58,7 @@ elif [ "$#" -gt "1" ]; then
 fi;
 
 confvar="$1";
-[ -f "$workdir/conf/defconf-$confvar.txt" ] || abort "No $confvar variant defconf found";
+[ -f "$confdir/defconf-$confvar.txt" ] || abort "No $confvar variant defconf found";
 
 echo " ";
 echo " - Building package $confvar";
@@ -68,7 +69,7 @@ mkdir -p "$tmpdir";
 
 # Config
 
-cp -f "$workdir/conf/defconf-$confvar.txt" "$tmpdir/defconf";
+cp -f "$confdir/defconf-$confvar.txt" "$tmpdir/defconf";
 . "$tmpdir/defconf" || abort "Config for $confvar cannot be executed";
 
 echo " ";
