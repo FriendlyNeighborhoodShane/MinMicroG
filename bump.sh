@@ -23,7 +23,7 @@ echo "--        Minimal MicroG Test Script        --";
 echo "--     The Essentials only MicroG pack      --";
 
 for bin in printf sed; do
-  [ "$(which $bin)" ] || abort "No $bin found";
+  command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
 [ "$#" = "3" ] || abort "Not enough arguments";

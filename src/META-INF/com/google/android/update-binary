@@ -102,7 +102,7 @@ $bootmode || {
 }
 
 for bin in chcon chmod chown cp cut df du echo find grep head mkdir mount ps rm sed tail touch umount unzip; do
-  [ "$(which "$bin")" ] || abort "No $bin available";
+  command -v "$bin" >/dev/null || abort "No $bin available";
 done;
 
 $bootmode && filedir="/dev/tmp/$modname" || filedir="/tmp/$modname";

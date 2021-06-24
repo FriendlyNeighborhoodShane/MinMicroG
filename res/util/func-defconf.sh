@@ -80,7 +80,7 @@ microg_cleanup() {
             fi;
           done;
         fi;
-        if [ "$(which sqlite3)" ]; then
+        if command -v "sqlite3" >/dev/null; then
           find /data/system* -type f -name "accounts*db" 2>/dev/null | while read -r database; do
             log "PREPPER: deleting Google Accounts from $database";
             sqlite3 "$database" "DELETE FROM accounts WHERE type='com.google';";

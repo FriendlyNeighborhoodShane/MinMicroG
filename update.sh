@@ -40,7 +40,7 @@ echo "--      The Essentials Only MicroG Pack     --";
 
 # Bin check
 for bin in chmod cp curl grep head jq mv rm sort tr unzip; do
-  [ "$(which $bin)" ] || abort "No $bin found";
+  command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
 echo " ";

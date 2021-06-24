@@ -54,7 +54,7 @@ verifycerts() {
 
   [ "$stuff_repo" ] || echo "$stuff_download" | grep -qE "^[ ]*[^ ]+.apk[ ]+" || return 0;
 
-  [ "$(which jarsigner)" ] && [ "$(which openssl)" ] || {
+  command -v "jarsigner" >/dev/null && command -v "openssl" >/dev/null || {
     echo " ";
     echo " !! Not checking certificates (missing jarsigner or openssl)";
     return 0;
@@ -115,7 +115,7 @@ checkwhitelist() {
 
   echo "$stuff_download" | grep -qE "^[ ]*/system/priv-app/[^ ]+.apk[ ]+" || return 0;
 
-  [ "$(which aapt)" ] || {
+  command -v "aapt" >/dev/null || {
     echo " ";
     echo " !! Not checking privperms (missing aapt)";
     return 0;

@@ -25,7 +25,7 @@ echo "--     The Essentials only MicroG pack      --";
 modname="MinMicroG";
 
 for bin in cp grep ls mv rm sed zip; do
-  [ "$(which $bin)" ] || abort "No $bin found";
+  command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
 echo " ";
