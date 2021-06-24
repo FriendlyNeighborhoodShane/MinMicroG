@@ -116,6 +116,8 @@ To build your own custom pack, refer to `conf/custom-conf.md`.
 
 Any changes made to the code should ideally be tested with `test.sh`, which runs the `shellcheck` linter program on every script.
 
+Use `bump.sh` to automatically bump the `ver`, `verc` and `date` values across all defconf files.
+
 ### Credits
  - Thanks to @osm0sis for the base magisk/recovery code and inspiration and guidance on the majority of the stuff in here.
  - Thanks to @Setialpha, the creator of NanoDroid, and ale5000 for the lib installation code, permissions code, and patched play.

@@ -9,7 +9,6 @@ abort() {
   echo " ";
   echo "!!! FATAL ERROR: $1";
   echo " ";
-  [ -d "$tmpdir" ] && rm -rf "$tmpdir";
   exit 1;
 }
 
@@ -36,4 +35,4 @@ done;
   # Can't add directives because it's all dynamic
 
 echo " ";
-shellcheck -s sh -e 1087,1090,2034,2154 "$@" -- ./src/META-INF/com/google/android/update-binary ./build.sh ./test.sh ./update.sh ./conf/*.txt ./res/util/*.sh;
+shellcheck -s sh -e 1087,1090,2034,2154 "$@" -- ./src/META-INF/com/google/android/update-binary ./build.sh ./bump.sh ./test.sh ./update.sh ./conf/*.txt ./res/util/*.sh;

@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# Bump versions in defconf files
+#
+# Copyright 2018-2020 FriendlyNeighborhoodShane
+# Distributed under the terms of the GNU GPL v3
+
+abort() {
+  echo " ";
+  echo "!!! FATAL ERROR: $1";
+  echo " ";
+  exit 1;
+}
+
+workdir="$(pwd)";
+
+quote_str() {
+  printf '"%s"' "$1";
+}
+
+echo " ";
+echo "--        Minimal MicroG Test Script        --";
+echo "--     The Essentials only MicroG pack      --";
+
+for bin in printf sed; do
+  [ "$(which $bin)" ] || abort "No $bin found";
+done;
+
+[ "$#" = "3" ] || abort "Not enough arguments";
+
+echo " ";
+echo " - Bumping defconfs: [$1] [$2] [$3]";
+
+for i in "ver=$(quote_str "$1")" "verc=$(quote_str "$2")" "date=$(quote_str "$3")"; do
+  sed -i "s|${i%%=*}=.*|$i;|g" -- "$workdir/conf"/defconf-*.txt;
+done;
+
+echo " ";
+echo " - Done!";
+echo " ";
