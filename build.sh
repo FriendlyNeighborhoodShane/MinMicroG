@@ -25,7 +25,7 @@ echo "--       Minimal MicroG Build Script        --";
 echo "--     The Essentials only MicroG pack      --";
 modname="MinMicroG";
 
-for bin in cp grep ls mv rm sed zip; do
+for bin in cp find grep mv rm sed zip; do
   command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
@@ -41,7 +41,8 @@ if [ "$1" = "all" ]; then
   echo " ";
   echo " - Building all packages...";
   echo " ";
-  for var in $(find "$confdir" -name "defconf-*.txt" | sed -e "s|^$confdir/defconf-||g" -e "s|.txt$||g"); do
+  varlist="$(find "$confdir" -type f -name "defconf-*.txt" -exec expr {} : ".*/defconf-\(.*\)\.txt$" ';')";
+  for var in $varlist; do
     echo " - Executing build for $var...";
     "$workdir/build.sh" "$var";
   done;

@@ -19,23 +19,24 @@ unzipmaps() {
 # Get update delta
 updatedelta() {
 
-  newlog=""
-  oldlogs=""
-  for log in $(ls -td "$reldir"/update-*.log); do
-    [ "$(basename "$log")" = "update-$updatetime.log" ] && newlog="$(basename "$log")" || oldlogs="$oldlogs $(basename "$log")";
+  newlog="";
+  oldlogs="";
+  loglist="$(find "$reldir" -type f -name "update-*.log" -exec expr {} : ".*/update-\([0-9]\{14\}\)\.log$" ';' | sort -nr)";
+  for log in $loglist; do
+    [ "$log" = "$updatetime" ] && newlog="$log" || oldlogs="$oldlogs $log";
   done;
   [ "$newlog" ] && [ "$oldlogs" ] || return 0;
 
   echo " ";
   echo " - Checking resdl delta between updates...";
 
-  for entry in $(grep -oE "FILE: [^,;]*" "$reldir/$newlog" | cut -d" " -f2); do
-    line="$(grep "FILE: $entry," "$reldir/$newlog")";
+  for entry in $(grep -oE "FILE: [^,;]*" "$reldir/update-$newlog.log" | cut -d" " -f2); do
+    line="$(grep "FILE: $entry," "$reldir/update-$newlog.log")";
     file="$entry";
     url="$(echo "$line" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
     oldurl="";
     for log in $oldlogs; do
-      oldurl="$(grep "FILE: $file," "$reldir/$log" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
+      oldurl="$(grep "FILE: $file," "$reldir/update-$log.log" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
       [ "$oldurl" ] && break;
     done;
     [ "$oldurl" ] || oldurl="None";

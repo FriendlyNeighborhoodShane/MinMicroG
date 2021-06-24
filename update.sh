@@ -39,7 +39,7 @@ echo "--       Minimal MicroG Update Script       --";
 echo "--      The Essentials Only MicroG Pack     --";
 
 # Bin check
-for bin in chmod cp curl grep head jq mv rm sort tr unzip; do
+for bin in chmod cp curl find grep head jq mv rm sort tr unzip; do
   command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
