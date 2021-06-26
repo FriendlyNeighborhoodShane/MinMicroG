@@ -31,21 +31,22 @@ updatedelta() {
   echo " - Checking resdl delta between updates...";
 
   for entry in $(grep -oE "FILE: [^,;]*" "$reldir/update-$newlog.log" | cut -d" " -f2); do
-    line="$(grep "FILE: $entry," "$reldir/update-$newlog.log")";
     file="$entry";
+    line="$(grep "FILE: $file[,;]" "$reldir/update-$newlog.log" | head -n1)";
     url="$(echo "$line" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
-    oldurl="";
+    oldline="";
     for log in $oldlogs; do
-      oldurl="$(grep "FILE: $file," "$reldir/update-$log.log" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
-      [ "$oldurl" ] && break;
+      oldline="$(grep "FILE: $file[,;]" "$reldir/update-$log.log" | head -n1)";
+      [ "$oldline" ] && break;
     done;
+    oldurl="$(echo "$oldline" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
     [ "$oldurl" ] || oldurl="None";
     [ "$url" = "$oldurl" ] && continue;
-    echo " -- Updated file: $file"
-    echo "   ++ Old URL: $oldurl"
-    echo "   ++ New URL: $url"
-    echo "   ++ Old name: $(basename "$oldurl")"
-    echo "   ++ New name: $(basename "$url")"
+    echo " -- Updated file: $file";
+    echo "   ++ Old URL: $oldurl";
+    echo "   ++ New URL: $url";
+    echo "   ++ Old name: $(basename "$oldurl")";
+    echo "   ++ New name: $(basename "$url")";
   done;
 
 }
