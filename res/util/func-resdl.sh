@@ -34,17 +34,22 @@ updatedelta() {
     file="$entry";
     line="$(grep "FILE: $file[,;]" "$reldir/update-$newlog.log" | head -n1)";
     url="$(echo "$line" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
+    cksum="$(echo "$line" | grep -oE "CKSUM: [^,;]*" | cut -d" " -f2)";
     oldline="";
     for log in $oldlogs; do
       oldline="$(grep "FILE: $file[,;]" "$reldir/update-$log.log" | head -n1)";
       [ "$oldline" ] && break;
     done;
     oldurl="$(echo "$oldline" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
+    oldcksum="$(echo "$oldline" | grep -oE "CKSUM: [^,;]*" | cut -d" " -f2)";
     [ "$oldurl" ] || oldurl="None";
-    [ "$url" = "$oldurl" ] && continue;
+    [ "$oldcksum" ] || oldcksum="None";
+    [ "$url" = "$oldurl" ] && [ "$cksum" = "$oldcksum" ] && continue;
     echo " -- Updated file: $file";
     echo "   ++ Old URL: $oldurl";
     echo "   ++ New URL: $url";
+    echo "   ++ Old CKSUM: $oldcksum";
+    echo "   ++ New CKSUM: $cksum";
     echo "   ++ Old name: $(basename "$oldurl")";
     echo "   ++ New name: $(basename "$url")";
   done;

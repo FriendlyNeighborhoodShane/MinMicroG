@@ -39,7 +39,7 @@ echo "--       Minimal MicroG Update Script       --";
 echo "--      The Essentials Only MicroG Pack     --";
 
 # Bin check
-for bin in chmod cp curl find grep head jq mv rm sort tr unzip; do
+for bin in chmod cksum cp curl find grep head jq mv rm sort tr unzip; do
   command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
@@ -165,7 +165,8 @@ for object in $(echo "$stuff_download" | select_word 1); do
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
       curl -L "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
-      echo "NAME: $objectname, FILE: $object, URL: $objecturl;" >> "$updatelog";
+      objectcksum="$(cksum "$objectfile" | select_word 1)";
+      echo "NAME: $objectname, FILE: $object, URL: $objecturl, CKSUM: $objectcksum;" >> "$updatelog";
     ;;
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
