@@ -166,7 +166,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
       echo " ---- Downloading $objecturl";
       curl -L "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       objectcksum="$(cksum "$objectfile" | select_word 1)";
-      echo "NAME: $objectname, FILE: $object, URL: $objecturl, CKSUM: $objectcksum;" >> "$updatelog";
+      echo "FILE: $object, URL: $objecturl, CKSUM: $objectcksum;" >> "$updatelog";
     ;;
   esac;
   mkdir -p "$resdldir/$(dirname "$object")";
