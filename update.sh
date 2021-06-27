@@ -98,7 +98,7 @@ for repo in $(echo "$stuff_repo" | select_word 1); do
   [ "$repourl" ] || { echo "ERROR: Repo $repo has no URL"; continue; }
   echo " -- REPO: Downloading repo $repo";
   echo " ---- Downloading $repourl";
-  curl -L "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar" || { echo "ERROR: Repo $repo failed to download"; continue; }
+  curl -fL "$repourl/index-v1.jar" -o "$tmpdir/repos/$repo.jar" || { echo "ERROR: Repo $repo failed to download"; continue; }
   unzip -oq "$tmpdir/repos/$repo.jar" "index-v1.json" -d "$tmpdir/repos/" || { echo "ERROR: Repo $repo failed to unzip"; continue; }
   mv -f "$tmpdir/repos/index-v1.json" "$tmpdir/repos/$repo.json" || { echo "ERROR: Repo $repo failed to rename"; continue; }
 done;
@@ -126,13 +126,13 @@ for object in $(echo "$stuff_download" | select_word 1); do
         ;;
         github)
           echo " ---- Getting GitHub URL for $object";
-          objecturl="$(curl -Ls "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep "$objectarg$" | head -n1)";
+          objecturl="$(curl -fLs "https://api.github.com/repos/$objectpath/releases" | jq -r '.[].assets[].browser_download_url' | grep "$objectarg$" | head -n1)";
         ;;
         gitlab)
           objectid="$(echo "$objectpath" | jq -Rr "@uri")";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found"; continue; }
           echo " ---- Getting GitLab URL for $object";
-          objectupload="$(curl -Ls "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -oE "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
+          objectupload="$(curl -fLs "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -oE "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
           [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found"; continue; }
           objecturl="https://gitlab.com/$objectpath$objectupload";
         ;;
@@ -164,7 +164,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
-      curl -L "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
+      curl -fL "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       objectcksum="$(cksum "$objectfile" | select_word 1)";
       echo "FILE: $object, URL: $objecturl, CKSUM: $objectcksum;" >> "$updatelog";
     ;;

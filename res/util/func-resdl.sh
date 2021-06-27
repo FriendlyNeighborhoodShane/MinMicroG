@@ -134,7 +134,7 @@ checkwhitelist() {
   echo " ";
   echo " - Getting priv-app permissions...";
 
-  curl -L "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download"; return 1; }
+  curl -fL "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download"; return 1; }
 
   lines="$(grep -nE "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | select_word 1)";
   for line in $lines; do
