@@ -109,9 +109,8 @@ To test network location, enable high accuracy location, and then use satstat (f
 If it doesn't, there's a problem with UNLP.
 
 ##### Permission troubles with microG and gang
-In a terminal app (like Termux) write these 2 commands, accept root request and reboot:
+Run this command from any terminal app (like Termux) after `su`, or from a computer after `adb shell`, and then reboot:
 ```
-su;
 npem;
 ```
 
