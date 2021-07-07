@@ -163,11 +163,11 @@ You can retieve your contacts directly from your Google account in a vcf file:
  - Use sidebar > Export > select 'Export as VCard' > Export
 
 You should also be able to sync contacts with Google without proprietary apps or microG using the open-source CardDAV client DAVdroid (available on F-Droid or Play)
- - First of all, go to Google dashboard's [less secure apps setting](https://www.google.com/settings/security/lesssecureapps) with your account and enable the setting
+ - Go to Google Dashboard's [app passwords](https://myaccount.google.com/apppasswords) page, and create an app password if you don't have one already
  - When logging in with DAVDroid, Use "Login with URL and user name"
    - Base URL: `https://www.google.com/calendar/dav/[your_gmail_id]@gmail.com/events`
    - User name: `[your_gmail_id]@gmail.com`
-   - Password: `[your_google_password]`
+   - Password: `[your_app_password]`
 
 ##### Android Wear companion apps
  - GatgetBridge companion app on F-Droid
