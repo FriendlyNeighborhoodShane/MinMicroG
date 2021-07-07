@@ -115,7 +115,7 @@ npem;
 ```
 
 Some new permissions are protected by Android now, and cannot simply be granted. You can try several things that may or may not work, depending on your ROM:
- - Extracting the MicroG APK from the zip and installing it as an user app update
+ - Extracting the MicroG APK from the zip (`system/priv-app/MicroGGMSCore/MicroGGMSCore.apk`) and installing it as an user app update
  - Installing MinMicroG as system instead of as a Magisk module
  - Clean flashing, if all else fails
 
