@@ -15,8 +15,7 @@ This is a simple MicroG installer. It can install MicroG and other stuff into yo
 The things included in the `Standard` Edition zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - Google Play store (modded for IAPs by Setialpha)
- - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
- - UNLP LocalGSM backend (From @ploink 's fork)
+ - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
  - AuroraDroid (From Whyorean's GitLab)
  - AuroraServices (From Whyorean's GitLab)
  - Swype libs for AOSP keyboard (From OpenGApps GitHub repo)
@@ -28,8 +27,7 @@ The things included in the `Standard` Edition zip are:
 The things included in the `NoGoolag` Edition zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - FakeStore (from MicroG FDroid repo)
- - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
- - UNLP LocalGSM backend (From @ploink 's fork)
+ - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
  - AuroraStore (From Whyorean's GitLab)
  - AuroraDroid (From Whyorean's GitLab)
  - AuroraServices (From Whyorean's GitLab)
@@ -39,8 +37,7 @@ The things included in the `NoGoolag` Edition zip are:
 The things included in the `UNLP` Edition zip are:
  - UNLP (From FDroid repo)
  - Maps APIv1
- - UNLP backends (Dejá vu, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
- - UNLP LocalGSM backend (From @ploink 's fork)
+ - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
