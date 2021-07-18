@@ -135,7 +135,9 @@ If you can't get any app to register for Google Cloud Messaging, try dialing thi
 
 If you restored app data from old backups, there might be some configuration files left over preventing the app from registering for push with microG. Run this from a root terminal:
 
-`rm -rf /data/data/*/shared_prefs/com.google.android.gms.*.xml`
+```
+rm -rf /data/data/*/shared_prefs/com.google.android.gms.*.xml
+```
 
 ##### Play Store RH-01 error
 Go to System > Apps > Play Store
