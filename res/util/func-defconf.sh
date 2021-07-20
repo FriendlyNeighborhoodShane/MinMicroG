@@ -60,8 +60,6 @@ microg_cleanup() {
       done;
       if [ -f "$mark_file" ]; then
         log "PREPPER: This is an update flash";
-      elif [ -f "$root/system/etc/.mmg" ]; then
-        log "PREPPER: This is an update flash";
       else
         log "PREPPER: Doing the clean install treatment";
         for app in $cleanup_packages; do
