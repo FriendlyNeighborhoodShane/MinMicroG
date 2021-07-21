@@ -28,13 +28,13 @@ user_conf() {
     stuff_arch_sdk="$new_stuff_arch_sdk";
   }
   [ "$includelist" ] && {
-    stuff="$(echo "$stuff" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+    stuff="$(echo "$stuff" | sed 's| |\n|g' | sort -u | sed 's|^|  |g')
 ";
-    stuff_arch="$(echo "$stuff_arch" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+    stuff_arch="$(echo "$stuff_arch" | sed 's| |\n|g' | sort -u | sed 's|^|  |g')
 ";
-    stuff_sdk="$(echo "$stuff_sdk" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+    stuff_sdk="$(echo "$stuff_sdk" | sed 's| |\n|g' | sort -u | sed 's|^|  |g')
 ";
-    stuff_arch_sdk="$(echo "$stuff_arch_sdk" | sed 's| |\n|g' | tr -s '\n' | sort -u | sed 's|^|  |g')
+    stuff_arch_sdk="$(echo "$stuff_arch_sdk" | sed 's| |\n|g' | sort -u | sed 's|^|  |g')
 ";
   }
 
