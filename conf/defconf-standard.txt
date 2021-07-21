@@ -67,6 +67,8 @@ stuff_arch_sdk="
 
 stuff_util="
   /util/func-defconf.sh
+  /util/script-addon.sh
+  /util/script-init.sh
 ";
 
 stuff_other="

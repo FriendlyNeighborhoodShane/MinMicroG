@@ -106,93 +106,11 @@ addon_install() {
   perm 0 0 0755 0644 "$(dirname "$root/$addond")";
   chcon -hR 'u:object_r:system_file:s0' "$(dirname "$root/$addond")";
 
-  cat << EOF > "$root/$addond";
-#!/sbin/sh
-#
-# MinMicroG addon.d
-#
-# ADDOND_VERSION=2
-
-save_files() {
-cat <<EOL
-$(echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "$addond_file" "$init_file" "$mark_file" | sed 's| |\n|g' | sort -u | tr -s '\n')
-
-EOL
-}
-
-delete_files() {
-cat <<EOL
-$(echo "$stuff_debloat" | sed 's| |\n|g' | sort -u | tr -s '\n')
-
-EOL
-}
-
-EOF
-
-  cat << 'EOF' >> "$root/$addond";
-log() { echo "$1"; }
-
-abort() {
-  log " ";
-  log "!!! ERROR: $1";
-  exit 1;
-}
-
-log " ";
-log "=== MinMicroG addon.d script ===";
-
-if [ -f "/tmp/backuptool.functions" ]; then
-  . "/tmp/backuptool.functions" || abort "could not source addon.d helper";
-elif [ -f "/postinstall/tmp/backuptool.functions" ]; then
-  . "/postinstall/tmp/backuptool.functions" || abort "could not source addon.d helper";
-else
-  abort "could not find addon.d helper"
-fi;
-
-[ -f "$S/build.prop" ] || abort "could not find a ROM in $S";
-sdk="$(grep ro.build.version.sdk "$S/build.prop" | head -n1 | cut -d= -f2)";
-[ "$sdk" ] && [ "$sdk" -gt "0" ] || abort "could not find SDK";
-
-translate_path() {
-  while read -r entry; do
-    if [ "$sdk" -lt 21 ]; then
-      [ "$(basename "$(dirname "$entry")").apk" = "$(basename "$entry")" ] && entry="$(dirname "$(dirname "$entry")")/$(basename "$entry")";
-    fi;
-    [ "$(basename "$(dirname "$entry")").apk" = "$(basename "$entry")" ] && entry="$(dirname "$entry")";
-    echo "${entry#/system/}";
-  done;
-}
-
-case "$1" in
-  backup)
-    log " ";
-    log "Backing up...";
-    save_files | translate_path | while read -r object; do
-      [ "$object" ] && [ -e "$S/$object" ] || continue;
-      backup_file "$S/$object";
-      log "BACKUPER: Object backed up ($object)";
-    done;
-  ;;
-  restore)
-    log " ";
-    log "Restoring...";
-    save_files | translate_path | while read -r object; do
-      [ "$object" ] && [ -e "$C/$S/$object" ] || continue;
-      restore_file "$S/$object";
-      log "RESTORER: Object restored ($object)";
-    done;
-  ;;
-  post-restore)
-    log " ";
-    log "Debloating...";
-    delete_files | translate_path | while read -r object; do
-      [ "$object" ] && [ -e "$S/$object" ] || continue;
-      rm -rf "$S/$object";
-      log "DEBLOATER: Object debloated ($object)";
-    done;
-  ;;
-esac;
-EOF
+  cat "$filedir/util/script-addon.sh" > "$root/$addond";
+  echo "$stuff" "$stuff_arch" "$stuff_sdk" "$stuff_arch_sdk" "$addond_file" "$init_file" | sed 's| |\n|g' | sort -u > "$filedir/util/INSTALLLIST";
+  echo "$stuff_debloat" | sed 's| |\n|g' | sort -u > "$filedir/util/DEBLOATLIST";
+  sed -i -e "/@INSTALLLIST@/r $filedir/util/INSTALLLIST" -e "/@INSTALLLIST@/d" "$root/$addond";
+  sed -i -e "/@DEBLOATLIST@/r $filedir/util/DEBLOATLIST" -e "/@DEBLOATLIST@/d" "$root/$addond";
 
 }
 
@@ -214,19 +132,6 @@ initscript_install() {
     chcon -hR 'u:object_r:system_file:s0' "$(dirname "$root/$init")";
   fi;
 
-  cat << 'EOF' > "$root/$init";
-#!/system/bin/sh
-# MinMicroG bootup script
-
-# Wait for bootup
-while true; do [ "$(getprop sys.boot_completed)" = "1" ] && break; sleep 5; done;
-
-# Fix GMS permission troubles
-apk="/system/priv-app/MicroGGMSCore/MicroGGMSCore.apk";
-[ -f "$apk" ] && pm install -r "$apk";
-
-# Grant permissions
-npem;
-EOF
+  cat "$filedir/util/script-init.sh" > "$root/$init";
 
 }
