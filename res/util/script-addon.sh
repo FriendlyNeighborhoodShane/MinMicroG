@@ -57,8 +57,11 @@ case "$1" in
     log "Backing up...";
     save_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$S/$object" ] || continue;
-      backup_file "$S/$object";
-      log "BACKUPER: Object backed up ($object)";
+      for file in $(find "$S/$object" -type f); do
+        file="${file#$S/}";
+        backup_file "$S/$file";
+        log "BACKUPER: Object backed up ($file)";
+      done;
     done;
   ;;
   restore)
@@ -66,8 +69,11 @@ case "$1" in
     log "Restoring...";
     save_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$C/$S/$object" ] || continue;
-      restore_file "$S/$object";
-      log "RESTORER: Object restored ($object)";
+      for file in $(find "$C/$S/$object" -type f); do
+        file="${file#$C/$S/}";
+        restore_file "$S/$file";
+        log "RESTORER: Object restored ($file)";
+      done;
     done;
   ;;
   post-restore)
