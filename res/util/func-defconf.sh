@@ -96,6 +96,7 @@ microg_cleanup() {
 addon_install() {
 
   [ "$magisk" = "no" ] || return 0;
+  [ "$addond_file" ] && [ -e "$filedir/util/script-addon.sh" ] || return 1;
 
   log " ";
   log "POST-INSTALL: Installing addon.d script";
@@ -116,6 +117,8 @@ addon_install() {
 
 # Place an init script
 initscript_install() {
+
+  [ "$init_file" ] && [ -e "$filedir/util/script-init.sh" ] || return 1;
 
   log " ";
   log "POST-INSTALL: Installing init script";
