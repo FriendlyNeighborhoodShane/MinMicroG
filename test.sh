@@ -29,10 +29,11 @@ done;
   # False positive from extended regex
   # Arrays aren't in sh anyway
 # SC1090: non-constant source
+# SC1091: not specified as input
 # SC2034: assigned but not used
 # SC2154: used but not assigned
   # All three happen all the time due to sourcing
   # Can't add directives because it's all dynamic
 
 echo " ";
-shellcheck -s sh -e 1087,1090,2034,2154 "$@" -- ./src/META-INF/com/google/android/update-binary ./build.sh ./bump.sh ./test.sh ./update.sh ./conf/*.txt ./res/util/*.sh;
+shellcheck -s sh -e 1087,1090,1091,2034,2154 "$@" -- ./src/META-INF/com/google/android/update-binary ./build.sh ./bump.sh ./test.sh ./update.sh ./conf/*.txt ./res/util/*.sh;
