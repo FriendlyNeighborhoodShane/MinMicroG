@@ -23,6 +23,7 @@ log() { echo "$1"; }
 abort() {
   log " ";
   log "!!! ERROR: $1";
+  log " ";
   exit 1;
 }
 
@@ -86,3 +87,7 @@ case "$1" in
     done;
   ;;
 esac;
+
+log " ";
+log "Done!";
+log " ";
