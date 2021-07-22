@@ -30,13 +30,12 @@ abort() {
 log " ";
 log "=== MinMicroG addon.d script ===";
 
-if [ -f "/tmp/backuptool.functions" ]; then
-  . "/tmp/backuptool.functions" || abort "could not source addon.d helper";
-elif [ -f "/postinstall/tmp/backuptool.functions" ]; then
-  . "/postinstall/tmp/backuptool.functions" || abort "could not source addon.d helper";
-else
-  abort "could not find addon.d helper"
-fi;
+backuptool="";
+for file in "/tmp/backuptool.functions" "/postinstall/tmp/backuptool.functions"; do
+  [ -f "$file" ] && { backuptool="$file"; break; }
+done;
+[ "$backuptool" ] || abort "could not find addon.d helper";
+. "$backuptool" || abort "could not source addon.d helper ($backuptool)";
 
 [ -f "$S/build.prop" ] || abort "could not find a ROM in $S";
 sdk="$(grep ro.build.version.sdk "$S/build.prop" | head -n1 | cut -d= -f2)";
