@@ -51,13 +51,17 @@ translate_path() {
   done;
 }
 
+delete_file() {
+  rm -rf "$1";
+}
+
 case "$1" in
   backup)
     log " ";
     log "Backing up...";
     save_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$S/$object" ] || continue;
-      for file in $(find "$S/$object" -type f); do
+      find "$S/$object" -type f | while read -r file; do
         file="${file#$S/}";
         backup_file "$S/$file";
         log "BACKUPER: Object backed up ($file)";
@@ -69,7 +73,7 @@ case "$1" in
     log "Restoring...";
     save_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$C/$S/$object" ] || continue;
-      for file in $(find "$C/$S/$object" -type f); do
+      find "$C/$S/$object" -type f | while read -r file; do
         file="${file#$C/$S/}";
         restore_file "$S/$file";
         log "RESTORER: Object restored ($file)";
@@ -81,7 +85,7 @@ case "$1" in
     log "Debloating...";
     delete_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$S/$object" ] || continue;
-      rm -rf "$S/$object";
+      delete_file "$S/$object";
       log "DEBLOATER: Object debloated ($object)";
     done;
   ;;

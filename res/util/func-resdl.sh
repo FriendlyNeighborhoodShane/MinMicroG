@@ -30,7 +30,7 @@ updatedelta() {
   echo " ";
   echo " - Checking resdl delta between updates...";
 
-  for entry in $(grep -oE "FILE: [^,;]*" "$reldir/update-$newlog.log" | cut -d" " -f2); do
+  grep -oE "FILE: [^,;]*" "$reldir/update-$newlog.log" | cut -d" " -f2 | while read -r entry; do
     file="$entry";
     line="$(grep "FILE: $file[,;]" "$reldir/update-$newlog.log" | head -n1)";
     url="$(echo "$line" | grep -oE "URL: [^,;]*" | cut -d" " -f2)";
