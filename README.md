@@ -20,7 +20,7 @@ The things included in the `Standard` Edition zip are:
  - AuroraServices (From Whyorean's GitLab)
  - Swype libs for AOSP keyboard (From OpenGApps GitHub repo)
  - Some Google DRM jars (From OpenGApps GitHub repo)
- - Google Sync adapters for KK to Q (From OpenGApps GitHub repo)
+ - Google Sync adapters for KK to R (From OpenGApps GitHub repo)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
