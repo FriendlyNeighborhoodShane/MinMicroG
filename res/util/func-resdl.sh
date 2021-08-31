@@ -21,7 +21,7 @@ updatedelta() {
 
   newlog="";
   oldlogs="";
-  loglist="$(find "$reldir" -type f -name "update-*.log" -exec expr {} : ".*/update-\([0-9]\{14\}\)\.log$" ';' | sort -nr)";
+  loglist="$(find -L "$reldir" -type f -name "update-*.log" -exec expr {} : ".*/update-\([0-9]\{14\}\)\.log$" ';' | sort -nr)";
   for log in $loglist; do
     [ "$log" = "$updatetime" ] && newlog="$log" || oldlogs="$oldlogs $log";
   done;
