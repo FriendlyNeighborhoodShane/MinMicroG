@@ -8,7 +8,7 @@
 * [GitHub](https://github.com/FriendlyNeighborhoodShane/MinMicroG)
 * [GitLab](https://gitlab.com/FriendlyNeighborhoodShane/MinMicroG)
 * [/r/microG](https://reddit.com/r/microG) on Reddit
-* [Telegram microG user group](https://t.me/microg)
+* [microG user group](https://t.me/microg) on Telegram
 
 ### What is this?
 This is a simple MicroG installer. It can install MicroG and other stuff into your system partition or as a Magisk module. It supports virtually all mobile architectures (arm/64, x86/64, mips/64) and fully supports KitKat and above. It can also (mostly) support much older versions, but sync adapters and some location providers won't work. It can even uninstall itself from your device, just rename it and flash it again.
