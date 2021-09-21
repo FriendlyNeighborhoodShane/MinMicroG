@@ -4,9 +4,11 @@
 *A simple, flexible MicroG/gang Installer*
 **Licensed under the GNU GPL v3**
 
-### Links
+### Repositories
 * [GitHub](https://github.com/FriendlyNeighborhoodShane/MinMicroG)
 * [GitLab](https://gitlab.com/FriendlyNeighborhoodShane/MinMicroG)
+
+### microG communities
 * [/r/microG](https://reddit.com/r/microG) on Reddit
 * [microG user group](https://t.me/microg) on Telegram
 
