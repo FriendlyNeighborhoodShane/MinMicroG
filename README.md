@@ -73,6 +73,10 @@ even cause conflicts in app data, leading to crashes.
 The maker does not support or endorse dirty flashing. It will harm you and your
 loved ones. Don't come complaining to me.
 
+You can flash this zip either from your recovery (recommended) or through
+Magisk Manager. Newer LOS recoveries are usually missing important tools,
+so you will probably require a full-fledged custom recovery like TWRP.
+
 How to control the zip by changing its name:
 NOTE: Control by name is not possible in Magisk Manager, since it copies the
 zip to a cache directory and renames it install.zip. This is unavoidable
