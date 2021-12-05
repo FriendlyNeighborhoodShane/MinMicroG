@@ -32,6 +32,7 @@
         <permission name="android.permission.STATUS_BAR" />
         <permission name="android.permission.SUBSTITUTE_NOTIFICATION_APP_NAME" />
         <permission name="android.permission.UPDATE_DEVICE_STATS" />
+        <permission name="android.permission.USE_INSTALLER_V2" />
         <permission name="android.permission.WRITE_SECURE_SETTINGS" />
     </privapp-permissions>
 </permissions>
