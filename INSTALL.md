@@ -92,15 +92,6 @@ There are several other ways to have your ROM support sigspoof too:
  - Using the NanoDroid-patcher standalone zip for on-device patching
    - Fork of Haystack modified to run on-device
  - Using an Xposed module called FakeGapps
- - Using the SmaliPatcher application on PC (shrouded in mystery)
-   - Proprietary, windows only
-   - [Here](https://forum.xda-developers.com/showpost.php?p=78958124) OP of XDA
-     thread admits they do not know of the source code, probably do not even have
-     access to it
-   - [Here](https://forum.xda-developers.com/showpost.php?p=80287799),
-     [Here](https://forum.xda-developers.com/showpost.php?p=80287989),
-     [Here](https://forum.xda-developers.com/showpost.php?p=80292041),
-     It connects to arbitrary Russian IPs and OP says it's probably nothing
 
 ##### [microG and UNLP] Network Location Provider support
 Another major thing MicroG and UNLP do is providing network location to apps.
