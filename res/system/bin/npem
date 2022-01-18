@@ -1,0 +1,89 @@
+#!/system/bin/sh
+# originally created by NanoDroid
+# vendored and modified for MinMicroG
+
+# Permissions
+perm_fake="android.permission.FAKE_PACKAGE_SIGNATURE"
+perm_floc="android.permission.ACCESS_FINE_LOCATION"
+perm_cloc="android.permission.ACCESS_COARSE_LOCATION"
+perm_bloc="android.permission.ACCESS_BACKGROUND_LOCATION"
+perm_calr="android.permission.READ_CALENDAR"
+perm_calw="android.permission.WRITE_CALENDAR"
+perm_conr="android.permission.READ_CONTACTS"
+perm_conw="android.permission.WRITE_CONTACTS"
+perm_gacc="android.permission.GET_ACCOUNTS"
+perm_rsms="android.permission.RECEIVE_SMS"
+
+# Packages
+microG="com.google.android.gms"
+PlayStore="com.android.vending"
+GCalSync="com.google.android.syncadapters.calendar"
+GConSync="com.google.android.syncadapters.contacts"
+nlpIchnaea="org.microg.nlp.backend.ichnaea"
+nlpDejavu="org.fitchfamily.android.dejavu"
+nlpApple="org.microg.nlp.backend.apple"
+nlpBmap="org.openbmap.unifiedNlp"
+
+# GmsCore userId
+gms_uid=$(dumpsys package com.google.android.gms | awk -F= '/userId/{print $2; exit}')
+
+error () {
+	echo "!! ${@}"
+	exit 1
+}
+
+check_package () {
+	pm list packages | grep -q "^package:${1}$" && return 0 || return 1
+}
+
+check_permission () {
+	[[ $(dumpsys package ${1} | grep -Eo "^[ ]+${2}: granted=true") ]] && return 0 || return 1
+}
+
+grant_permission () {
+	if [ -n "${3}" ]; then
+		pm grant --user ${3} ${1} ${2} 2>/dev/null
+	else
+		pm grant ${1} ${2} 2>/dev/null
+	fi
+}
+
+permissions () {
+	if check_package ${1}; then
+		echo "package ${1} found"
+		if ! check_permission ${1} ${2}; then
+			grant_permission ${1} ${2} ${3} && \
+				echo "permission ${2} granted" || \
+				echo "failed to grant permission ${2}"
+		else	echo "already has permission ${2}"
+		fi
+	fi
+}
+
+[[ $(whoami) = "root" ]] || [[ $(whoami) = "shell" ]] || error "not running as either ADB or root"
+
+# Fake Package Signature
+permissions ${microG} ${perm_fake}
+permissions ${PlayStore} ${perm_fake}
+
+# Location
+for app in ${microG} ${nlpIchnaea} ${nlpDejavu} ${nlpApple} ${nlpBmap}; do
+	permissions ${app} ${perm_cloc}
+done
+
+for app in ${microG} ${nlpIchnaea} ${nlpDejavu} ${nlpApple}; do
+	permissions ${app} ${perm_floc}
+done
+
+# Restricted permissions
+permissions ${microG} ${perm_bloc} ${gms_uid}
+permissions ${microG} ${perm_rsms} ${gms_uid}
+
+# Google Calendar Sync
+permissions ${GCalSync} ${perm_calr}
+permissions ${GCalSync} ${perm_calw}
+
+# Google Contacts Sync
+permissions ${GConSync} ${perm_conr}
+permissions ${GConSync} ${perm_conw}
+permissions ${GConSync} ${perm_gacc}
