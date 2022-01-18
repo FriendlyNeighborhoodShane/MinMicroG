@@ -65,7 +65,34 @@ permissions () {
 	fi
 }
 
+get_app_location () {
+	pm list packages -f ${1} | sed 's|package:\(.*\)=[^=]*|\1|g'
+}
+
+user_install_app () {
+	pm install -r ${1}
+}
+
+user_install () {
+	check_package ${1} || return
+	loc=$(get_app_location ${1})
+	case ${loc} in
+		/data/* ) echo "package ${1} already is user app" ;;
+		* )
+			user_install_app ${loc} && \
+			echo "package ${1} installed as user app" || \
+			echo "failed to install package ${1} as user app"
+		;;
+	esac
+}
+
 [[ $(whoami) = "root" ]] || [[ $(whoami) = "shell" ]] || error "not running as either ADB or root"
+
+if [ "$(getprop ro.build.version.sdk)" -ge 29 ]; then
+	# microG GmsCore needs to be installed as user app for all permissions to be granted
+	# see https://github.com/microg/android_packages_apps_GmsCore/issues/1100#issuecomment-711088518
+	user_install ${microG}
+fi
 
 # Fake Package Signature
 permissions ${microG} ${perm_fake}
