@@ -1,9 +1,9 @@
 # Config
 
 variant="Minimal";
-ver="2.10";
-verc="2100";
-date="28th april, 2021";
+ver="2.11";
+verc="2110";
+date="26th january, 2022";
 minsdk="21";
 
 modprop="id=$modname
