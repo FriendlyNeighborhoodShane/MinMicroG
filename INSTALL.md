@@ -165,7 +165,7 @@ granted. You can try several things that may or may not work, depending on your
 ROM:
  - Extracting the MicroG APK from the zip
    (`system/priv-app/MicroGGMSCore/MicroGGMSCore.apk`) and installing it as an
-   user app update
+   user app update (`npem` tries this for you automatically)
  - Installing MinMicroG as system instead of as a Magisk module
  - Clean flashing, if all else fails
 
