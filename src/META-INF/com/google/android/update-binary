@@ -190,25 +190,15 @@ sizecheck() {
 
 remove() {
   removalobject="$1";
-  backupobject="$2";
   if [ "$sdk" -lt 21 ]; then
     [ "$(basename "$(dirname "$removalobject")").apk" = "$(basename "$removalobject")" ] && {
       removalobject="$(dirname "$(dirname "$removalobject")")/$(basename "$removalobject")";
-      backupobject="$(dirname "$(dirname "$backupobject")")/$(basename "$backupobject")";
     }
   fi;
   [ "$(basename "$(dirname "$removalobject")").apk" = "$(basename "$removalobject")" ] && {
     removalobject="$(dirname "$removalobject")";
-    backupobject="$(dirname "$backupobject")";
   }
   [ -e "$removalobject" ] || return 0;
-  mkdir -p "$(dirname "$backupobject")";
-  cp -rf "$removalobject" "$backupobject";
-  if [ -e "$backupobject" ]; then
-    log "BACKUPER: Object backed up ($removalobject)";
-  else
-    log "ERROR: Could not backup ($removalobject)";
-  fi;
   rm -rf "$removalobject" || { log "ERROR: Could not remove ($removalobject)"; return 1; }
   if [ -e "$removalobject" ]; then
     log "ERROR: Could not remove ($removalobject)";
@@ -387,7 +377,6 @@ unzip -o "$zipfile" "defconf" -d "$filedir/";
 . "$filedir/defconf" || abort "Could not execute default config";
 
 moddir="/data/media/0/$modname";
-backupdir="$moddir/Backup";
 
 ui_print " ";
 ui_print "Package: $variant";
@@ -447,13 +436,9 @@ if [ "$action" = "installation" ]; then
     done;
   elif [ "$magisk" = "no" ]; then
     for thing in $stuff_debloat; do
-      [ "$thing" ] && remove "/$sysroot/$thing" "$backupdir/$thing";
+      [ "$thing" ] && remove "/$sysroot/$thing";
     done;
   fi;
-  [ -d "$backupdir" ] && {
-    perm 1023 1023 775 664 "$backupdir";
-    chcon -hR 'u:object_r:media_rw_data_file:s0' "$backupdir";
-  }
 
   ui_print " ";
   ui_print "Doing size checks...";
