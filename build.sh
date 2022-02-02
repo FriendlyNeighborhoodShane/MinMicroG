@@ -94,7 +94,6 @@ for object in $stuff $stuff_util; do
     echo " -- BUILDER: Copying $object";
     mkdir -p "$tmpdir/$(dirname "$object")/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/";
-    break;
   done;
   [ "$found" ] || echo "ERROR: object not found ($object)";
 done;
@@ -107,7 +106,6 @@ for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
     echo " -- BUILDER: Copying $object ($cond)";
     mkdir -p "$tmpdir/$(dirname "$object")/$cond/";
     cp -Rf "$realobject" "$tmpdir/$(dirname "$object")/$cond/";
-    break;
   done;
   [ "$found" ] || echo "ERROR: object not found ($object)";
 done;
