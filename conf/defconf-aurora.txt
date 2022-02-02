@@ -1,9 +1,9 @@
 # Config
 
 variant="AuroraServices";
-ver="2.11";
-verc="2110";
-date="26th january, 2022";
+ver="2.11.1";
+verc="2111";
+date="02 february, 2022";
 minsdk="21";
 
 modprop="id=$modname
