@@ -89,7 +89,7 @@ done;
 
 for object in $stuff $stuff_util; do
   found="";
-  for realobject in "$resdir/$object" "$resdldir/$object"; do
+  for realobject in "$resdldir/$object" "$resdir/$object"; do
     [ -e "$realobject" ] && found="yes" || continue;
     echo " -- BUILDER: Copying $object";
     mkdir -p "$tmpdir/$(dirname "$object")/";
@@ -100,7 +100,7 @@ done;
 
 for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
   found="";
-  for realobject in "$resdir/$(dirname "$object")"/-*-/"$(basename "$object")" "$resdldir/$(dirname "$object")"/-*-/"$(basename "$object")"; do
+  for realobject in "$resdldir/$(dirname "$object")"/-*-/"$(basename "$object")" "$resdir/$(dirname "$object")"/-*-/"$(basename "$object")"; do
     [ -e "$realobject" ] && found="yes" || continue;
     cond="$(basename "$(dirname "$realobject")")";
     echo " -- BUILDER: Copying $object ($cond)";
