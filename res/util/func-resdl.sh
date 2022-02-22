@@ -129,18 +129,14 @@ checkwhitelist() {
   }
 
   privpermlist="util/privperms.lst";
-  privpermurl="https://developer.android.com/reference/android/Manifest.permission";
+  privpermurl="https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/master/core/res/AndroidManifest.xml";
 
   echo " ";
   echo " - Getting priv-app permissions...";
 
   curl -fL "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download"; return 1; }
 
-  lines="$(grep -nE "<!-- [=]* [A-Z ]* [=]* -->" "$tmpdir/tmppage" | grep -A1 "ENUM CONSTANTS DETAIL" | sed "s|:| |g" | select_word 1)";
-  for line in $lines; do
-    [ "$startline" ] && endline="$line" || startline="$line";
-  done;
-  head -n"$endline" "$tmpdir/tmppage" | tail -n+"$startline" | tr -d "\n" | sed "s|<div data|\n|g" | grep -E -e "Protection level: [0-9A-Za-z_|]*privileged" -e "Not for use by third-party applications" | grep -oE "android.permission.[0-9A-Za-z_]*" > "$tmpdir/tmplist";
+  cat "$tmpdir/tmppage" | tr '\n' ' ' | grep -o '<permission [^>]*>' | grep 'android:protectionLevel="[^"]*privileged[^"]*"' | grep -o 'android:name="[^"]*"' | cut -d= -f2 | tr -d '"' > "$tmpdir/tmplist";
   echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "$tmpdir/tmplist";
 
   cat "$resdldir/$privpermlist" "$tmpdir/tmplist" 2>/dev/null | sort -u > "$tmpdir/sortedlist";
