@@ -55,6 +55,7 @@ stuff_other="
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
+  /system/etc/default-permissions/gsync.xml
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml
   /system/etc/permissions/com.aurora.services.xml
@@ -62,7 +63,6 @@ stuff_other="
   /system/etc/permissions/com.google.android.maps.xml
   /system/etc/permissions/com.google.android.media.effects.xml
   /system/etc/permissions/com.google.widevine.software.drm.xml
-  /system/etc/permissions/gsync.xml
   /system/etc/sysconfig/nogoolag.xml
   /system/framework/com.google.android.maps.jar
   /system/framework/com.google.android.media.effects.jar
@@ -81,6 +81,7 @@ stuff_old="
   /system/addon.d/01-nogoolag.sh
   /system/app/FDroid/FDroid.apk
   /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
+  /system/etc/permissions/gsync.xml
   /system/etc/permissions/org.fdroid.fdroid.privileged.xml
   /system/priv-app/AuroraStore/AuroraStore.apk
   /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk

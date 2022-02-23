@@ -54,7 +54,7 @@ stuff_arch="
 stuff_sdk="
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
-  /system/etc/permissions/gsync.xml
+  /system/etc/default-permissions/gsync.xml
   /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
 ";
 
@@ -83,6 +83,7 @@ stuff_old="
   /system/addon.d/01-nogoolag.sh
   /system/app/FDroid/FDroid.apk
   /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
+  /system/etc/permissions/gsync.xml
   /system/etc/permissions/org.fdroid.fdroid.privileged.xml
   /system/priv-app/AuroraStore/AuroraStore.apk
   /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk
