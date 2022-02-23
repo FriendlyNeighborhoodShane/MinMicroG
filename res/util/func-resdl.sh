@@ -136,7 +136,7 @@ checkwhitelist() {
 
   curl -fL "$privpermurl" -o "$tmpdir/tmppage" || { echo "ERROR: Android permission docpage failed to download"; return 1; }
 
-  cat "$tmpdir/tmppage" | tr '\n' ' ' | grep -o '<permission [^>]*>' | grep 'android:protectionLevel="[^"]*privileged[^"]*"' | grep -o 'android:name="[^"]*"' | cut -d= -f2 | tr -d '"' > "$tmpdir/tmplist";
+  tr '\n' ' ' < "$tmpdir/tmppage" | grep -o '<permission [^>]*>' | grep 'android:protectionLevel="[^"]*privileged[^"]*"' | grep -o 'android:name="[^"]*"' | cut -d= -f2 | tr -d '"' > "$tmpdir/tmplist";
   echo "android.permission.FAKE_PACKAGE_SIGNATURE" >> "$tmpdir/tmplist";
 
   cat "$resdldir/$privpermlist" "$tmpdir/tmplist" 2>/dev/null | sort -u > "$tmpdir/sortedlist";
@@ -146,6 +146,7 @@ checkwhitelist() {
   echo " ";
   echo " - Checking priv-app permissions...";
 
+  find "$resdir/system/etc/permissions" -name "*.xml" -exec cat {} + | tr '\n' ' ' | sed -e 's|<privapp-permissions [^>]*>|\n&|g' -e 's|</privapp-permissions>|&\n|g' > "$tmpdir/tmpexcept";
   for object in $(echo "$stuff_download" | grep -E "^[ ]*/system/priv-app/[^ ]+.apk[ ]+" | select_word 1); do
     [ -f "$resdldir/$object" ] || { echo "ERROR: Privapp $object not found"; continue; }
     privperms="";
@@ -153,7 +154,7 @@ checkwhitelist() {
     privappperms="$(aapt dump permissions "$resdldir/$object" | grep -oE "uses-permission: name=[^ ]*" | sed "s|'| |g" | select_word 3 | sort -u)";
     for privperm in in $privappperms; do
       grep -q "^$privperm$" "$resdldir/$privpermlist" || continue;
-      grep -q "name=\"$privperm\"" "$resdir/system/etc/permissions/$privapppackage.xml" 2>/dev/null && continue;
+      grep "<privapp-permissions package=\"$privapppackage\">" "$tmpdir/tmpexcept" 2>/dev/null | grep -q "name=\"$privperm\"" && continue;
       privperms="$privperm $privperms";
     done;
     [ "$privperms" ] || continue;
