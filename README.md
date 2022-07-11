@@ -20,6 +20,13 @@ can also (mostly) support much older versions, but sync adapters and some
 location providers won't work. It can even uninstall itself from your device,
 just rename it and flash it again.
 
+The `MinMicroG` packages are intended as various base configuration for microG,
+they are all mutually exclusive with each other and you can only choose one.
+While the `MinAddon` packages act as independent additions on top, you can have
+as many as you wish over a base package, or even without a base package.
+
+The available `MinMicroG` variants are:
+
 The things included in the `Standard` Edition zip are:
  - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
  - Google Play store (modded for IAPs by Setialpha)
@@ -55,10 +62,10 @@ The things included in the `Minimal` Edition zip are:
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the `MinimalIAP` zip are:
- - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
+The available `MinAddon` variants are:
+
+The things included in the `Playstore` zip are:
  - Google Play store (modded for IAPs by Setialpha)
- - Some Google DRM jars (From OpenGApps GitHub repo)
  - Permission files for all of this
  - An addon.d file to backup/restore everything on a rom flash
 

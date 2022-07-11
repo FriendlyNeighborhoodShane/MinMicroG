@@ -1,8 +1,8 @@
 # Config
 
-modname="MinAddon-AuroraServices";
+modname="MinAddon-Playstore"
 
-variant="AuroraServices";
+variant="Playstore";
 ver="2.11.1";
 verc="2111";
 date="02 february, 2022";
@@ -20,8 +20,8 @@ minMagisk=1900
 ";
 
 stuff="
-  /system/etc/permissions/com.aurora.services.xml
-  /system/priv-app/AuroraServices/AuroraServices.apk
+  /system/etc/permissions/com.android.vending.xml
+  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
 
 stuff_arch="
@@ -49,7 +49,7 @@ stuff_debloat="
 
 stuff_perm="
   /system/etc/permissions
-  /system/priv-app/AuroraServices
+  /system/priv-app/PatchPhonesky
 ";
 
 pre_build_actions() {
