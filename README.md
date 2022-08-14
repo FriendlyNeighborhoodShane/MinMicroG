@@ -27,52 +27,52 @@ as many as you wish over a base package, or even without a base package.
 
 The available `MinMicroG` variants are:
 
-The things included in the `Standard` Edition zip are:
- - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
- - Google Play store (modded for IAPs by Setialpha)
- - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
- - AuroraDroid (From Whyorean's GitLab)
- - AuroraServices (From Whyorean's GitLab)
- - Swype libs for AOSP keyboard (From OpenGApps GitHub repo)
- - Some Google DRM jars (From OpenGApps GitHub repo)
- - Google Sync adapters for KK to R (From OpenGApps GitHub repo)
- - Permission files for all of this
- - An addon.d file to backup/restore everything on a rom flash
+ - The things included in the `Standard` Edition zip are:
+   - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
+   - Google Play store (modded for IAPs by Setialpha)
+   - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
+   - AuroraDroid (From Whyorean's GitLab)
+   - AuroraServices (From Whyorean's GitLab)
+   - Swype libs for AOSP keyboard (From OpenGApps GitHub repo)
+   - Some Google DRM jars (From OpenGApps GitHub repo)
+   - Google Sync adapters for KK to R (From OpenGApps GitHub repo)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the `NoGoolag` Edition zip are:
- - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
- - FakeStore (from MicroG FDroid repo)
- - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
- - AuroraStore (From Whyorean's GitLab)
- - AuroraDroid (From Whyorean's GitLab)
- - AuroraServices (From Whyorean's GitLab)
- - Permission files for all of this
- - An addon.d file to backup/restore everything on a rom flash
+ - The things included in the `NoGoolag` Edition zip are:
+   - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
+   - FakeStore (from MicroG FDroid repo)
+   - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
+   - AuroraStore (From Whyorean's GitLab)
+   - AuroraDroid (From Whyorean's GitLab)
+   - AuroraServices (From Whyorean's GitLab)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the `UNLP` Edition zip are:
- - UNLP (From FDroid repo)
- - Maps APIv1
- - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
- - Permission files for all of this
- - An addon.d file to backup/restore everything on a rom flash
+ - The things included in the `UNLP` Edition zip are:
+   - UNLP (From FDroid repo)
+   - Maps APIv1
+   - UNLP backends (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim) (From FDroid repo)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the `Minimal` Edition zip are:
- - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
- - FakeStore (from MicroG FDroid repo)
- - Permission files for all of this
- - An addon.d file to backup/restore everything on a rom flash
+ - The things included in the `Minimal` Edition zip are:
+   - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
+   - FakeStore (from MicroG FDroid repo)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
 
 The available `MinAddon` variants are:
 
-The things included in the `Playstore` zip are:
- - Google Play store (modded for IAPs by Setialpha)
- - Permission files for all of this
- - An addon.d file to backup/restore everything on a rom flash
+ - The things included in the `Playstore` zip are:
+   - Google Play store (modded for IAPs by Setialpha)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
 
-The things included in the `AuroraServices` Edition zip are:
- - AuroraServices (From Whyorean's GitLab)
- - Permission files for all of this
- - An addon.d file to backup/restore everything on a rom flash
+ - The things included in the `AuroraServices` Edition zip are:
+   - AuroraServices (From Whyorean's GitLab)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
 
 ### Notes
 Dirty flashing not recommended. you'll mess up all your permissions and may
