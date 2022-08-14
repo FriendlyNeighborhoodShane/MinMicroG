@@ -348,6 +348,23 @@ install_lib() {
   rm -rf "$tmplibdir";
 }
 
+sizecheck_pack() {
+  packsize=0;
+  for thing in defconf $stuff; do
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$thing") ))";
+  done;
+  for thing in $stuff_arch; do
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*/$(basename "$thing")") ))";
+  done;
+  for thing in $stuff_sdk; do
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$sdk-*/$(basename "$thing")") ))";
+  done;
+  for thing in $stuff_arch_sdk; do
+    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*-$sdk-*/$(basename "$thing")") ))";
+  done;
+  echo "$packsize";
+}
+
 uninstall_pack() {
   if [ "$magisk" = "yes" ]; then
     rm -rf "$root" || { log " "; log "Could not delete Magisk root ($root)"; }
@@ -442,20 +459,7 @@ if [ "$action" = "installation" ]; then
 
   ui_print " ";
   ui_print "Doing size checks...";
-  packsize=0;
-  for thing in defconf $stuff; do
-    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$thing") ))";
-  done;
-  for thing in $stuff_arch; do
-    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*/$(basename "$thing")") ))";
-  done;
-  for thing in $stuff_sdk; do
-    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$sdk-*/$(basename "$thing")") ))";
-  done;
-  for thing in $stuff_arch_sdk; do
-    [ "$thing" ] && packsize="$(( packsize + $(sizecheck "$filedir/$(dirname "$thing")/*-$arch-*-$sdk-*/$(basename "$thing")") ))";
-  done;
-  packsizem="$(( packsize / 1024 + 1 ))";
+  packsizem="$(( $(sizecheck_pack) / 1024 + 1 ))";
   log "Pack size is $packsizem";
   if [ "$magisk" = "yes" ]; then
     datfreem="$(( $(df -Pk "/data" | tail -n 1 | select_word 4) / 1024 ))";
