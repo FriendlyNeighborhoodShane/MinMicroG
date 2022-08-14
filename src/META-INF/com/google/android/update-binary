@@ -90,9 +90,10 @@ $bootmode || {
   mount /data;
   umountparts="$umountparts /data";
 }
-[ -e "/system/system/build.prop" ] && sysroot="/system";
-[ -e "/system_root/system/build.prop" ] && sysroot="/system_root";
-[ -e "/mnt/system/system/build.prop" ] && sysroot="/mnt/system";
+[ -e "/system/build.prop" ] && { sysroot="/"; sysrootpart="/system"; };
+[ -e "/system/system/build.prop" ] && { sysroot="/system"; sysrootpart="/system"; };
+[ -e "/system_root/system/build.prop" ] && { sysroot="/system_root"; sysrootpart="/system_root"; };
+[ -e "/mnt/system/system/build.prop" ] && { sysroot="/mnt/system"; sysrootpart="/mnt/system"; };
 [ -f "$sysroot/system/build.prop" ] || abort "Could not find a ROM!";
 
 bbdir="/tmp/busybox";
@@ -421,7 +422,8 @@ fi;
 ui_print " ";
 ui_print "Mounting...";
 if [ -e "/data/adb/magisk" ] && [ "$forcesys" != "yes" ]; then
-  $bootmode && modulesdir="/data/adb/modules_update" || modulesdir="/data/adb/modules";
+  rootpart="/data";
+  $bootmode && modulesdir="$rootpart/adb/modules_update" || modulesdir="$rootpart/adb/modules";
   root="$modulesdir/$modname";
   magisk=yes;
   log "Using $modulesdir";
@@ -430,16 +432,12 @@ if [ -e "/data/adb/magisk" ] && [ "$forcesys" != "yes" ]; then
     perm 0 0 0755 0644 "$modulesdir";
   }
 else
-  if [ "$sysroot" ]; then
-    mount -o rw,remount $sysroot;
-    mount -o rw,remount $sysroot $sysroot;
-  else
-    mount -o rw,remount /system;
-    mount -o rw,remount /system /system;
-  fi;
-  root="${sysroot:-/}";
+  rootpart="$sysrootpart";
+  mount -o rw,remount "$rootpart";
+  mount -o rw,remount "$rootpart" "$rootpart";
+  root="$sysroot";
   magisk=no;
-  log "Mounted $sysroot/system RW";
+  log "Mounted $rootpart RW";
 fi;
 
 if [ "$action" = "installation" ]; then
@@ -470,15 +468,9 @@ if [ "$action" = "installation" ]; then
   ui_print "Doing size checks...";
   packsizem="$(( $(sizecheck_pack) / 1024 + 1 ))";
   log "Pack size is $packsizem";
-  if [ "$magisk" = "yes" ]; then
-    datfreem="$(( $(df -Pk "/data" | tail -n 1 | select_word 4) / 1024 ))";
-    log "Free data space is $datfreem";
-    [ "$datfreem" -lt "$packsizem" ] && abort "Not enough free space in your data!";
-  elif [ "$magisk" = "no" ]; then
-    sysfreem="$(( $(df -Pk "$sysroot/system" | tail -n 1 | select_word 4) / 1024 ))";
-    log "Free system space is $sysfreem";
-    [ "$sysfreem" -lt "$packsizem" ] && abort "Not enough free space in your system!";
-  fi;
+  diskfreem="$(( $(df -Pk "$rootpart" | tail -n 1 | select_word 4) / 1024 ))";
+  log "Free space in $rootpart is $diskfreem";
+  [ "$diskfreem" -gt "$packsizem" ] || abort "Not enough free space in your $rootpart!";
 
   ui_print " ";
   ui_print "Installing $modname to $root...";
@@ -515,8 +507,8 @@ if [ "$action" = "installation" ]; then
       echo "$modprop" > "$root/module.prop" || abort "Could not create module.prop in $root";
     }
     touch "$root/auto_mount" || abort "Could not create auto_mount in $root";
-    if $bootmode && [ "$modulesdir" = "/data/adb/modules_update" ]; then
-      modmnt="/data/adb/modules";
+    if $bootmode && [ "$modulesdir" = "$rootpart/adb/modules_update" ]; then
+      modmnt="$rootpart/adb/modules";
       mkdir -p "$modmnt/$modname";
       touch "$modmnt/$modname/update" || abort "Could not create update in $modmnt/$modname";
       [ "$modprop" ] && {
