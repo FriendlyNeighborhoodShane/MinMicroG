@@ -101,7 +101,7 @@ $bootmode || {
   }
 }
 
-for bin in chcon chmod chown cp cut df du echo find grep head mkdir mount ps rm sed tail touch umount unzip; do
+for bin in chcon chmod chown cp cut df du echo find grep head mkdir mount ps rm sed tail touch tr umount unzip; do
   command -v "$bin" >/dev/null || abort "No $bin available";
 done;
 
@@ -109,15 +109,15 @@ $bootmode && filedir="/dev/tmp/$modname" || filedir="/tmp/$modname";
 tmplibdir="$filedir/tmplibdir";
 
 $bootmode && forcesys=no;
-case "$(basename "$zipfile")" in
-  *system*|*System*|*SYSTEM*)
+case "$(basename "$zipfile" | tr 'A-Z' 'a-z')" in
+  *system*)
     forcesys=yes;
     ui_print " ";
     ui_print "WARNING: Forcing a system action!";
   ;;
 esac;
-case "$(basename "$zipfile")" in
-  *uninstall*|*Uninstall*|*UNINSTALL*)
+case "$(basename "$zipfile" | tr 'A-Z' 'a-z')" in
+  *uninstall*)
     action=uninstallation;
   ;;
   *)
