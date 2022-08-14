@@ -90,10 +90,10 @@ $bootmode || {
   mount /data;
   umountparts="$umountparts /data";
 }
-[ -e "/system/system/build.prop" ] && sysroot="system";
-[ -e "/system_root/system/build.prop" ] && sysroot="system_root";
-[ -e "/mnt/system/system/build.prop" ] && sysroot="mnt/system";
-[ -f "/$sysroot/system/build.prop" ] || abort "Could not find a ROM in /$sysroot";
+[ -e "/system/system/build.prop" ] && sysroot="/system";
+[ -e "/system_root/system/build.prop" ] && sysroot="/system_root";
+[ -e "/mnt/system/system/build.prop" ] && sysroot="/mnt/system";
+[ -f "$sysroot/system/build.prop" ] || abort "Could not find a ROM!";
 
 bbdir="/tmp/busybox";
 $bootmode || {
@@ -134,7 +134,7 @@ case "$(basename "$zipfile" | tr 'A-Z' 'a-z')" in
   ;;
 esac;
 
-abi="$(file_getprop /$sysroot/system/build.prop ro.product.cpu.abi)";
+abi="$(file_getprop $sysroot/system/build.prop ro.product.cpu.abi)";
 case "$abi" in
   arm64*)
     arch=arm64;
@@ -165,7 +165,7 @@ case "$abi" in
   ;;
 esac;
 
-sdk="$(file_getprop /$sysroot/system/build.prop ro.build.version.sdk)";
+sdk="$(file_getprop $sysroot/system/build.prop ro.build.version.sdk)";
 [ "$sdk" ] || abort "Could not find SDK";
 [ "$sdk" -gt 0 ] || abort "Could not recognise SDK: $sdk";
 
@@ -411,7 +411,7 @@ ui_print "Release date: $date";
 ui_print " ";
 ui_print "Using architecture: $arch";
 ui_print "Using SDK level: $sdk";
-ui_print "Sysroot is on /$sysroot";
+ui_print "Sysroot is on $sysroot";
 if [ "$sdk" -lt "$minsdk" ]; then
   ui_print " ";
   ui_print "WARNING: Using an old Android";
@@ -431,15 +431,15 @@ if [ -e "/data/adb/magisk" ] && [ "$forcesys" != "yes" ]; then
   }
 else
   if [ "$sysroot" ]; then
-    mount -o rw,remount /$sysroot;
-    mount -o rw,remount /$sysroot /$sysroot;
+    mount -o rw,remount $sysroot;
+    mount -o rw,remount $sysroot $sysroot;
   else
     mount -o rw,remount /system;
     mount -o rw,remount /system /system;
   fi;
-  root="/$sysroot";
+  root="${sysroot:-/}";
   magisk=no;
-  log "Mounted /$sysroot/system RW";
+  log "Mounted $sysroot/system RW";
 fi;
 
 if [ "$action" = "installation" ]; then
@@ -458,11 +458,11 @@ if [ "$action" = "installation" ]; then
   log "Debloating";
   if [ "$magisk" = "yes" ]; then
     for thing in $stuff_debloat $stuff_uninstall; do
-      [ "$thing" ] && debloat "/$sysroot/$thing" "$root/$thing";
+      [ "$thing" ] && debloat "$sysroot/$thing" "$root/$thing";
     done;
   elif [ "$magisk" = "no" ]; then
     for thing in $stuff_debloat; do
-      [ "$thing" ] && remove "/$sysroot/$thing";
+      [ "$thing" ] && remove "$sysroot/$thing";
     done;
   fi;
 
@@ -475,7 +475,7 @@ if [ "$action" = "installation" ]; then
     log "Free data space is $datfreem";
     [ "$datfreem" -lt "$packsizem" ] && abort "Not enough free space in your data!";
   elif [ "$magisk" = "no" ]; then
-    sysfreem="$(( $(df -Pk "/$sysroot/system" | tail -n 1 | select_word 4) / 1024 ))";
+    sysfreem="$(( $(df -Pk "$sysroot/system" | tail -n 1 | select_word 4) / 1024 ))";
     log "Free system space is $sysfreem";
     [ "$sysfreem" -lt "$packsizem" ] && abort "Not enough free space in your system!";
   fi;
