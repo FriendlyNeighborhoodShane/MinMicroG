@@ -48,18 +48,21 @@ file_getprop() {
   grep "^$2" "$1" | head -n1 | select_word 1 | cut -d= -f2;
 }
 
+cleanup() {
+  rm -rf "$filedir" "$bbdir";
+  $bootmode || {
+    if [ "$sysroot" ]; then umount "$sysroot"; else umount "/system"; fi;
+  }
+  sync;
+}
+
 abort() {
   ui_print " ";
   ui_print "!!! FATAL ERROR: $1";
   ui_print " ";
   ui_print "Stopping installation and Uninstalling...";
   uninstall_pack;
-  [ -d "$filedir" ] && rm -rf "$filedir";
-  [ -d "$bbdir" ] && rm -rf "$bbdir";
-  $bootmode || {
-    if [ "$sysroot" ]; then umount "/$sysroot"; else umount "/system"; fi;
-  }
-  sync;
+  cleanup;
   ui_print " ";
   ui_print "Installation failed!";
   ui_print " ";
@@ -551,12 +554,7 @@ fi;
 
 ui_print " ";
 ui_print "Unmounting...";
-$bootmode || {
-  if [ "$sysroot" ]; then umount "/$sysroot"; else umount /system; fi;
-}
-rm -rf "$filedir";
-[ -d "$bbdir" ] && rm -rf "$bbdir";
-sync;
+cleanup;
 
 ui_print " ";
 ui_print "Done!";
