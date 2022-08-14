@@ -48,10 +48,13 @@ file_getprop() {
   grep "^$2" "$1" | head -n1 | select_word 1 | cut -d= -f2;
 }
 
+umountparts="";
 cleanup() {
   rm -rf "$filedir" "$bbdir";
   $bootmode || {
-    if [ "$sysroot" ]; then umount "$sysroot"; else umount "/system"; fi;
+    for part in $umountparts; do
+      umount "$part";
+    done;
   }
   sync;
 }
@@ -79,10 +82,13 @@ log "Zip File is $zipfile";
 log "Bootmode is $bootmode";
 
 $bootmode || {
-  [ -e "/system" ] && mount -o ro /system;
-  [ -e "/system_root" ] && mount -o ro /system_root;
-  [ -e "/mnt/system" ] && mount -o ro /mnt/system;
+  for part in "/system" "/system_root" "/mnt/system"; do
+    [ -e "$part" ] || continue;
+    mount -o ro "$part";
+    umountparts="$umountparts $part";
+  done;
   mount /data;
+  umountparts="$umountparts /data";
 }
 [ -e "/system/system/build.prop" ] && sysroot="system";
 [ -e "/system_root/system/build.prop" ] && sysroot="system_root";
