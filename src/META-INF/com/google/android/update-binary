@@ -45,7 +45,7 @@ select_word() {
 }
 
 file_getprop() {
-  grep "^$2" "$1" | head -n1 | select_word 1 | cut -d= -f2;
+  grep "^$2=" "$1" | head -n1 | select_word 1 | cut -d= -f2;
 }
 
 umountparts="";
