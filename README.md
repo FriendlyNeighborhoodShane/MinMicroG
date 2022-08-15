@@ -62,6 +62,13 @@ The available `MinMicroG` variants are:
    - Permission files for all of this
    - An addon.d file to backup/restore everything on a rom flash
 
+ - The things included in the `MinimalIAP` zip are:
+   - MicroG (GMSCore, GSFProxy, Maps APIv1) (from MicroG FDroid repo)
+   - Google Play store (modded for IAPs by Setialpha)
+   - Some Google DRM jars (From OpenGApps GitHub repo)
+   - Permission files for all of this
+   - An addon.d file to backup/restore everything on a rom flash
+
 The available `MinAddon` variants are:
 
  - The things included in the `Playstore` zip are:
