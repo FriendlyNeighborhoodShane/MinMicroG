@@ -72,6 +72,39 @@ abort() {
   exit 1;
 }
 
+fstab_getmount() {
+  grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s "[:blank:]" " " | cut -d" " -f1;
+}
+
+find_block() {
+  dynamicpart="$(getprop ro.boot.dynamicpart)";
+  [ "$dynamicpart" = "true" ] || dynamicpart="false";
+  [ "$dynamicpart" = "true" ] && blkpath="/dev/block/mapper" || {
+    blkpath="/dev/block/by-name";
+    [ -d "$blkpath" ] || blkpath="/dev/block/bootdevice/by-name";
+  }
+  blkabslot="$(getprop ro.boot.slot_suffix)";
+  for name in "$@"; do
+    blkmount="$(fstab_getmount "$name")";
+    [ "$blkmount" ] && blkmountexists="true" || blkmountexists="false";
+    case "$dynamicpart-$blkmountexists" in
+      true-true)
+        blkdev="${blkpath}/${blkmount}${blkabslot}";
+      ;;
+      false-true)
+        blkdev="${blkmount}${blkabslot}";
+      ;;
+      true-false|false-false)
+        blkdev="${blkpath}/${name}${blkabslot}";
+      ;;
+    esac;
+    [ -b "$blkdev" ] && {
+      echo "$blkdev";
+      return;
+    }
+  done;
+}
+
 ui_print " ";
 ui_print "--         Minimal MicroG Installer         --";
 ui_print "--     The Essentials only MicroG pack      --";
@@ -82,10 +115,13 @@ log "Zip File is $zipfile";
 log "Bootmode is $bootmode";
 
 $bootmode || {
-  for part in "/system" "/system_root" "/mnt/system"; do
-    [ -e "$part" ] || continue;
-    mount -o ro "$part";
-    umountparts="$umountparts $part";
+  sysblk="$(find_block /mnt/system /system_root /system /)";
+  for mntpoint in "/mnt/system" "/system_root" "/system"; do
+    [ -e "$mntpoint" ] || continue;
+    mount -o ro "$mntpoint" || mount -o ro "$sysblk" "$mntpoint" && {
+      umountparts="$umountparts $mntpoint";
+      break;
+    }
   done;
   mount /data;
   umountparts="$umountparts /data";
@@ -435,6 +471,7 @@ else
   rootpart="$sysrootpart";
   mount -o rw,remount "$rootpart";
   mount -o rw,remount "$rootpart" "$rootpart";
+  [ "$dynamicpart" = "true" ] && blockdev --setrw "$sysblk";
   root="$sysroot";
   magisk=no;
   log "Mounted $rootpart RW";
