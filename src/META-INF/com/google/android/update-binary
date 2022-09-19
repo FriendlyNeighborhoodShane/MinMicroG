@@ -72,6 +72,38 @@ abort() {
   exit 1;
 }
 
+get_block_for_mount_point() {
+  grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s [:blank:] ' ' | cut -d' ' -f1
+}
+
+find_block() {
+  local name="$1"
+  local fstab_entry=$(get_block_for_mount_point "/$name")
+  # P-SAR hacks
+  [ -z "$fstab_entry" ] && [ "$name" = "system" ] && fstab_entry=$(get_block_for_mount_point "/")
+  [ -z "$fstab_entry" ] && [ "$name" = "system" ] && fstab_entry=$(get_block_for_mount_point "/system_root")
+
+  local dev
+  if [ "$DYNAMIC_PARTITIONS" = "true" ]; then
+    if [ -n "$fstab_entry" ]; then
+      dev="${BLK_PATH}/${fstab_entry}${SLOT_SUFFIX}"
+    else
+      dev="${BLK_PATH}/${name}${SLOT_SUFFIX}"
+    fi
+  else
+    if [ -n "$fstab_entry" ]; then
+      dev="${fstab_entry}${SLOT_SUFFIX}"
+    else
+      dev="${BLK_PATH}/${name}${SLOT_SUFFIX}"
+    fi
+  fi
+
+  if [ -b "$dev" ]; then
+    echo "$dev"
+  fi
+}
+
+
 ui_print " ";
 ui_print "--         Minimal MicroG Installer         --";
 ui_print "--     The Essentials only MicroG pack      --";
@@ -82,10 +114,42 @@ log "Zip File is $zipfile";
 log "Bootmode is $bootmode";
 
 $bootmode || {
-  for part in "/system" "/system_root" "/mnt/system"; do
-    [ -e "$part" ] || continue;
-    mount -o ro "$part";
-    umountparts="$umountparts $part";
+  # Find partitions
+  DYNAMIC_PARTITIONS=`getprop ro.boot.dynamic_partitions`
+  if [ "$DYNAMIC_PARTITIONS" = "true" ]; then
+    BLK_PATH="/dev/block/mapper"
+  else
+    BLK_PATH="/dev/block/by-name"
+    if [ ! -d "$BLK_PATH" ]; then
+      BLK_PATH="/dev/block/bootdevice/by-name"
+    fi
+  fi
+
+  CURRENTSLOT=`getprop ro.boot.slot_suffix`
+  if [ ! -z "$CURRENTSLOT" ]; then
+    if [ "$CURRENTSLOT" == "_a" ]; then
+      SLOT_SUFFIX="_a"
+    else
+      SLOT_SUFFIX="_b"
+    fi
+  fi
+
+  SYSTEM_BLOCK=$(find_block "system")
+
+  # Disable rw protection on dynamic partitions
+  if [ "$DYNAMIC_PARTITIONS" = "true" ]; then
+    blockdev --setrw "$SYSTEM_BLOCK"
+    if [ -n "$PRODUCT_BLOCK" ]; then
+      blockdev --setrw "$PRODUCT_BLOCK"
+    fi
+    if [ -n "$SYSTEM_EXT_BLOCK" ]; then
+      blockdev --setrw "$SYSTEM_EXT_BLOCK"
+    fi
+  fi
+
+  for mntpoint in "/mnt/system" "/system_root" "/system"; do
+    [ -e "$mntpoint" ] || continue;
+    mount -o ro "$SYSTEM_BLOCK" "$mntpoint" && umountparts="$umountparts $part" && break;
   done;
   mount /data;
   umountparts="$umountparts /data";
