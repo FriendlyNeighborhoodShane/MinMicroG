@@ -95,6 +95,8 @@ if [ "$(getprop ro.build.version.sdk)" -ge 29 ]; then
 	# microG GmsCore needs to be installed as user app for all permissions to be granted
 	# see https://github.com/microg/android_packages_apps_GmsCore/issues/1100#issuecomment-711088518
 	user_install ${microG}
+	# Phonesky needs a similar treatment on some ROMs to avoid missing internet
+	user_install ${PlayStore}
 fi
 
 # Fake Package Signature
