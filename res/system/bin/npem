@@ -90,9 +90,19 @@ user_install () {
 	esac
 }
 
+allow_networking () {
+	oldlist="$(settings get global uids_allowed_on_restricted_networks)"
+	newlist="$( { echo "${oldlist}" | sed 's|;|\n|g'; echo "${2}"; } | sort -nu)"
+	newlist="$(printf '%d;' ${newlist})"
+	newlist="${newlist%;}"
+	settings put global uids_allowed_on_restricted_networks "${newlist}"
+	echo "package ${1} added to LOS networking allowlist"
+}
+
 [[ $(whoami) = "root" ]] || [[ $(whoami) = "shell" ]] || error "not running as either ADB or root"
 
 gms_uid=$(get_uid ${microG})
+play_uid=$(get_uid ${PlayStore})
 
 if [ "$(getprop ro.build.version.sdk)" -ge 29 ]; then
 	# microG GmsCore needs to be installed as user app for all permissions to be granted
@@ -100,6 +110,11 @@ if [ "$(getprop ro.build.version.sdk)" -ge 29 ]; then
 	user_install ${microG}
 	# Phonesky needs a similar treatment on some ROMs to avoid missing internet
 	user_install ${PlayStore}
+	if [ "$(settings list global | grep uids_allowed_on_restricted_networks)" ]; then
+		# both need this on LOS-based ROMs in some situations like it restricting their internet for no reason
+		allow_networking ${microG} ${gms_uid}
+		allow_networking ${PlayStore} ${play_uid}
+	fi;
 fi
 
 # Fake Package Signature
