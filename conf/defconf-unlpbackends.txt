@@ -1,0 +1,104 @@
+# Config
+
+modname="MinAddon-UNLPBackends";
+
+variant="UNLPBackends";
+ver="2.11.1";
+verc="2111";
+date="02 february, 2022";
+minsdk="19";
+
+modprop="id=$modname
+name=Minimal MicroG Pack $variant Edition
+version=$ver
+versionCode=$verc
+author=MOVZX and FatherJony and FriendlyNeighborhoodShane
+description=A Minimal MicroG installer with just the essentials
+support=
+donate=
+minMagisk=1900
+";
+
+stuff="
+  /system/app/AppleNLPBackend/AppleNLPBackend.apk
+  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
+  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
+";
+
+stuff_arch="
+";
+
+stuff_sdk="
+";
+
+stuff_arch_sdk="
+";
+
+stuff_util="
+  /util/func-defconf.sh
+  /util/script-addon.sh
+";
+
+stuff_other="
+";
+
+stuff_old="
+";
+
+stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $stuff_other $stuff_old";
+
+stuff_debloat="
+";
+
+stuff_perm="
+  /system/app/AppleNLPBackend
+  /system/app/DejaVuNLPBackend
+  /system/app/LocalGSMNLPBackend
+  /system/app/LocalWiFiNLPBackend
+  /system/app/MozillaUnifiedNLPBackend
+  /system/app/NominatimNLPBackend
+";
+
+pre_build_actions() {
+
+  return 0;
+
+}
+
+post_build_actions() {
+
+  return 0;
+
+}
+
+pre_install_actions() {
+
+  . "$filedir/util/func-defconf.sh";
+  return 0;
+
+}
+
+post_install_actions() {
+
+  addon_install;
+  return 0;
+
+}
+
+pre_uninstall_actions() {
+
+  [ "$magisk" = "no" ] && stuff_uninstall="$stuff_uninstall $addond_file";
+  return 0;
+
+}
+
+post_uninstall_actions() {
+
+  return 0;
+
+}
+
+addond_file="/system/addon.d/10-$modname.sh";

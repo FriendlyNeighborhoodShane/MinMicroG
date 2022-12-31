@@ -49,6 +49,7 @@ everything on a ROM flash in a system installation.
 They just consist of singular components, just what they say on their label.
 - AuroraServices
 - PlayStore
+- UNLPBackends
 
 #### Package sources and credit
 - MicroG includes GMSCore and GSFProxy from MicroG FDroid repo
