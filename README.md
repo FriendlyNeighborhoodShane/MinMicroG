@@ -30,8 +30,9 @@ as many as you wish over a base package, or even without a base package.
 | Variant → Component ↓ | Standard | NoGoolag | UNLP | Minimal | MinimalIAP | AuroraServices | PlayStore |
 |-----------------------|----------|----------|------|---------|------------|----------------|-----------|
 | MicroG                | x        | x        |      | x       | x          |                |           |
+| Standalone UNLP (old) |          |          | x    |         |            |                |           |
 | Maps APIv1            | x        | x        | x    | x       | x          |                |           |
-| UNLP                  | x        | x        | x    |         |            |                |           |
+| UNLP Backends         | x        | x        | x    |         |            |                |           |
 | Fake Store            |          | x        |      | x       |            |                |           |
 | Google Play Store     | x        |          |      |         | x          |                | x         |
 | Aurora Store          |          | x        |      |         |            |                |           |
