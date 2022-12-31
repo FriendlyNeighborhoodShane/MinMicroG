@@ -160,6 +160,12 @@ computer after `adb shell`, and then reboot:
 npem;
 ```
 
+MicroG or Playstore might be unable to connect to the internet, even if there
+is no firewall or DNS blocking them. This is caused by dirty flashing, as it
+confuses the LOS internet blocking feature, which works on an allowlist basis.
+To fix, enable: `App info` > `Mobile data and Wi-Fi` > `Allow network usage`.
+`npem` tries this for you automatically.
+
 Some new permissions are protected by Android now, and cannot simply be
 granted. You can try several things that may or may not work, depending on your
 ROM:
