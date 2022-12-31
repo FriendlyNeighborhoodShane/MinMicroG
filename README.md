@@ -54,7 +54,7 @@ All of these include required permissions and an addon.d file to backup/restore 
 - Aurora Store, Aurora Droid and Aurora Services from Whyorean's GitLab
 - Swype libs for AOSP keyboard from OpenGApps GitHub repo
 - Some Google DRM jars from OpenGApps GitHub repo
-- Google Sync adapters from KK to R from OpenGApps GitHub repo
+- Google Sync adapters for KK-R from OpenGApps GitLab repo, and for S-T from MindTheGApps GitLab repo
 
 ### Notes
 Dirty flashing not recommended. you'll mess up all your permissions and may
