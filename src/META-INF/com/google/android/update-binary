@@ -77,7 +77,7 @@ fstab_getmount() {
 }
 
 find_block() {
-  dynamicpart="$(getprop ro.boot.dynamicpart)";
+  dynamicpart="$(getprop ro.boot.dynamic_partitions)";
   [ "$dynamicpart" = "true" ] || dynamicpart="false";
   [ "$dynamicpart" = "true" ] && blkpath="/dev/block/mapper" || {
     blkpath="/dev/block/by-name";
