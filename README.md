@@ -62,7 +62,7 @@ They just consist of singular components, just what they say on their label.
 - Some Google DRM jars from OpenGApps GitHub repo
 - Google Sync adapters for KK-R from OpenGApps GitLab repo, and for S-T from MindTheGApps GitLab repo
 
-### Notes
+### Uninstallation and notes
 Dirty flashing not recommended. you'll mess up all your permissions and may
 even cause conflicts in app data, leading to crashes.
 The maker does not support or endorse dirty flashing. It will harm you and your
