@@ -92,7 +92,12 @@ user_install () {
 
 allow_networking () {
 	oldlist="$(settings get global uids_allowed_on_restricted_networks)"
-	newlist="$( { echo "${oldlist}" | sed 's|;|\n|g'; echo "${2}"; } | sort -nu)"
+	newlist="$(echo "${oldlist}" | sed 's|;|\n|g')"
+	if echo "${newlist}" | grep -q "^${2}$"; then
+		echo "package ${1} already in LOS networking allowlist"
+		return
+	fi
+	newlist="$( { echo "${newlist}"; echo "${2}"; } | sort -nu)"
 	newlist="$(printf '%d;' ${newlist})"
 	newlist="${newlist%;}"
 	settings put global uids_allowed_on_restricted_networks "${newlist}"
