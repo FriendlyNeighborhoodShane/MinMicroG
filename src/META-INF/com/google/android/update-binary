@@ -128,9 +128,9 @@ $bootmode || {
     if ismntpoint "$mntpoint"; then
       log "Mountpoint $mntpoint already mounted";
       continue;
-    else if mount -o ro "$mntpoint"; then
+    elif mount -o ro "$mntpoint"; then
       log "Mountpoint $mntpoint mounted (auto)";
-    else if [ "$sysblk" ] && mount -o ro "$sysblk" "$mntpoint"; then
+    elif [ "$sysblk" ] && mount -o ro "$sysblk" "$mntpoint"; then
       log "Mountpoint $mntpoint mounted (manual)";
     else
       log "Mountpoint $mntpoint could not be mounted";
