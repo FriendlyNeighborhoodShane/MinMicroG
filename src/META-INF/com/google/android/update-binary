@@ -121,23 +121,21 @@ log "Bootmode is $bootmode";
 $bootmode || {
   log " ";
   log "Mounting early";
-  sysblk="$(find_block /mnt/system /system_root /system /)";
-  [ "$sysblk" ] && log "Found system block at $sysblk";
-  for mntpoint in "/mnt/system" "/system_root" "/system"; do
-    [ -e "$mntpoint" ] || continue;
-    if ismntpoint "$mntpoint"; then
-      log "Mountpoint $mntpoint already mounted";
-      continue;
-    elif mount -o ro "$mntpoint"; then
-      log "Mountpoint $mntpoint mounted (auto)";
-    elif [ "$sysblk" ] && mount -o ro "$sysblk" "$mntpoint"; then
-      log "Mountpoint $mntpoint mounted (manual)";
-    else
-      log "Mountpoint $mntpoint could not be mounted";
-      continue;
-    fi;
-    umountparts="$umountparts $mntpoint";
+  for part in "/system" "/system_root"; do
+    [ -e "$part" ] || continue;
+    mount -o ro "$part";
+    log "Mountpoint $part mounted (auto)";
+    umountparts="$umountparts $part";
   done;
+  sysblk="$(find_block /system_root /system /)";
+  [ "$sysblk" ] && {
+    for part in "/mnt/system"; do
+      mkdir -p "$part";
+      mount -o ro "$sysblk" "$part";
+      umountparts="$umountparts $part";
+      log "Mountpoint $part mounted (manual $sysblk)";
+    done;
+  }
   mount /data;
   umountparts="$umountparts /data";
 }
