@@ -72,6 +72,10 @@ abort() {
   exit 1;
 }
 
+ismntpoint() {
+  mount | grep -q " on $1 ";
+}
+
 fstab_getmount() {
   grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s "[:blank:]" " " | cut -d" " -f1;
 }
@@ -115,13 +119,24 @@ log "Zip File is $zipfile";
 log "Bootmode is $bootmode";
 
 $bootmode || {
+  log " ";
+  log "Mounting early";
   sysblk="$(find_block /mnt/system /system_root /system /)";
+  [ "$sysblk" ] && log "Found system block at $sysblk";
   for mntpoint in "/mnt/system" "/system_root" "/system"; do
     [ -e "$mntpoint" ] || continue;
-    mount -o ro "$mntpoint" || mount -o ro "$sysblk" "$mntpoint" && {
-      umountparts="$umountparts $mntpoint";
-      break;
-    }
+    if ismntpoint "$mntpoint"; then
+      log "Mountpoint $mntpoint already mounted";
+      continue;
+    else if mount -o ro "$mntpoint"; then
+      log "Mountpoint $mntpoint mounted (auto)";
+    else if [ "$sysblk" ] && mount -o ro "$sysblk" "$mntpoint"; then
+      log "Mountpoint $mntpoint mounted (manual)";
+    else
+      log "Mountpoint $mntpoint could not be mounted";
+      continue;
+    fi;
+    umountparts="$umountparts $mntpoint";
   done;
   mount /data;
   umountparts="$umountparts /data";
@@ -469,9 +484,9 @@ if [ -e "/data/adb/magisk" ] && [ "$forcesys" != "yes" ]; then
   }
 else
   rootpart="$sysrootpart";
+  [ "$dynamicpart" = "true" ] && [ "$sysblk" ] && blockdev --setrw "$sysblk";
   mount -o rw,remount "$rootpart";
   mount -o rw,remount "$rootpart" "$rootpart";
-  [ "$dynamicpart" = "true" ] && blockdev --setrw "$sysblk";
   root="$sysroot";
   magisk=no;
   log "Mounted $rootpart RW";
