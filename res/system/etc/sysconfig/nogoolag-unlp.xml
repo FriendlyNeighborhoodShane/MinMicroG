@@ -22,15 +22,6 @@
     <allow-in-data-usage-save package="com.google.android.gms" />
     <allow-unthrottled-location package="com.google.android.gms" />
 
-    <!-- Uncontrolled access to location for backends. -->
-    <allow-unthrottled-location package="org.openbmap.unifiedNlp" />
-    <allow-unthrottled-location package="org.fitchfamily.android.wifi_backend" />
-    <allow-unthrottled-location package="org.fitchfamily.android.gsmlocation" />
-    <allow-unthrottled-location package="org.microg.nlp.backend.nominatim" />
-    <allow-unthrottled-location package="org.fitchfamily.android.dejavu" />
-    <allow-unthrottled-location package="org.microg.nlp.backend.ichnaea" />
-    <allow-unthrottled-location package="org.microg.nlp.backend.apple" />
-
     <!-- Apps that have ability to run as system user. -->
     <system-user-whitelisted-app package="com.google.android.gms" />
 

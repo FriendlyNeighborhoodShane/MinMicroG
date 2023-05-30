@@ -18,15 +18,9 @@ minMagisk=1900
 ";
 
 stuff="
-  /system/app/AppleNLPBackend/AppleNLPBackend.apk
   /system/app/AuroraDroid/AuroraDroid.apk
   /system/app/AuroraStore/AuroraStore.apk
-  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
-  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
-  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk
-  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
-  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
 
   /system/bin/npem
 
@@ -60,8 +54,14 @@ stuff_util="
 ";
 
 stuff_other="
+  /system/app/AppleNLPBackend/AppleNLPBackend.apk
+  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
+  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
   /system/etc/default-permissions/gsync.xml
   /system/etc/default-permissions/microg-permissions-unlp.xml
   /system/etc/permissions/com.google.android.backuptransport.xml
@@ -139,15 +139,9 @@ stuff_debloat="
 ";
 
 stuff_perm="
-  /system/app/AppleNLPBackend
   /system/app/AuroraDroid
   /system/app/AuroraStore
-  /system/app/DejaVuNLPBackend
-  /system/app/LocalGSMNLPBackend
-  /system/app/LocalWiFiNLPBackend
   /system/app/MicroGGSFProxy
-  /system/app/MozillaUnifiedNLPBackend
-  /system/app/NominatimNLPBackend
   /system/bin/npem
   /system/etc/default-permissions
   /system/etc/permissions

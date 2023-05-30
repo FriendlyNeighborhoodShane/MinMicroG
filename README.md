@@ -35,7 +35,7 @@ everything on a ROM flash in a system installation.
 | MicroG                | x        | x        |      | x       | x          |
 | Standalone UNLP (old) |          |          | x    |         |            |
 | Maps APIv1            | x        | x        | x    | x       | x          |
-| UNLP Backends         | x        | x        | x    |         |            |
+| UNLP Backends         |          |          | x    |         |            |
 | Fake Store            |          | x        |      | x       |            |
 | Google Play Store     | x        |          |      |         | x          |
 | Aurora Store          |          | x        |      |         |            |
@@ -49,7 +49,6 @@ everything on a ROM flash in a system installation.
 They just consist of singular components, just what they say on their label.
 - AuroraServices
 - PlayStore
-- UNLPBackends
 
 #### Package sources and credit
 - MicroG includes GMSCore and GSFProxy from MicroG FDroid repo
