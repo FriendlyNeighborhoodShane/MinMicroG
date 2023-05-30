@@ -4,7 +4,12 @@
         <permission name="android.permission.CHANGE_DEVICE_IDLE_TEMP_WHITELIST" />
         <permission name="android.permission.FAKE_PACKAGE_SIGNATURE" />
         <permission name="android.permission.INSTALL_LOCATION_PROVIDER" />
+        <permission name="android.permission.LOCATION_HARDWARE" />
         <permission name="android.permission.MANAGE_USB" />
+        <permission name="android.permission.MODIFY_PHONE_STATE" />
+        <permission name="android.permission.NETWORK_SCAN" />
         <permission name="android.permission.UPDATE_APP_OPS_STATS" />
+        <permission name="android.permission.UPDATE_DEVICE_STATS" />
+        <permission name="android.permission.WATCH_APPOPS" />
     </privapp-permissions>
 </permissions>
