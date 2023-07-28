@@ -1,7 +1,6 @@
 # Config file for update.sh
 
 stuff_repo="
-  fdroid https://f-droid.org/repo
   microg https://microg.org/fdroid/repo
   nanolx https://nanolx.org/fdroid/repo
 ";
