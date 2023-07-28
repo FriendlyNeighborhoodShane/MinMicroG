@@ -7,20 +7,13 @@ stuff_repo="
 ";
 
 stuff_download="
-  /system/app/AppleNLPBackend/AppleNLPBackend.apk                   repo    fdroid/org.microg.nlp.backend.apple
   /system/app/AuroraDroid/AuroraDroid.apk                           gitlab  AuroraOSS/auroradroid                           .apk
   /system/app/AuroraStore/AuroraStore.apk                           gitlab  AuroraOSS/AuroraStore                           .apk
-  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk                 repo    fdroid/org.fitchfamily.android.dejavu
-  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk             repo    fdroid/org.fitchfamily.android.gsmlocation
-  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk           repo    fdroid/org.fitchfamily.android.wifi_backend
   /system/app/MicroGGSFProxy/MicroGGSFProxy.apk                     repo    microg/com.google.android.gsf
-  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk repo    fdroid/org.microg.nlp.backend.ichnaea
-  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk           repo    fdroid/org.microg.nlp.backend.nominatim
   /system/framework/com.google.android.maps.zip                     github  microg/android_frameworks_mapsv1                .zip
   /system/priv-app/AuroraServices/AuroraServices.apk                gitlab  AuroraOSS/AuroraServices                        .apk
   /system/priv-app/FakeStore/FakeStore.apk                          repo    microg/com.android.vending
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk                  repo    microg/com.google.android.gms
-  /system/priv-app/MicroGUNLP/MicroGUNLP.apk                        repo    fdroid/com.google.android.gms
 
   /system/app/GoogleCalendarSyncAdapter/-19-21-22-23-24-25-26-27-/GoogleCalendarSyncAdapter.apk direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/21/nodpi/2016267990.apk
   /system/app/GoogleCalendarSyncAdapter/-28-29-30-/GoogleCalendarSyncAdapter.apk                direct  https://gitlab.opengapps.org/opengapps/all/raw/master/app/com.google.android.syncadapters.calendar/21/nodpi/2016267990.apk

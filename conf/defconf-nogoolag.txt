@@ -54,20 +54,12 @@ stuff_util="
 ";
 
 stuff_other="
-  /system/app/AppleNLPBackend/AppleNLPBackend.apk
-  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
-  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
-  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
-  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
-  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
   /system/etc/default-permissions/gsync.xml
-  /system/etc/default-permissions/microg-permissions-unlp.xml
   /system/etc/permissions/com.google.android.backuptransport.xml
   /system/etc/permissions/com.google.android.media.effects.xml
   /system/etc/permissions/com.google.widevine.software.drm.xml
-  /system/etc/sysconfig/nogoolag-unlp.xml
   /system/framework/com.google.android.media.effects.jar
   /system/framework/com.google.widevine.software.drm.jar
   /system/lib/libjni_keyboarddecoder.so
@@ -75,16 +67,23 @@ stuff_other="
   /system/lib64/libjni_keyboarddecoder.so
   /system/lib64/libjni_latinimegoogle.so
   /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
-  /system/priv-app/MicroGUNLP/MicroGUNLP.apk
   /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
 
 stuff_old="
   /system/addon.d/01-nogoolag.sh
+  /system/app/AppleNLPBackend/AppleNLPBackend.apk
+  /system/app/DejaVuNLPBackend/DejaVuNLPBackend.apk
   /system/app/FDroid/FDroid.apk
+  /system/app/LocalGSMNLPBackend/LocalGSMNLPBackend.apk
+  /system/app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
+  /system/app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
+  /system/app/NominatimNLPBackend/NominatimNLPBackend.apk
   /system/app/RadioCellsNLPBackend/RadioCellsNLPBackend.apk
+  /system/etc/default-permissions/microg-permissions-unlp.xml
   /system/etc/permissions/gsync.xml
   /system/etc/permissions/org.fdroid.fdroid.privileged.xml
+  /system/etc/sysconfig/nogoolag-unlp.xml
   /system/priv-app/AuroraStore/AuroraStore.apk
   /system/priv-app/DejaVuLocationService/DejaVuLocationService.apk
   /system/priv-app/DejaVuNLPBackend/DejaVuNLPBackend.apk
@@ -93,6 +92,7 @@ stuff_old="
   /system/priv-app/LocalWiFiNLPBackend/LocalWiFiNLPBackend.apk
   /system/priv-app/MicroGDroidGuard/MicroGDroidGuard.apk
   /system/priv-app/MicroGGSFProxy/MicroGGSFProxy.apk
+  /system/priv-app/MicroGUNLP/MicroGUNLP.apk
   /system/priv-app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk
 ";
