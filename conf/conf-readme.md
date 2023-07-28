@@ -21,9 +21,9 @@ For making your own pack and config file, check `conf/custom-conf.md`.
 
  - `variant`: The name that will be in the filename of the released zip as well
    as will be shown on installation. It does not have to be related to the name
-   of the defconf file (for example the `defconf-unlp.txt` file has variant
-   "Backend" and creates the `MinMicroG-Backend-*-*.zip` package). Any string
-   without whitespace will do.
+   of the defconf file (for example the `defconf-aurora.txt` file has variant
+   "AuroraServices" and creates the `MinMicroG-AuroraServices-*-*.zip` package).
+   Any string without whitespace will do.
  - `ver`: The version number of the package, which is shown in the release
    filename and during installation. It can be anything except whitespace, but
    for convenience is integers along with decimals.

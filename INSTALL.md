@@ -24,15 +24,10 @@ installation and can be removed with it.
    permission" isn't ticked, click on it and grant the permission.
  - In microG settings, Go to "Google device registration", "Google Cloud
    Messaging" and enable both of them.
+ - In microG settings, go to Location, and configure every source you want to
+   enable.
  - If you wish to connect to your Google account, go to Settings > Accounts >
    Add Accounts > Google and login to your account.
- - Reboot.
-
-##### Chapter 3: UnifiedNLP
- - In microG settings, go to Location modules, and enable every backend you
-   want in "Network-based geolocation modules" and "Address lookup modules".
- - Open gear icons on the backends that have it and grant all neccessary
-   permissions and configuration.
  - Reboot.
 
 Most of your self-check should be checked by now. If the last one or two are
@@ -94,7 +89,7 @@ There are several other ways to have your ROM support sigspoof too:
  - Using an Xposed module called FakeGapps
 
 ##### [microG and UNLP] Network Location Provider support
-Another major thing MicroG and UNLP do is providing network location to apps.
+Another major thing MicroG does is providing network location to apps.
 
 What is network location? It's a quick and rough estimate of your location,
 several hundred metres wide, made using cellular towers and wifi networks

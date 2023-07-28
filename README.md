@@ -30,20 +30,18 @@ All of these include required permissions and an addon.d file to backup/restore
 everything on a ROM flash in a system installation.
 
 #### Table of contents of different MinMicroG variants
-| Component \ Variant   | Standard | NoGoolag | UNLP | Minimal | MinimalIAP |
-|-----------------------|----------|----------|------|---------|------------|
-| MicroG                | x        | x        |      | x       | x          |
-| Standalone UNLP (old) |          |          | x    |         |            |
-| Maps APIv1            | x        | x        | x    | x       | x          |
-| UNLP Backends         |          |          | x    |         |            |
-| Fake Store            |          | x        |      | x       |            |
-| Google Play Store     | x        |          |      |         | x          |
-| Aurora Store          |          | x        |      |         |            |
-| Aurora Droid          | x        | x        |      |         |            |
-| Aurora Services       | x        | x        |      |         |            |
-| Swype libs            | x        |          |      |         |            |
-| Google DRM jars       | x        |          |      |         | x          |
-| Google Sync adapters  | x        |          |      |         |            |
+| Component \ Variant   | Standard | NoGoolag | Minimal | MinimalIAP |
+|-----------------------|----------|----------|---------|------------|
+| MicroG                | x        | x        | x       | x          |
+| Maps APIv1            | x        | x        | x       | x          |
+| Fake Store            |          | x        | x       |            |
+| Google Play Store     | x        |          |         | x          |
+| Aurora Store          |          | x        |         |            |
+| Aurora Droid          | x        | x        |         |            |
+| Aurora Services       | x        | x        |         |            |
+| Swype libs            | x        |          |         |            |
+| Google DRM jars       | x        |          |         | x          |
+| Google Sync adapters  | x        |          |         |            |
 
 #### List of MinAddon variants
 They just consist of singular components, just what they say on their label.
@@ -53,7 +51,6 @@ They just consist of singular components, just what they say on their label.
 #### Package sources and credit
 - MicroG includes GMSCore and GSFProxy from MicroG FDroid repo
 - Maps APIv1 from MicroG FDroid repo
-- UNLP and UNLP backends from FDroid repo (Dejá vu, LocalGSM, LocalWiFi, Mozilla, Nominatim)
 - Google Play Store modded for IAPs by Setialpha
 - Fake Store from MicroG FDroid repo
 - Aurora Store, Aurora Droid and Aurora Services from Whyorean's GitLab
