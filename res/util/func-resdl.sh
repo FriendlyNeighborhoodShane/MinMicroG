@@ -75,7 +75,7 @@ verifycerts() {
   for repo in $(echo "$stuff_repo" | select_word 1); do
     [ -f "$tmpdir/repos/$repo.jar" ] || continue;
     certobject="repo/$repo.cer";
-    apksigner verify --min-sdk-version=0 --max-sdk-version=0 "$tmpdir/repos/$repo.jar" > /dev/null || {
+    apksigner verify --min-sdk-version=19 --max-sdk-version=19 "$tmpdir/repos/$repo.jar" > /dev/null || {
       echo "  !! Verification failed for repo ($repo)";
       continue;
     }
