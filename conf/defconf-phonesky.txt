@@ -21,7 +21,7 @@ minMagisk=1900
 
 stuff="
   /system/etc/permissions/com.android.vending.xml
-  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
+  /system/priv-app/Phonesky/Phonesky.apk
 ";
 
 stuff_arch="
@@ -51,7 +51,7 @@ stuff_debloat="
 
 stuff_perm="
   /system/etc/permissions
-  /system/priv-app/PatchPhonesky
+  /system/priv-app/Phonesky
 ";
 
 pre_build_actions() {

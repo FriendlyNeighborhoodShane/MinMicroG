@@ -2,7 +2,6 @@
 
 stuff_repo="
   microg https://microg.org/fdroid/repo
-  nanolx https://nanolx.org/fdroid/repo
 ";
 
 stuff_download="
@@ -51,7 +50,7 @@ stuff_download="
   /system/priv-app/GoogleBackupTransport/-24-25-/GoogleBackupTransport.apk                      direct  https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/24/nodpi/24.apk
   /system/priv-app/GoogleBackupTransport/-26-27-/GoogleBackupTransport.apk                      direct  https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/26/nodpi/26.apk
   /system/priv-app/GoogleBackupTransport/-28-29-30-/GoogleBackupTransport.apk                   direct  https://gitlab.opengapps.org/opengapps/all/raw/master/priv-app/com.google.android.backuptransport/28/nodpi/28.apk
-  /system/priv-app/PatchPhonesky/PatchPhonesky.apk                                              repo    nanolx/com.android.vending
+  /system/priv-app/Phonesky/Phonesky.apk                                                        direct  https://gitlab.pixelexperience.org/android/vendor_gms/raw/HEAD/common/proprietary/product/priv-app/Phonesky/Phonesky.apk
 ";
 
 pre_update_actions() {

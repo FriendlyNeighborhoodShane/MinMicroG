@@ -39,7 +39,7 @@ stuff="
 
   /system/priv-app/AuroraServices/AuroraServices.apk
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
-  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
+  /system/priv-app/Phonesky/Phonesky.apk
 ";
 
 stuff_arch="
@@ -95,6 +95,7 @@ stuff_old="
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk
   /system/priv-app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk
+  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
 
 stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $stuff_other $stuff_old";
@@ -148,7 +149,7 @@ stuff_perm="
   /system/framework/com.google.android.maps.jar
   /system/priv-app/AuroraServices
   /system/priv-app/MicroGGMSCore
-  /system/priv-app/PatchPhonesky
+  /system/priv-app/Phonesky
   /system/app/GoogleCalendarSyncAdapter
   /system/app/GoogleContactsSyncAdapter
   /system/priv-app/GoogleBackupTransport

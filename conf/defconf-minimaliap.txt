@@ -34,7 +34,7 @@ stuff="
   /system/framework/com.google.android.media.effects.jar
   /system/framework/com.google.widevine.software.drm.jar
 
-  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
+  /system/priv-app/Phonesky/Phonesky.apk
   /system/priv-app/MicroGGMSCore/MicroGGMSCore.apk
 ";
 
@@ -95,6 +95,7 @@ stuff_old="
   /system/priv-app/MicroGUNLP/MicroGUNLP.apk
   /system/priv-app/MozillaUnifiedNLPBackend/MozillaUnifiedNLPBackend.apk
   /system/priv-app/NominatimNLPBackend/NominatimNLPBackend.apk
+  /system/priv-app/PatchPhonesky/PatchPhonesky.apk
 ";
 
 stuff_uninstall="$stuff $stuff_arch $stuff_sdk $stuff_arch_sdk $stuff_other $stuff_old";
@@ -145,7 +146,7 @@ stuff_perm="
   /system/etc/permissions
   /system/etc/sysconfig
   /system/framework/com.google.android.maps.jar
-  /system/priv-app/PatchPhonesky
+  /system/priv-app/Phonesky
   /system/priv-app/MicroGGMSCore
 ";
 

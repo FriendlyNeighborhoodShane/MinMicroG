@@ -51,7 +51,7 @@ They just consist of singular components, just what they say on their label.
 #### Package sources and credit
 - MicroG includes GMSCore and GSFProxy from MicroG FDroid repo
 - Maps APIv1 from MicroG FDroid repo
-- Google Play Store modded for IAPs by Setialpha
+- Google Play Store modded from the Pixel Experience Gitlab
 - Fake Store from MicroG FDroid repo
 - Aurora Store, Aurora Droid and Aurora Services from Whyorean's GitLab
 - Swype libs for AOSP keyboard from OpenGApps GitHub repo
