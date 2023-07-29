@@ -25,7 +25,6 @@ stuff="
 
   /system/etc/default-permissions/microg-permissions.xml
   /system/etc/permissions/com.android.vending.xml
-  /system/etc/permissions/com.google.android.backuptransport.xml
   /system/etc/permissions/com.google.android.gms.xml
   /system/etc/permissions/com.google.android.maps.xml
   /system/etc/sysconfig/nogoolag.xml
@@ -43,6 +42,7 @@ stuff_sdk="
   /system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk
   /system/app/GoogleContactsSyncAdapter/GoogleContactsSyncAdapter.apk
   /system/etc/default-permissions/gsync.xml
+  /system/etc/permissions/com.google.android.backuptransport.xml
   /system/priv-app/GoogleBackupTransport/GoogleBackupTransport.apk
 ";
 
