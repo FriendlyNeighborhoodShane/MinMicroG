@@ -25,7 +25,6 @@
     <!-- Ensure app store applications has internet access to manage updates. -->
     <allow-in-power-save-except-idle package="com.android.vending" />
     <allow-in-power-save-except-idle package="com.aurora.adroid" />
-    <allow-in-power-save-except-idle package="com.aurora.services" />
     <allow-in-power-save-except-idle package="com.aurora.store" />
 
     <!-- microG components -->
@@ -38,7 +37,6 @@
     <system-user-whitelisted-app package="com.google.android.gms" />
     <system-user-whitelisted-app package="com.google.android.gsf" />
     <system-user-whitelisted-app package="org.microg.gms.droidguard" />
-    <system-user-whitelisted-app package="com.aurora.services" />
 
     <!-- Third party apps allowed to access the entire private API  -->
     <hidden-api-whitelisted-app package="com.google.android.gms" />
