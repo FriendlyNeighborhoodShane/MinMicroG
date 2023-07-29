@@ -61,9 +61,9 @@ verifycerts() {
 
   [ "$stuff_repo" ] || echo "$stuff_download" | grep -qE "^[ ]*[^ ]+.apk[ ]+" || return 0;
 
-  command -v "apksigner" >/dev/null && command -v "openssl" >/dev/null || {
+  command -v "apksigner" >/dev/null || {
     echo " ";
-    echo " !! Not checking certificates (missing apksigner or openssl)";
+    echo " !! Not checking certificates (missing apksigner)";
     return 0;
   }
 
@@ -82,10 +82,10 @@ verifycerts() {
     [ -f "$certdir/$certobject" ] || {
       echo "  -- Adding cert for new repo ($repo)";
       mkdir -p "$certdir/$(dirname "$certobject")";
-      unzip -p "$tmpdir/repos/$repo.jar" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$certdir/$certobject";
+      apksigner verify --min-sdk-version=19 --max-sdk-version=19 --print-certs-pem "$tmpdir/repos/$repo.jar" | grep -v '^WARNING: ' > "$certdir/$certobject";
       continue;
     }
-    unzip -p "$tmpdir/repos/$repo.jar" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$tmpdir/tmp.cer";
+    apksigner verify --min-sdk-version=19 --max-sdk-version=19 --print-certs-pem "$tmpdir/repos/$repo.jar" | grep -v '^WARNING: ' > "$tmpdir/tmp.cer";
     [ "$(diff -w "$tmpdir/tmp.cer" "$certdir/$certobject")" ] && {
       echo "  !! Cert mismatch for repo ($repo)";
       cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
@@ -105,10 +105,10 @@ verifycerts() {
     [ -f "$certdir/$certobject" ] || {
       echo "  -- Adding cert for new APK ($object)";
       mkdir -p "$certdir/$(dirname "$certobject")";
-      unzip -p "$resdldir/$object" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$certdir/$certobject";
+      apksigner verify --print-certs-pem "$resdldir/$object" | grep -v '^WARNING: ' > "$certdir/$certobject";
       continue;
     }
-    unzip -p "$resdldir/$object" "META-INF/*.RSA" | openssl pkcs7 -inform der -print_certs > "$tmpdir/tmp.cer";
+    apksigner verify --print-certs-pem "$resdldir/$object" | grep -v '^WARNING: ' > "$tmpdir/tmp.cer";
     [ "$(diff -w "$tmpdir/tmp.cer" "$certdir/$certobject")" ] && {
       echo "  !! Cert mismatch for APK ($object)";
       cp -f "$tmpdir/tmp.cer" "$certdir/$certobject.new";
