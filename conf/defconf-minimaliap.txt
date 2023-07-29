@@ -1,9 +1,9 @@
 # Config
 
 variant="MinimalIAP";
-ver="2.11.1";
-verc="2111";
-date="02 february, 2022";
+ver="2.12.0";
+verc="2120";
+date="29 july 2023";
 minsdk="21";
 
 modprop="id=$modname
