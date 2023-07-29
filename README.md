@@ -38,8 +38,6 @@ everything on a ROM flash in a system installation.
 | Google Play Store     | x        |          |         | x          |
 | Aurora Store          |          | x        |         |            |
 | Aurora Droid          | x        | x        |         |            |
-| Swype libs            | x        |          |         |            |
-| Google DRM jars       | x        |          |         | x          |
 | Google Sync adapters  | x        |          |         |            |
 
 #### List of MinAddon variants
@@ -53,8 +51,6 @@ They just consist of singular components, just what they say on their label.
 - Google Play Store modded from the Pixel Experience Gitlab
 - Fake Store from MicroG FDroid repo
 - Aurora Store and Aurora Droid from Whyorean's GitLab
-- Swype libs for AOSP keyboard from OpenGApps GitHub repo
-- Some Google DRM jars from OpenGApps GitHub repo
 - Google Sync adapters for KK-R from OpenGApps GitLab repo, and for S-T from MindTheGApps GitLab repo
 
 ### Uninstallation and notes
