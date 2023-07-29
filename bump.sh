@@ -27,7 +27,7 @@ for bin in printf sed; do
   command -v "$bin" >/dev/null || abort "No $bin found";
 done;
 
-[ "$#" = "3" ] || abort "Not enough arguments";
+[ "$#" = "3" ] || abort "Insufficient arguments: [version] [version number] [date]";
 
 echo " ";
 echo " - Bumping defconfs: [$1] [$2] [$3]";
