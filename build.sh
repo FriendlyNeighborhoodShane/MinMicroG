@@ -110,6 +110,9 @@ for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
   [ "$found" ] || echo "ERROR: object not found ($object)";
 done;
 
+# KernelSU expects module.prop to be already present in OTA
+echo "$modprop" > "$tmpdir/module.prop"
+
 # Pre build actions
 
 pre_build_actions;

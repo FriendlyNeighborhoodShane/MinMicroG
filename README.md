@@ -14,11 +14,13 @@
 
 ### What is this?
 This is a simple MicroG installer. It can install MicroG and other stuff into
-your system partition or as a Magisk module. It supports virtually all mobile
-architectures (arm/64, x86/64, mips/64) and fully supports KitKat and above. It
-can also (mostly) support much older versions, but sync adapters and some
-location providers won't work. It can even uninstall itself from your device,
-just rename it and flash it again.
+your system partition or as a Magisk/KernelSU¹ module. It supports virtually all
+mobile architectures (arm/64, x86/64, mips/64) and fully supports KitKat and
+above. It can also (mostly) support much older versions, but sync adapters and
+some location providers won't work. It can even uninstall itself from your
+device, just rename it and flash it again.
+
+¹ may require setting an adequate [app profile or disabling unmounting](https://kernelsu.org/guide/app-profile.html#non-root-profile)
 
 ### Variants
 The `MinMicroG` packages are intended as various base configuration for microG,
