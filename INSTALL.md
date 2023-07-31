@@ -18,7 +18,9 @@ install as a module, it will not touch system at all, and you can easily remove
 it when something goes wrong. On the other hand, it will be tied to the Magisk
 installation and can be removed with it.
  - If you want MinMicroG to be installed as a Magisk module, flash Magisk and
-   boot your phone once to allow Magisk to setup properly.
+   boot your phone once to allow Magisk to setup properly. If you want it as a
+   KernelSU module, set an appropriate app profile to prevent unmounting for
+   apps.
  - Flash MinMicroG, preferably from recovery.
  - Open microG Settings > Self-Check. If "System grants signature spoofing
    permission" isn't ticked, click on it and grant the permission.
