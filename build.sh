@@ -87,6 +87,9 @@ for file in "src/META-INF" "INSTALL.md" "LICENSE" "README.md"; do
   cp -Rf "$workdir/$file" "$tmpdir/";
 done;
 
+# KernelSU expects module.prop in zip
+echo "$modprop" > "$tmpdir/module.prop"
+
 for object in $stuff $stuff_util; do
   found="";
   for realobject in "$resdldir/$object" "$resdir/$object"; do
@@ -109,9 +112,6 @@ for object in $stuff_arch $stuff_sdk $stuff_arch_sdk; do
   done;
   [ "$found" ] || echo "ERROR: object not found ($object)";
 done;
-
-# KernelSU expects module.prop to be already present in OTA
-echo "$modprop" > "$tmpdir/module.prop"
 
 # Pre build actions
 
