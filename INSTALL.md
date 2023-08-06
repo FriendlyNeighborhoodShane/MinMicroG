@@ -32,9 +32,8 @@ installation and can be removed with it.
    Add Accounts > Google and login to your account.
  - Reboot.
 
-Most of your self-check should be checked by now. If the last one or two are
-not, just enable high accuracy location, open the map tab on Satstat (from
-FDroid) and wait until a blue circle appears. They should be okay now.
+Most of your self-check should be checked by now. If some permissions are missing,
+see the troubleshooting section below.
 
 ### Prerequisites
 
