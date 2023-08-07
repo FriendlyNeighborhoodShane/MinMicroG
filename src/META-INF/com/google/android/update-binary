@@ -15,6 +15,7 @@ zipfile="$3";
 
 ps | grep zygote | grep -v grep >/dev/null && bootmode=true || bootmode=false;
 $bootmode || ps -A 2>/dev/null | grep zygote | grep -v grep >/dev/null && bootmode=true;
+[ "$BOOTMODE" = true ] && bootmode=true;
 
 if $bootmode; then
   ui_print() {
@@ -147,7 +148,7 @@ $bootmode || {
 
 bbdir="/tmp/busybox";
 $bootmode || {
-  for bb in /data/adb/magisk/busybox; do
+  for bb in /data/adb/ksu/bin/busybox /data/adb/magisk/busybox; do
     [ -f "$bb" ] && magiskbb="$bb";
   done;
   [ "$magiskbb" ] && {
@@ -165,6 +166,7 @@ for bin in chcon chmod chown cp cut df du echo find grep head mkdir mount ps rm 
 done;
 
 $bootmode && filedir="/dev/tmp/$modname" || filedir="/tmp/$modname";
+[ "$TMPDIR" ] && filedir="$TMPDIR/$modname";
 tmplibdir="$filedir/tmplibdir";
 
 $bootmode && forcesys=no;
@@ -470,7 +472,12 @@ fi;
 
 ui_print " ";
 ui_print "Mounting...";
-if [ -e "/data/adb/magisk" ] && [ "$forcesys" != "yes" ]; then
+if $bootmode && [ "$KSU" = true ]; then
+  rootpart="/data";
+  modulesdir="$(dirname "$MODPATH")";
+  root="$MODPATH";
+  magisk=yes;
+elif [ -e "/data/adb/magisk" ] && [ "$forcesys" != "yes" ]; then
   rootpart="/data";
   $bootmode && modulesdir="$rootpart/adb/modules_update" || modulesdir="$rootpart/adb/modules";
   root="$modulesdir/$modname";
