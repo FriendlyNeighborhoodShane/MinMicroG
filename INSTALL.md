@@ -100,7 +100,7 @@ that appears on your maps app quickly before a smaller accurate one appears.
 It technically should not be needed for the functioning of most apps, but
 poorly coded ones that depend on Google Play Services often crash without it.
 
-Most ROMs should support it, but some OnePlus's and Xaiomi's have other
+Most ROMs should support it, but some OnePlus’s and Xiaomi’s have other
 providers (like `com.qualcomm.location`) that do not allow other providers to
 bind with system.
 
@@ -118,15 +118,8 @@ guarantees for clean ROMs either, but that'a a different thing)
 Get a clean AOSP-based ROM.
 
 Or if you're a masochist, there are several ways to clean those kinds of ROMs:
- - Gapps removal script
-   - https://github.com/CHEF-KOCH/Remove-Gapps
- - G-Killer (GAPPS aroma Debloater)
-   - https://forum.xda-developers.com/android/software-hacking/aroma-google-services-debloater-t3668456
- - Rom Cleaner
-   - https://github.com/DroidTR/Rom-Cleaner
  - /d/gapps
    - https://f-droid.org/app/org.droidtr.deletegapps
-
 
 ### Troubleshooting
 
@@ -238,7 +231,7 @@ Play)
    - Password: `[your_app_password]`
 
 ##### Android Wear companion apps
- - GatgetBridge companion app on F-Droid
+ - GadgetBridge companion app on F-Droid
  - AsteroidOS and similar projects
 
 ##### Making miscelleneous Google Apps work
@@ -258,7 +251,7 @@ Store by logging in with your own account.
 
 License verification, unfortunately, is something tied to Play Store and
 probably always will be. If you don't want to install it, all you can do is
-pester the devs to remove it or atleast offer alternative means of verification.
+pester the devs to remove it or at least offer alternative means of verification.
  - The Titanium Backup devs are a bunch of nice people. If you email them,
    they'll give you offline verification codes.
 
