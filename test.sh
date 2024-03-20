@@ -35,5 +35,12 @@ done;
   # All three happen all the time due to sourcing
   # Can't add directives because it's all dynamic
 
+for script in src/META-INF/com/google/android/update-binary build.sh bump.sh test.sh update.sh res/util/script-addon.sh res/util/script-init.sh; do
+  echo " ";
+  echo " - Linting script: $script";
+  shellcheck -s sh -ax -W 0 -e 1087,1090,1091,2034,2154 "$@" -- "$workdir/$script";
+done;
+
 echo " ";
-shellcheck -s sh -e 1087,1090,1091,2034,2154 "$@" -- ./src/META-INF/com/google/android/update-binary ./*.sh ./conf/*.txt ./res/util/*.sh;
+echo " - Done!";
+echo " ";
