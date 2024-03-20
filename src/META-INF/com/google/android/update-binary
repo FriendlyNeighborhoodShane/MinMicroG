@@ -73,10 +73,6 @@ abort() {
   exit 1;
 }
 
-ismntpoint() {
-  mount | grep -q " on $1 ";
-}
-
 fstab_getmount() {
   grep -v "^#" /etc/recovery.fstab | grep "[[:blank:]]$1[[:blank:]]" | tail -n1 | tr -s "[:blank:]" " " | cut -d" " -f1;
 }
@@ -186,7 +182,7 @@ case "$(basename "$zipfile" | tr 'A-Z' 'a-z')" in
   ;;
 esac;
 
-abi="$(file_getprop $sysroot/system/build.prop ro.product.cpu.abi)";
+abi="$(file_getprop "$sysroot/system/build.prop" ro.product.cpu.abi)";
 case "$abi" in
   arm64*)
     arch=arm64;
@@ -217,7 +213,7 @@ case "$abi" in
   ;;
 esac;
 
-sdk="$(file_getprop $sysroot/system/build.prop ro.build.version.sdk)";
+sdk="$(file_getprop "$sysroot/system/build.prop" ro.build.version.sdk)";
 [ "$sdk" ] || abort "Could not find SDK";
 [ "$sdk" -gt 0 ] || abort "Could not recognise SDK: $sdk";
 

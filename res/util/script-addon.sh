@@ -62,7 +62,7 @@ case "$1" in
     save_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$S/$object" ] || continue;
       find "$S/$object" -type f | while read -r file; do
-        file="${file#$S/}";
+        file="${file#"$S/"}";
         backup_file "$S/$file";
         log "BACKUPER: Object backed up ($file)";
       done;
@@ -74,7 +74,7 @@ case "$1" in
     save_files | translate_path | while read -r object; do
       [ "$object" ] && [ -e "$C/$S/$object" ] || continue;
       find "$C/$S/$object" -type f | while read -r file; do
-        file="${file#$C/$S/}";
+        file="${file#"$C/$S/"}";
         restore_file "$S/$file";
         log "RESTORER: Object restored ($file)";
       done;
