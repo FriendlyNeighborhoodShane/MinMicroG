@@ -132,9 +132,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
           objectid="$(echo "$objectpath" | jq -Rr "@uri")";
           [ "$objectid" ] || { echo "ERROR: $object gitlab project ID not found"; continue; }
           echo " ---- Getting GitLab URL for $object";
-          objectupload="$(curl -fLs "https://gitlab.com/api/v4/projects/$objectid/repository/tags" | jq -r '.[].release.description' | grep -oE "(/uploads/[^()]*$objectarg)" | head -n1 | tr -d "()")";
-          [ "$objectupload" ] || { echo "ERROR: $object gitlab project upload not found"; continue; }
-          objecturl="https://gitlab.com/$objectpath$objectupload";
+          objecturl="$(curl -fLs "https://gitlab.com/api/v4/projects/$objectid/releases" | jq -r '.[].assets.links[].direct_asset_url' | grep "$objectarg$" | head -n1)";
         ;;
         repo)
           objectrepo="$(dirname "$objectpath")";
