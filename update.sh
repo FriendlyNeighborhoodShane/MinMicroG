@@ -162,7 +162,7 @@ for object in $(echo "$stuff_download" | select_word 1); do
       objectname="$(basename "$objecturl")";
       objectfile="$tmpdir/$objectname";
       echo " ---- Downloading $objecturl";
-      curl -fL "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
+      curl -fL -H 'User-Agent: Mozilla' "$objecturl" -o "$objectfile" || { echo "ERROR: $object failed to download"; continue; }
       objectcksum="$(cksum "$objectfile" | select_word 1)";
       echo "FILE: $object, URL: $objecturl, CKSUM: $objectcksum;" >> "$updatelog";
     ;;
