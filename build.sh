@@ -71,6 +71,7 @@ mkdir -p "$tmpdir";
 # Config
 
 cp -f "$confdir/defconf-$confvar.txt" "$tmpdir/defconf";
+# shellcheck source=./conf/dummy-defconf.txt
 . "$tmpdir/defconf" || abort "Config for $confvar cannot be executed";
 
 echo " ";

@@ -35,6 +35,7 @@ for file in "/tmp/backuptool.functions" "/postinstall/tmp/backuptool.functions";
   [ -f "$file" ] && { backuptool="$file"; break; }
 done;
 [ "$backuptool" ] || abort "could not find addon.d helper";
+# shellcheck source=/dev/null
 . "$backuptool" || abort "could not source addon.d helper ($backuptool)";
 
 [ -f "$S/build.prop" ] || abort "could not find a ROM in $S";

@@ -36,6 +36,7 @@ stuff_download="
 
 pre_update_actions() {
 
+  # shellcheck source=./res/util/func-resdl.sh
   . "$resdir/util/func-resdl.sh";
   return 0;
 

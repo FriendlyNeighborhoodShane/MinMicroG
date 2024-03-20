@@ -59,6 +59,7 @@ mkdir -p "$tmpdir" "$tmpdir/repos" "$(dirname "$updatelog")";
 # Config
 
 [ -f "$confdir/resdl-download.txt" ] || abort "No resdl-download.txt found";
+# shellcheck source=./conf/resdl-download.txt
 . "$confdir/resdl-download.txt" || abort "Cannot execute resdl-download.txt";
 
 # Filter list by arguments if given

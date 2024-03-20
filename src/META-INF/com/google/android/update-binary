@@ -448,6 +448,7 @@ rm -rf "$filedir";
 mkdir -p "$filedir";
 unzip -o "$zipfile" "defconf" -d "$filedir/";
 [ -f "$filedir/defconf" ] || abort "Could not find a default config";
+# shellcheck source=./conf/dummy-defconf.txt
 . "$filedir/defconf" || abort "Could not execute default config";
 
 moddir="/data/media/0/$modname";
