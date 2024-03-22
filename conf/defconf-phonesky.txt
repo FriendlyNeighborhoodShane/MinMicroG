@@ -68,6 +68,7 @@ post_build_actions() {
 
 pre_install_actions() {
 
+  # shellcheck source=./res/util/func-defconf.sh
   . "$filedir/util/func-defconf.sh";
   return 0;
 

@@ -164,6 +164,7 @@ post_build_actions() {
 
 pre_install_actions() {
 
+  # shellcheck source=./res/util/func-defconf.sh
   . "$filedir/util/func-defconf.sh";
   user_conf;
   microg_cleanup;
