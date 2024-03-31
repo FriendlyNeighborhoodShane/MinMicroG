@@ -30,15 +30,15 @@ All of these include required permissions and an addon.d file to backup/restore
 everything on a ROM flash in a system installation.
 
 #### Table of contents of different MinMicroG variants
-| Component \ Variant   | Standard | NoGoolag | Minimal | MinimalIAP |
-|-----------------------|----------|----------|---------|------------|
-| MicroG                | x        | x        | x       | x          |
-| Maps APIv1            | x        | x        | x       | x          |
-| Fake Store            |          | x        | x       |            |
-| Google Play Store     | x        |          |         | x          |
-| Aurora Store          |          | x        |         |            |
-| Aurora Droid          | x        | x        |         |            |
-| Google Sync adapters  | x        |          |         |            |
+| Component \ Variant   | Standard | NoGoolag | Minimal | MinimalPhonesky |
+|-----------------------|----------|----------|---------|-----------------|
+| MicroG                | x        | x        | x       | x               |
+| Maps APIv1            | x        | x        | x       | x               |
+| Fake Store            |          | x        | x       |                 |
+| Google Play Store     | x        |          |         | x               |
+| Aurora Store          |          | x        |         |                 |
+| Aurora Droid          | x        | x        |         |                 |
+| Google Sync adapters  | x        |          |         |                 |
 
 #### List of MinAddon variants
 They just consist of singular components, just what they say on their label.
