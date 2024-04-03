@@ -118,21 +118,22 @@ log "Bootmode is $bootmode";
 $bootmode || {
   log " ";
   log "Mounting early";
-  for part in "/system" "/system_root"; do
-    [ -e "$part" ] || continue;
-    mount -o ro "$part";
-    log "Mountpoint $part mounted (auto)";
-    umountparts="$umountparts $part";
-  done;
   sysblk="$(find_block /system_root /system /)";
-  [ "$sysblk" ] && {
+  if [ "$sysblk" ]; then
     for part in "/mnt/system"; do
       mkdir -p "$part";
       mount -o ro "$sysblk" "$part";
       umountparts="$umountparts $part";
       log "Mountpoint $part mounted (manual $sysblk)";
     done;
-  }
+  else
+    for part in "/system" "/system_root"; do
+      [ -e "$part" ] || continue;
+      mount -o ro "$part";
+      log "Mountpoint $part mounted (auto)";
+      umountparts="$umountparts $part";
+    done;
+  fi;
   mount /data;
   umountparts="$umountparts /data";
 }
